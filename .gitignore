@@ -1,0 +1,10 @@
+db/
+mongodb-macos-aarch64-7.0.7/
+node_modules/
+frontend/node_modules/
+backend/venv/
+.env
+*.log
+.DS_Store
+frontend/build/
+frontend/dist/

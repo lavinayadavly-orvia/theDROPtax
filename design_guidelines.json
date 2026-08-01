@@ -1,0 +1,153 @@
+{
+  "identity": {
+    "name": "E1",
+    "mission": "Create a 'Bloomberg for Pharma' operating system that fuses clinical precision with financial aggression.",
+    "principles": [
+      "Density is Clarity: In the War Room, whitespace is waste. Fill it with data.",
+      "Clinical vs. Kinetic: The White Room is sterile/calm; The War Room is dark/active.",
+      "Data over Decoration: No gradients unless they encode value (e.g., heatmaps).",
+      "Function over Form: Sharp edges, high contrast, monospaced numbers."
+    ]
+  },
+  "typography": {
+    "fonts": {
+      "headings": {
+        "family": "JetBrains Mono",
+        "fallback": "monospace",
+        "weights": ["700", "800"],
+        "purpose": "Data headers, tickers, KPIs, drug codes"
+      },
+      "body": {
+        "family": "Manrope",
+        "fallback": "sans-serif",
+        "weights": ["400", "500", "600"],
+        "purpose": "Narrative text, labels, tooltips"
+      }
+    },
+    "rules": [
+      "Use JetBrains Mono for ALL numbers, currency, and percentages.",
+      "Uppercase labels for column headers (tracking-widest text-xs).",
+      "Tabular figures (tnum) are mandatory for data tables."
+    ]
+  },
+  "colors": {
+    "modes": {
+      "white_room": {
+        "background": "#FFFFFF",
+        "foreground": "#0A0A0A",
+        "accent": "#008080",
+        "surface": "#F8FAFC",
+        "border": "#E2E8F0"
+      },
+      "war_room": {
+        "background": "#050505",
+        "foreground": "#E5E5E5",
+        "surface": "#121212",
+        "border": "#262626",
+        "muted": "#737373"
+      }
+    },
+    "palette": {
+      "primary": "#008080",
+      "primary_foreground": "#FFFFFF",
+      "destructive": "#E53E3E",
+      "warning": "#F59E0B",
+      "success": "#10B981",
+      "info": "#3B82F6",
+      "chart_1": "#008080",
+      "chart_2": "#E53E3E",
+      "chart_3": "#F59E0B",
+      "chart_4": "#6366F1",
+      "chart_5": "#8B5CF6"
+    },
+    "usage": {
+      "text": "High contrast always. Pure White on Black for War Room data.",
+      "borders": "1px solid #333 in War Room. Subtle #E5E5E5 in White Room.",
+      "gradients": "FORBIDDEN except for data visualization (heatmaps)."
+    }
+  },
+  "layout": {
+    "grid_system": {
+      "white_room": "Centered single column (max-w-3xl) with massive vertical padding.",
+      "war_room": "Bento Grid / 12-column density. Gap-2 or Gap-4 max. Fill the screen height (h-screen)."
+    },
+    "spacing": {
+      "scale": "Compact in War Room (p-2, p-3), Generous in White Room (p-12, p-24).",
+      "containers": "War Room panels use border-r or border-b to separate, not whitespace."
+    }
+  },
+  "components": {
+    "buttons": {
+      "style": "Sharp edges (rounded-sm) or very slight roundness (rounded-md).",
+      "white_room": "Outline or Ghost style, minimal.",
+      "war_room": "Solid high-contrast or neon-outline."
+    },
+    "cards": {
+      "style": "Flat, bordered, no shadow in War Room. Soft shadow in White Room.",
+      "content": "Header + Body + Footer structure. Header usually contains a ticker or KPI."
+    },
+    "inputs": {
+      "style": "Underlined (Matte) or Terminal Box (Dark background, light border).",
+      "focus": "Ring-2 ring-primary ring-offset-2 ring-offset-black."
+    },
+    "tooltips": {
+      "style": "Instant appearance, high contrast (Black bg, White text), JetBrains Mono font.",
+      "usage": "Mandatory for all acronyms and data points."
+    },
+    "charts": {
+      "library": "Recharts (via Shadcn)",
+      "style": "Minimal axes, grid lines opacity 0.1, bright distinctive data lines/bars."
+    }
+  },
+  "visual_enhancers": {
+    "textures": {
+      "white_room": "Subtle organic noise or abstract white shapes (use provided image).",
+      "war_room": "Scanlines (optional CSS overlay), subtle glow on active elements."
+    },
+    "motion": {
+      "speed": "Fast (100ms-200ms). No sluggish 'smooth' animations.",
+      "type": "Slide-in from edges, blink-on-update (for data)."
+    }
+  },
+  "assets": {
+    "images": {
+      "white_room_bg": "https://images.unsplash.com/photo-1766224770683-8400e77db405?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzJ8MHwxfHNlYXJjaHwyfHxwaGFybWFjZXV0aWNhbCUyMGxhYm9yYXRvcnklMjBtb2Rlcm4lMjBjbGVhbiUyMHdoaXRlfGVufDB8fHx8MTc3MTIxNzg5Nnww&ixlib=rb-4.1.0&q=85",
+      "war_room_bg": "https://images.unsplash.com/photo-1771013304380-dfaf9f928de6?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMjh8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMGZpbmFuY2lhbCUyMGRhdGElMjB2aXN1YWxpemF0aW9uJTIwZGFyayUyMGJhY2tncm91bmR8ZW58MHx8fHwxNzcxMjE3ODk3fDA&ixlib=rb-4.1.0&q=85",
+      "risk_texture": "https://images.unsplash.com/photo-1770520212755-9f67dfa40313?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMjh8MHwxfHNlYXJjaHwzfHxhYnN0cmFjdCUyMGZpbmFuY2lhbCUyMGRhdGElMjB2aXN1YWxpemF0aW9uJTIwZGFyayUyMGJhY2tncm91bmR8ZW58MHx8fHwxNzcxMjE3ODk3fDA&ixlib=rb-4.1.0&q=85"
+    },
+    "icons": {
+      "library": "Lucide React",
+      "style": "Stroke width 1.5px or 2px. Sharp, technical icons."
+    }
+  },
+  "universal_guidelines": {
+    "general": [
+      "Avoid 'AI Slop' - no generic gradients or rounded corners everywhere.",
+      "Dark colors must be solid or subtle noise, not linear-gradient(to right, #000, #333).",
+      "No transition: all. Use specific transitions (opacity, transform, color).",
+      "No center-aligned apps. Text flows left-to-right.",
+      "Use 'sonner' for toasts.",
+      "Use data-testid on ALL interactive elements."
+    ],
+    "file_structure": [
+      "Components: Named exports.",
+      "Pages: Default exports."
+    ],
+    "accessibility": [
+      "Ensure contrast ratios (4.5:1 for text).",
+      "Interactive states must be visible.",
+      "Focus rings are mandatory."
+    ]
+  },
+  "implementation_plan": {
+    "steps": [
+      "Setup Tailwind theme with 'white_room' and 'war_room' classes or CSS variables.",
+      "Install JetBrains Mono and Manrope fonts.",
+      "Create the layout shell (Navigation, Region Switcher).",
+      "Build White Room (Search) page.",
+      "Build War Room (Dashboard) shell with 3-column grid.",
+      "Implement Charts (Recharts) with stacked bars.",
+      "Implement PDF Dossier Generator (Frontend trigger + mock logic)."
+    ]
+  }
+}
