@@ -19,7 +19,7 @@ import { useApp } from '../context/AppContext';
 const getColors = (isDark) => ({
     assetBase: '#0EA5E9',        // Accessible Teal
     competitorBase: '#94A3B8',   // Muted Silver
-    toxicity: '#EF4444',         // Warning Red
+    adverseEvent: '#EF4444',         // Warning Red
     relapse: '#F97316',          // Orange — differentiate relapse from AE
     netSavings: '#22C55E',       // Green — savings indicator
     border: isDark ? '#27272A' : '#E4E4E7',
@@ -227,7 +227,7 @@ export function ValueBridge({ valueBridgeData, currencySymbol = '' }) {
                         </Bar>
 
                         {/* Adverse Event Cost */}
-                        <Bar dataKey="Adverse Event Cost" stackId="stack" fill={colors.toxicity} />
+                        <Bar dataKey="Adverse Event Cost" stackId="stack" fill={colors.adverseEvent} />
 
                         {/* Failure/Relapse Tax */}
                         <Bar dataKey="Treatment Failure Cost" stackId="stack" fill={colors.relapse} radius={[4, 4, 0, 0]}>

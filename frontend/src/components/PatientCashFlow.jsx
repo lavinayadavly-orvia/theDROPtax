@@ -7,9 +7,9 @@ import { InfoTooltip } from './InfoTooltip';
 export default function PatientCashFlow({ pricingModel, currencySymbol, theme = 'dark' }) {
     if (!pricingModel || !pricingModel.period_data) return null;
 
-    const cycleChartData = pricingModel.period_data.map(c => ({
-        name: `C${c.cycle}`,
-        cycle: c.cycle,
+    const periodChartData = pricingModel.period_data.map(c => ({
+        name: `C${c.period}`,
+        period: c.period,
         patient: c.patient_pay,
         insurer: c.insurer_pay,
         govt: c.govt_pay,
@@ -28,16 +28,16 @@ export default function PatientCashFlow({ pricingModel, currencySymbol, theme = 
             {/* Header with Tooltip for clarity */}
             <div className="flex items-center gap-2 mb-2">
                 <h3 className="text-xs font-bold uppercase tracking-widest" style={{ color: mutedColor }}>
-                    Cycle View: Patient Cash Flow
+                    Patient Cash Flow by Treatment Period
                 </h3>
                 {pricingModel.effective_monthly_cost > 0 && (
-                    <InfoTooltip content="Effective Avg: The average amount the patient actually pays out-of-pocket per treatment cycle, considering any financial assistance or free doses." />
+                    <InfoTooltip content="Effective Avg: The average amount the patient actually pays out-of-pocket per treatment period, considering any financial assistance or free doses." />
                 )}
             </div>
 
-            <div style={{ height: '220px' }} data-testid="cycle-cost-chart">
+            <div style={{ height: '220px' }} data-testid="period-cost-chart">
                 <ResponsiveContainer width="100%" height="100%">
-                    <ComposedChart data={cycleChartData.slice(0, 6)}>
+                    <ComposedChart data={periodChartData.slice(0, 6)}>
                         <CartesianGrid strokeDasharray="3 3" stroke={borderColor} opacity={0.3} />
                         <XAxis dataKey="name" stroke={mutedColor} tick={{ fill: mutedColor, fontSize: 11 }} />
                         <YAxis stroke={mutedColor} tick={{ fill: mutedColor, fontSize: 10 }} tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`} />

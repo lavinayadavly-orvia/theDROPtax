@@ -6,7 +6,9 @@ export const INDICATION_REGISTRY = {
   // ── CVD — Cardiology & Lipidology ──
   'cardiovascular risk reduction': {
     category: 'CVD', indication: 'Cardiovascular Risk Reduction',
-    aliases: ['cv risk reduction', 'mace reduction', 'cardiovascular outcomes', 'ascvd risk reduction'],
+    aliases: ['cv risk reduction', 'mace reduction', 'cardiovascular outcomes', 'ascvd risk reduction',
+      'secondary prevention', 'post-pci', 'acute coronary syndrome', 'acs', 'antiplatelet',
+      'stroke prevention', 'atrial fibrillation', 'thromboembolism', 'anticoagul', 'antithrombotic'],
     primaryEndpoint: { key: 'mace_hr', label: '3-pt MACE Risk Reduction', unit: 'HR', direction: 'lower_better',
       definition: 'Hazard ratio for 3-point Major Adverse Cardiovascular Events (CV death, MI, stroke). HR<1 means fewer events.' },
     secondaryEndpoints: [
@@ -19,7 +21,7 @@ export const INDICATION_REGISTRY = {
   },
   'heart failure': {
     category: 'CVD', indication: 'Heart Failure',
-    aliases: ['hfref', 'hfpef', 'chronic heart failure', 'cardiac failure'],
+    aliases: ['hfref', 'hfpef', 'chronic heart failure', 'cardiac failure', 'heart-failure'],
     primaryEndpoint: { key: 'hf_event_hr', label: 'CV-death / HF-hospitalisation HR', unit: 'HR', direction: 'lower_better',
       definition: 'Hazard ratio for the composite of cardiovascular death or heart-failure hospitalisation.' },
     secondaryEndpoints: [
@@ -32,7 +34,8 @@ export const INDICATION_REGISTRY = {
   },
   'hypercholesterolemia': {
     category: 'CVD', indication: 'Hypercholesterolemia / Dyslipidemia',
-    aliases: ['dyslipidemia', 'dyslipidaemia', 'high cholesterol', 'ldl lowering', 'hyperlipidemia'],
+    aliases: ['dyslipidemia', 'dyslipidaemia', 'high cholesterol', 'ldl lowering', 'hyperlipidemia',
+      'ascvd', 'familial hypercholesterolemia', 'high ldl', 'hypertriglyceridemia', 'triglyceride', 'statin', 'lipid'],
     primaryEndpoint: { key: 'ldl_reduction', label: 'LDL-C Reduction', unit: '%', direction: 'lower_better',
       definition: 'Percentage reduction in LDL cholesterol vs baseline.' },
     secondaryEndpoints: [
@@ -45,7 +48,7 @@ export const INDICATION_REGISTRY = {
   },
   'hypertension': {
     category: 'CVD', indication: 'Hypertension',
-    aliases: ['high blood pressure', 'resistant hypertension', 'htn'],
+    aliases: ['high blood pressure', 'resistant hypertension', 'htn', 'hypertensive', 'antihypertensive', 'controlled hypotension'],
     primaryEndpoint: { key: 'sbp_reduction', label: 'Systolic BP Reduction', unit: 'mmHg', direction: 'lower_better',
       definition: 'Absolute reduction in systolic blood pressure vs comparator.' },
     secondaryEndpoints: [
@@ -99,7 +102,8 @@ export const INDICATION_REGISTRY = {
   },
   'type 2 diabetes': {
     category: 'Metabolic', indication: 'Type 2 Diabetes',
-    aliases: ['t2dm', 't2d', 'diabetes mellitus type 2', 'diabetes'],
+    aliases: ['t2dm', 't2d', 'diabetes mellitus type 2', 'diabetes', 'glycaemic', 'glycemic',
+      'insulin', 'prandial insulin', 'basal insulin', 'hyperglyc'],
     primaryEndpoint: { key: 'hba1c_reduction', label: 'HbA1c Reduction', unit: '%', direction: 'lower_better',
       definition: 'Absolute HbA1c reduction (percentage points) vs baseline.' },
     secondaryEndpoints: [
@@ -126,7 +130,7 @@ export const INDICATION_REGISTRY = {
   },
   'osteoporosis': {
     category: "Women's Health", indication: 'Osteoporosis',
-    aliases: ['postmenopausal osteoporosis', 'bone loss', 'fracture prevention'],
+    aliases: ['postmenopausal osteoporosis', 'bone loss', 'fracture prevention', 'osteopenia', 'bone mineral density', 'vitamin d deficiency'],
     primaryEndpoint: { key: 'vertebral_fracture_hr', label: 'Vertebral-Fracture Risk Reduction', unit: 'HR', direction: 'lower_better',
       definition: 'Hazard ratio for new vertebral fracture vs comparator.' },
     secondaryEndpoints: [
@@ -163,7 +167,8 @@ export const INDICATION_REGISTRY = {
   },
   'heavy menstrual bleeding': {
     category: "Women's Health", indication: 'Heavy Menstrual Bleeding (Menorrhagia)',
-    aliases: ['menorrhagia', 'hmb', 'abnormal uterine bleeding', 'heavy periods'],
+    aliases: ['menorrhagia', 'hmb', 'abnormal uterine bleeding', 'heavy periods',
+      'dysfunctional uterine bleeding', 'postpartum haemorrhage', 'postpartum hemorrhage'],
     primaryEndpoint: { key: 'mbl_reduction', label: 'Menstrual Blood-Loss Reduction (alkaline-hematin)', unit: '%', direction: 'lower_better',
       definition: 'Percentage reduction in objectively-measured menstrual blood loss (alkaline-hematin method).' },
     secondaryEndpoints: [

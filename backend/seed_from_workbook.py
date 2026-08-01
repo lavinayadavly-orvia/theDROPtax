@@ -223,11 +223,11 @@ async def main():
                 "data_sources": {
                     "clinical": "Standard prescribing guides",
                     "competitor": "Standard of Care baseline",
-                    "toxicity": "Clinical trial safety metadata",
-                    "drug_toxicity": "Product label",
+                    "safety": "Clinical trial safety metadata",
+                    "drug_safety": "Product label",
                     "clinical_tier": "tier_2",
                     "competitor_tier": "tier_3",
-                    "toxicity_tier": "tier_2"
+                    "safety_tier": "tier_2"
                 },
                 "regional_availability": {
                     "global_approval": {"agency": "FDA", "date": launch_approx, "status": "approved"},

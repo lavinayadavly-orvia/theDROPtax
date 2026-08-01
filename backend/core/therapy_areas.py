@@ -86,7 +86,9 @@ INDICATION_REGISTRY: Dict[str, Dict[str, Any]] = {
     "cardiovascular risk reduction": {
         "category": "CVD",
         "indication": "Cardiovascular Risk Reduction",
-        "aliases": ["cv risk reduction", "mace reduction", "cardiovascular outcomes", "ascvd risk reduction"],
+        "aliases": ["cv risk reduction", "mace reduction", "cardiovascular outcomes", "ascvd risk reduction",
+                    "secondary prevention", "post-pci", "acute coronary syndrome", "acs", "antiplatelet",
+                    "stroke prevention", "atrial fibrillation", "thromboembolism", "anticoagul", "antithrombotic"],
         "primary_endpoint": {
             "key": "mace_hr", "label": "3-pt MACE Risk Reduction", "unit": "HR", "direction": "lower_better",
             "norm": {"type": "hr", "good": 0.30},
@@ -113,7 +115,7 @@ INDICATION_REGISTRY: Dict[str, Dict[str, Any]] = {
     "heart failure": {
         "category": "CVD",
         "indication": "Heart Failure",
-        "aliases": ["hfref", "hfpef", "chronic heart failure", "cardiac failure"],
+        "aliases": ["hfref", "hfpef", "chronic heart failure", "cardiac failure", "heart-failure"],
         "primary_endpoint": {
             "key": "hf_event_hr", "label": "CV-death / HF-hospitalisation HR", "unit": "HR", "direction": "lower_better",
             "norm": {"type": "hr", "good": 0.25},
@@ -138,7 +140,9 @@ INDICATION_REGISTRY: Dict[str, Dict[str, Any]] = {
     "hypercholesterolemia": {
         "category": "CVD",
         "indication": "Hypercholesterolemia / Dyslipidemia",
-        "aliases": ["dyslipidemia", "dyslipidaemia", "high cholesterol", "ldl lowering", "hyperlipidemia"],
+        "aliases": ["dyslipidemia", "dyslipidaemia", "high cholesterol", "ldl lowering", "hyperlipidemia",
+                    "ascvd", "familial hypercholesterolemia", "high ldl", "hypertriglyceridemia",
+                    "triglyceride", "statin", "lipid"],
         "primary_endpoint": {
             "key": "ldl_reduction", "label": "LDL-C Reduction", "unit": "%", "direction": "lower_better",
             "norm": {"type": "reduction_pct", "good": 55.0},
@@ -165,7 +169,8 @@ INDICATION_REGISTRY: Dict[str, Dict[str, Any]] = {
     "hypertension": {
         "category": "CVD",
         "indication": "Hypertension",
-        "aliases": ["high blood pressure", "resistant hypertension", "htn"],
+        "aliases": ["high blood pressure", "resistant hypertension", "htn", "hypertensive",
+                    "antihypertensive", "controlled hypotension"],
         "primary_endpoint": {
             "key": "sbp_reduction", "label": "Systolic BP Reduction", "unit": "mmHg", "direction": "lower_better",
             "norm": {"type": "mmhg", "good": 20.0},
@@ -264,7 +269,8 @@ INDICATION_REGISTRY: Dict[str, Dict[str, Any]] = {
     "type 2 diabetes": {
         "category": "Metabolic",
         "indication": "Type 2 Diabetes",
-        "aliases": ["t2dm", "t2d", "diabetes mellitus type 2", "diabetes"],
+        "aliases": ["t2dm", "t2d", "diabetes mellitus type 2", "diabetes", "glycaemic", "glycemic",
+                    "insulin", "prandial insulin", "basal insulin", "hyperglyc"],
         "primary_endpoint": {
             "key": "hba1c_reduction", "label": "HbA1c Reduction", "unit": "%", "direction": "lower_better",
             "norm": {"type": "reduction_pct", "good": 2.0},
@@ -317,7 +323,8 @@ INDICATION_REGISTRY: Dict[str, Dict[str, Any]] = {
     "osteoporosis": {
         "category": "Women's Health",
         "indication": "Osteoporosis",
-        "aliases": ["postmenopausal osteoporosis", "bone loss", "fracture prevention"],
+        "aliases": ["postmenopausal osteoporosis", "bone loss", "fracture prevention", "osteopenia",
+                    "bone mineral density", "vitamin d deficiency"],
         "primary_endpoint": {
             "key": "vertebral_fracture_hr", "label": "Vertebral-Fracture Risk Reduction", "unit": "HR", "direction": "lower_better",
             "norm": {"type": "hr", "good": 0.60},
@@ -393,7 +400,8 @@ INDICATION_REGISTRY: Dict[str, Dict[str, Any]] = {
     "heavy menstrual bleeding": {
         "category": "Women's Health",
         "indication": "Heavy Menstrual Bleeding (Menorrhagia)",
-        "aliases": ["menorrhagia", "hmb", "abnormal uterine bleeding", "heavy periods"],
+        "aliases": ["menorrhagia", "hmb", "abnormal uterine bleeding", "heavy periods",
+                    "dysfunctional uterine bleeding", "postpartum haemorrhage", "postpartum hemorrhage"],
         "primary_endpoint": {
             "key": "mbl_reduction", "label": "Menstrual Blood-Loss Reduction (alkaline-hematin)", "unit": "%", "direction": "lower_better",
             "norm": {"type": "reduction_pct", "good": 50.0},

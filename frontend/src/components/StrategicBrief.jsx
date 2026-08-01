@@ -55,8 +55,8 @@ export function StrategicBrief({ activeTab, pricingModel, selectedPayer, selecte
         actionText = `Focus on "Formulary Inclusion" and "Tender Participation" as patient out-of-pocket (OOP) is zero.`;
         actionHighlight = "Formulary Focus";
     } else if (selectedPayer === 'oop') {
-        actionText = `Focus on "Financial Toxicity" and "Adherence Risk." Highlight "Buy 1 Get 1" PAP to stabilize cash flow.`;
-        actionHighlight = "Financial Toxicity";
+        actionText = `Focus on "Financial Burden" and "Adherence Risk." Highlight "Buy 1 Get 1" PAP to stabilize cash flow.`;
+        actionHighlight = "Financial Burden";
     }
 
     // Theme support

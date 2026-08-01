@@ -390,7 +390,7 @@ async def calculate_period_costs(
     if pap_eligible:
         region_paps = PAP_SCHEMES.get(region, [])
         if region_paps:
-            best_pap = min(region_paps, key=lambda s: s["paid_cycles"])
+            best_pap = min(region_paps, key=lambda s: s["paid_periods"])
 
     # ── Build period data ────────────────────────────────────────────────────
     period_data = []
@@ -408,9 +408,9 @@ async def calculate_period_costs(
 
         # Apply PAP period logic (paid vs free intervals)
         if best_pap:
-            span = best_pap["paid_cycles"] + best_pap["free_cycles"]
+            span = best_pap["paid_periods"] + best_pap["free_periods"]
             position_in_span = (i - 1) % span
-            if position_in_span >= best_pap["paid_cycles"]:
+            if position_in_span >= best_pap["paid_periods"]:
                 is_free = True
                 subsidy = patient_pay
                 patient_pay = 0
@@ -476,7 +476,7 @@ async def get_region_payer_segments(region_code: str):
 @api_router.post("/pricing/calculate")
 async def calculate_pricing(request: PricingRequest):
     """
-    Dynamic Pricing Engine - Calculate cycle-based costs for a drug
+    Dynamic Pricing Engine - Calculate period-based costs for a drug
     Respects payer segment and regional pricing
     """
     # Get regional price (not conversion)
@@ -750,7 +750,7 @@ async def web_search_drug_info(drug_name: str) -> dict:
 async def run_web_sweeper(drug_name: str, indication: str, region_code: str) -> dict:
     """
     Step 2 of Commercial Brain: Run the Web Sweeper Protocol.
-    Returns comprehensive clinical, competitor, toxicity data using Tavily + GPT-4.
+    Returns clinical, competitor and safety data from search + LLM extraction.
     """
     import asyncio as _asyncio, json as _json
 
@@ -787,9 +787,9 @@ async def run_web_sweeper(drug_name: str, indication: str, region_code: str) -> 
                 "source_tier": tier,
             },
             "competitor": {"name": None, "source_url": None, "source_tier": tier},
-            "toxicity": {"severe_ae_rate": None, "is_estimated": True, "adverse_events": [],
+            "safety": {"severe_ae_rate": None, "is_estimated": True, "adverse_events": [],
                          "source_url": None, "source_tier": tier},
-            "drug_toxicity": {"severe_ae_rate": None, "is_estimated": True, "adverse_events": [],
+            "drug_safety": {"severe_ae_rate": None, "is_estimated": True, "adverse_events": [],
                               "source_url": None},
             "data_quality": {"status": "unavailable", "missing_fields": [pe["key"], "severe_ae_rate"], "issues": issues},
             "local_hero_applied": False,
@@ -843,8 +843,8 @@ async def run_web_sweeper(drug_name: str, indication: str, region_code: str) -> 
                     '    ],\n'
                     '    "confidence": 0-1, "source_url": "url"|null },\n'
                     '  "competitor": { "name": "brand name"|null, "source_url": "url"|null },\n'
-                    '  "toxicity": { "severe_ae_rate": 0-1|null, "adverse_events": ["ae1"], "source_url": "url"|null },\n'
-                    '  "drug_toxicity": { "severe_ae_rate": 0-1|null, "adverse_events": ["ae1"], "source_url": "url"|null }\n'
+                    '  "safety": { "severe_ae_rate": 0-1|null, "adverse_events": ["ae1"], "source_url": "url"|null },\n'
+                    '  "drug_safety": { "severe_ae_rate": 0-1|null, "adverse_events": ["ae1"], "source_url": "url"|null }\n'
                     "}\n\nText:\n" + combined
                 )}
             ]
@@ -873,23 +873,23 @@ async def run_web_sweeper(drug_name: str, indication: str, region_code: str) -> 
         base["competitor"]["source_url"] = comp.get("source_url")
         base["competitor"]["source_tier"] = "tier_1"
 
-        tox = parsed.get("toxicity", {}) or {}
-        base["toxicity"]["severe_ae_rate"] = tox.get("severe_ae_rate")
-        base["toxicity"]["adverse_events"] = tox.get("adverse_events") or []
-        base["toxicity"]["is_estimated"] = tox.get("severe_ae_rate") is None
-        base["toxicity"]["source_url"] = tox.get("source_url")
-        base["toxicity"]["source_tier"] = "tier_1"
+        tox = parsed.get("safety", {}) or {}
+        base["safety"]["severe_ae_rate"] = tox.get("severe_ae_rate")
+        base["safety"]["adverse_events"] = tox.get("adverse_events") or []
+        base["safety"]["is_estimated"] = tox.get("severe_ae_rate") is None
+        base["safety"]["source_url"] = tox.get("source_url")
+        base["safety"]["source_tier"] = "tier_1"
 
-        dtox = parsed.get("drug_toxicity", {}) or {}
-        base["drug_toxicity"]["severe_ae_rate"] = dtox.get("severe_ae_rate")
-        base["drug_toxicity"]["adverse_events"] = dtox.get("adverse_events") or []
-        base["drug_toxicity"]["is_estimated"] = dtox.get("severe_ae_rate") is None
+        dtox = parsed.get("drug_safety", {}) or {}
+        base["drug_safety"]["severe_ae_rate"] = dtox.get("severe_ae_rate")
+        base["drug_safety"]["adverse_events"] = dtox.get("adverse_events") or []
+        base["drug_safety"]["is_estimated"] = dtox.get("severe_ae_rate") is None
 
         # Recompute data quality from what we actually got
         missing = []
         if base["clinical"]["primary_endpoint_value"] is None:
             missing.append(pe["key"])
-        if base["toxicity"]["severe_ae_rate"] is None:
+        if base["safety"]["severe_ae_rate"] is None:
             missing.append("severe_ae_rate")
         issues = [{"field": m, "severity": "warning",
                    "message": f"{m} not found in sources — enter manually or verify."} for m in missing]
@@ -1046,7 +1046,7 @@ async def analyze_drug_dynamically(
     COMMERCIAL BRAIN - Dynamic drug analysis using Web Sweeper Protocol
     
     1. Gets basic drug info (indication, mechanism, status)
-    2. Runs Web Sweeper for clinical, competitor, toxicity data
+    2. Runs Web Sweeper for clinical, competitor and safety data
     3. Gets regional market availability (checks web for real availability)
     4. Calculates liability using the new formula
     """
@@ -1292,14 +1292,14 @@ async def analyze_drug_dynamically(
         ) if _resolved_entry else [],
 
         # Safety data — Competitor (serious/severe AEs, therapy-area-agnostic)
-        "competitor_severe_ae_rate": sweeper_data["toxicity"].get("severe_ae_rate"),
-        "competitor_ae_is_estimated": sweeper_data["toxicity"].get("is_estimated", True),
-        "competitor_adverse_events": sweeper_data["toxicity"].get("adverse_events", []),
+        "competitor_severe_ae_rate": sweeper_data["safety"].get("severe_ae_rate"),
+        "competitor_ae_is_estimated": sweeper_data["safety"].get("is_estimated", True),
+        "competitor_adverse_events": sweeper_data["safety"].get("adverse_events", []),
 
         # Safety data — Drug itself
-        "drug_severe_ae_rate": sweeper_data.get("drug_toxicity", {}).get("severe_ae_rate"),
-        "drug_ae_is_estimated": sweeper_data.get("drug_toxicity", {}).get("is_estimated", True),
-        "drug_adverse_events": sweeper_data.get("drug_toxicity", {}).get("adverse_events", []),
+        "drug_severe_ae_rate": sweeper_data.get("drug_safety", {}).get("severe_ae_rate"),
+        "drug_ae_is_estimated": sweeper_data.get("drug_safety", {}).get("is_estimated", True),
+        "drug_adverse_events": sweeper_data.get("drug_safety", {}).get("adverse_events", []),
 
         # Anti-hallucination envelope
         "data_quality": sweeper_data.get("data_quality", {"status": "unavailable", "missing_fields": [], "issues": []}),
@@ -1324,11 +1324,11 @@ async def analyze_drug_dynamically(
         "data_sources": {
             "clinical": sweeper_data["clinical"]["source_url"],
             "competitor": sweeper_data["competitor"]["source_url"],
-            "toxicity": sweeper_data["toxicity"]["source_url"],
-            "drug_toxicity": sweeper_data.get("drug_toxicity", {}).get("source_url"),
+            "safety": sweeper_data["safety"]["source_url"],
+            "drug_safety": sweeper_data.get("drug_safety", {}).get("source_url"),
             "clinical_tier": sweeper_data["clinical"]["source_tier"],
             "competitor_tier": sweeper_data["competitor"]["source_tier"],
-            "toxicity_tier": sweeper_data["toxicity"]["source_tier"]
+            "safety_tier": sweeper_data["safety"]["source_tier"]
         },
         "local_hero_applied": sweeper_data["local_hero_applied"],
 
@@ -1490,7 +1490,7 @@ async def get_heor_regional_data(
     its AE management burden, and standard-of-care costs in the target region.
 
     Tier 1: Tavily web search (3 parallel queries) + GPT-4 extraction  ← when keys present
-    Tier 2: REGIONAL_DRUG_PRICES / REGIONAL_CONSTANTS lookup tables     ← always-available fallback
+    Tier 2: DEFAULT_REGIONAL_PRICES_BY_INDICATION / REGIONAL_CONSTANTS tables     ← always-available fallback
     """
     import asyncio as _asyncio
     import json as _json
@@ -1692,7 +1692,7 @@ Return ONLY valid JSON:
     }
 
 
-async def _web_sweeper_toxicity(drug_name: str, region_code: str) -> dict:
+async def _web_sweeper_safety(drug_name: str, region_code: str) -> dict:
     """
     Fetch the serious/severe adverse-event rate for a drug via search + GPT.
     Returns { severe_ae_rate: float|None, adverse_events: list, is_estimated: bool }.
@@ -1731,7 +1731,7 @@ async def _web_sweeper_toxicity(drug_name: str, region_code: str) -> dict:
         return {"severe_ae_rate": rate, "adverse_events": parsed.get("adverse_events") or [],
                 "is_estimated": rate is None}
     except Exception as e:
-        logger.warning(f"[Toxicity Sweeper] Error for {drug_name}: {e} — returning unavailable")
+        logger.warning(f"[Safety Sweeper] Error for {drug_name}: {e} — returning unavailable")
         return unavailable
 
 
@@ -1903,8 +1903,8 @@ async def analyze_competitor(competitor_name: str, region_code: str = "IN", indi
         source_url = url_entry["url"] if url_entry else None
     else:
         # Web search for a real safety figure — None if unavailable (no guessing)
-        toxicity_result = await _web_sweeper_toxicity(competitor_name, region_code)
-        ae_rate = toxicity_result.get("severe_ae_rate")
+        safety_result = await _web_sweeper_safety(competitor_name, region_code)
+        ae_rate = safety_result.get("severe_ae_rate")
         ae_is_estimated = ae_rate is None
         source_label = "Web Intelligence via search" if ae_rate is not None else "Not available — enter manually"
         source_url = (f"https://pubmed.ncbi.nlm.nih.gov/?term={competitor_name.replace(' ', '+')}+clinical+trial"
@@ -2400,7 +2400,7 @@ async def calculate_liability(drug_id: str, region_code: str = "IN"):
             },
             "competitor_ae_rate": {
                 "value": competitor_ae_rate,
-                "source": drug_data.get("data_sources", {}).get("toxicity"),
+                "source": drug_data.get("data_sources", {}).get("safety"),
                 "is_estimated": drug_data.get("competitor_ae_is_estimated", True),
                 "method": "Extracted from label" if competitor_ae_rate is not None else "Not available",
             },

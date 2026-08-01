@@ -55,8 +55,8 @@ DRUGS = [
         "data_sources": {
             "clinical": "SELECT Trial (NCT03574597) published in NEJM",
             "competitor": "Cardiovascular outcomes registries",
-            "toxicity": "Wegovy FDA prescribing information",
-            "clinical_tier": "tier_1", "competitor_tier": "tier_2", "toxicity_tier": "tier_1"
+            "safety": "Wegovy FDA prescribing information",
+            "clinical_tier": "tier_1", "competitor_tier": "tier_2", "safety_tier": "tier_1"
         },
         "data_quality": {"status": "complete", "missing_fields": [], "issues": []},
         "regional_availability": {
@@ -103,8 +103,8 @@ DRUGS = [
         "data_sources": {
             "clinical": "SURMOUNT-1 Trial published in NEJM",
             "competitor": "Indirect treatment comparison (ITC) analysis",
-            "toxicity": "Zepbound FDA prescribing information",
-            "clinical_tier": "tier_1", "competitor_tier": "tier_2", "toxicity_tier": "tier_1"
+            "safety": "Zepbound FDA prescribing information",
+            "clinical_tier": "tier_1", "competitor_tier": "tier_2", "safety_tier": "tier_1"
         },
         "data_quality": {"status": "complete", "missing_fields": [], "issues": []},
         "regional_availability": {
@@ -148,8 +148,8 @@ DRUGS = [
         "data_sources": {
             "clinical": "PARADIGM-HF Trial published in NEJM",
             "competitor": "Standard ACE inhibitor clinical literature",
-            "toxicity": "Entresto prescribing information",
-            "clinical_tier": "tier_1", "competitor_tier": "tier_1", "toxicity_tier": "tier_1"
+            "safety": "Entresto prescribing information",
+            "clinical_tier": "tier_1", "competitor_tier": "tier_1", "safety_tier": "tier_1"
         },
         "data_quality": {"status": "complete", "missing_fields": [], "issues": []},
         "regional_availability": {
@@ -196,8 +196,8 @@ DRUGS = [
         "data_sources": {
             "clinical": "EXTEND-IA TNK Trial published in NEJM",
             "competitor": "Alteplase stroke registry data",
-            "toxicity": "Metalyse prescribing guidelines",
-            "clinical_tier": "tier_1", "competitor_tier": "tier_1", "toxicity_tier": "tier_1"
+            "safety": "Metalyse prescribing guidelines",
+            "clinical_tier": "tier_1", "competitor_tier": "tier_1", "safety_tier": "tier_1"
         },
         "data_quality": {"status": "complete", "missing_fields": [], "issues": []},
         "regional_availability": {
@@ -241,8 +241,8 @@ DRUGS = [
         "data_sources": {
             "clinical": "SKYLIGHT-1 Trial published in The Lancet",
             "competitor": "HRT efficacy meta-analyses",
-            "toxicity": "Veozah FDA prescribing information",
-            "clinical_tier": "tier_1", "competitor_tier": "tier_2", "toxicity_tier": "tier_1"
+            "safety": "Veozah FDA prescribing information",
+            "clinical_tier": "tier_1", "competitor_tier": "tier_2", "safety_tier": "tier_1"
         },
         "data_quality": {"status": "complete", "missing_fields": [], "issues": []},
         "regional_availability": {
@@ -286,8 +286,8 @@ DRUGS = [
         "data_sources": {
             "clinical": "ARCH Trial published in NEJM",
             "competitor": "Standard bisphosphonate treatment cohorts",
-            "toxicity": "Evenity FDA prescribing information",
-            "clinical_tier": "tier_1", "competitor_tier": "tier_1", "toxicity_tier": "tier_1"
+            "safety": "Evenity FDA prescribing information",
+            "clinical_tier": "tier_1", "competitor_tier": "tier_1", "safety_tier": "tier_1"
         },
         "data_quality": {"status": "complete", "missing_fields": [], "issues": []},
         "regional_availability": {

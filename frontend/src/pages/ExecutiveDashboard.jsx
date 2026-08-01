@@ -118,7 +118,7 @@ export default function ExecutiveDashboard() {
             element: '.tour-cost-metrics',
             popover: {
               title: 'Step 2: Effective Cost',
-              description: 'We dynamically calculate the actual out-of-pocket cost per cycle based on regional subsidies.',
+              description: 'We dynamically calculate the actual out-of-pocket cost per period based on regional subsidies.',
               side: 'left',
               align: 'start'
             }
@@ -127,7 +127,7 @@ export default function ExecutiveDashboard() {
             element: '.tour-clinical-endpoints',
             popover: {
               title: 'Step 3: Clinical Integration',
-              description: 'Efficacy and toxicity data are factored directly into the financial liability engine.',
+              description: 'Efficacy and safety data are factored directly into the financial liability engine.',
               side: 'left',
               align: 'start'
             }
@@ -393,10 +393,10 @@ export default function ExecutiveDashboard() {
     );
   }
 
-  // Prepare cycle chart data for "sawtooth" visualization
-  const cycleChartData = pricingModel?.period_data?.map(c => ({
-    name: `C${c.cycle}`,
-    cycle: c.cycle,
+  // Prepare period chart data for "sawtooth" visualization
+  const periodChartData = pricingModel?.period_data?.map(c => ({
+    name: `C${c.period}`,
+    period: c.period,
     patient: c.patient_pay,
     insurer: c.insurer_pay,
     govt: c.govt_pay,
@@ -691,7 +691,7 @@ export default function ExecutiveDashboard() {
                   <div className="text-xs uppercase tracking-widest text-muted-foreground mb-1">EFFECTIVE PATIENT COST</div>
                   <div className="text-3xl font-data font-bold text-[#10B981]">
                     {pricingModel.currency_symbol}{pricingModel.effective_monthly_cost?.toLocaleString()}
-                    <span className="text-sm text-muted-foreground font-normal"> /cycle</span>
+                    <span className="text-sm text-muted-foreground font-normal"> /period</span>
                   </div>
                   <div className="text-xs text-muted-foreground mt-1">
                     {selectedPayer?.toUpperCase() === 'OOP' || selectedPayer?.toLowerCase() === 'oop'
@@ -712,7 +712,7 @@ export default function ExecutiveDashboard() {
             {/* Government Burden - Show for CGHS/ECHS */}
             {pricingModel && (['cghs', 'echs', 'ayushman_bharat', 'govt'].includes(selectedPayer?.toLowerCase())) && pricingModel.annual_govt_impact > 0 && (
               <div className="p-3 rounded-sm border border-[#10B981]/30" style={{ backgroundColor: theme === 'dark' ? '#10B98110' : '#10B98108' }}>
-                <div className="text-xs uppercase tracking-widest text-[#10B981] mb-1">GOVT / INSTITUTION BURDEN PER CYCLE</div>
+                <div className="text-xs uppercase tracking-widest text-[#10B981] mb-1">GOVT / INSTITUTION BURDEN PER PERIOD</div>
                 <div className="text-xl font-data font-bold" style={{ color: textColor }}>
                   {pricingModel.currency_symbol}{Math.round(pricingModel.annual_govt_impact / 12).toLocaleString()}
                 </div>
@@ -725,7 +725,7 @@ export default function ExecutiveDashboard() {
             {/* Insurer Burden - Show for Insurance */}
             {pricingModel && (selectedPayer?.toLowerCase().includes('insurance') || ['CORP', 'PRIVATE', 'MEDISAVE', 'DAMAN'].includes(selectedPayer?.toUpperCase())) && pricingModel.annual_insurer_impact > 0 && (
               <div className="p-3 rounded-sm border border-blue-500/30" style={{ backgroundColor: theme === 'dark' ? '#3B82F610' : '#3B82F608' }}>
-                <div className="text-xs uppercase tracking-widest text-blue-500 mb-1">INSURER BURDEN PER CYCLE</div>
+                <div className="text-xs uppercase tracking-widest text-blue-500 mb-1">INSURER BURDEN PER PERIOD</div>
                 <div className="text-xl font-data font-bold" style={{ color: textColor }}>
                   {pricingModel.currency_symbol}{Math.round(pricingModel.annual_insurer_impact / 12).toLocaleString()}
                 </div>
@@ -739,7 +739,7 @@ export default function ExecutiveDashboard() {
             {pricingModel && (
               <div className="text-xs" style={{ color: mutedColor }}>
                 <span>List Price: </span>
-                <span className="font-data">{pricingModel.currency_symbol}{pricingModel.list_price_per_period?.toLocaleString()}/cycle</span>
+                <span className="font-data">{pricingModel.currency_symbol}{pricingModel.list_price_per_period?.toLocaleString()}/period</span>
               </div>
             )}
 
@@ -1280,7 +1280,7 @@ export default function ExecutiveDashboard() {
                     </div>
                     <h4 className="text-sm font-semibold mb-1" style={{ color: textColor }}>Liability Analysis Bypassed</h4>
                     <p className="text-xs text-muted-foreground max-w-[250px]">
-                      Downstream liability modeling is bypassed for standard low-cost maintenance therapies (under ₹2,000/cycle).
+                      Downstream liability modeling is bypassed for standard low-cost maintenance therapies (under ₹2,000/period).
                     </p>
                   </div>
                 ) : (

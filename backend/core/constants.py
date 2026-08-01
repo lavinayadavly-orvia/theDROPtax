@@ -6,9 +6,8 @@ Regional configurations, pricing data, and market availability
 # Regional Constants for Liability Engine
 REGIONAL_CONSTANTS = {
     "IN": {
-        "C_ICU": 1800000,  # ₹18,00,000 - ICU/Hospitalization cost
         "daily_wage": 2500,  # ₹2,500 - Average daily wage for productivity calculation
-        "hospitalization_cost": 150000,  # ₹1,50,000 - Fixed hospitalization cost for toxicity
+        "hospitalization_cost": 150000,  # ₹1,50,000 - Adverse-event management / hospitalization cost
         "currency_symbol": "₹",
         "currency": "INR",
         "regulator": "CDSCO",
@@ -19,7 +18,6 @@ REGIONAL_CONSTANTS = {
         "retail_mrp_multiplier": 1.35  # home/retail MRP vs institutional/tender price
     },
     "SG": {
-        "C_ICU": 85000,  # S$85,000
         "daily_wage": 250,  # S$250
         "hospitalization_cost": 15000,  # S$15,000
         "currency_symbol": "S$",
@@ -32,7 +30,6 @@ REGIONAL_CONSTANTS = {
         "retail_mrp_multiplier": 1.20
     },
     "AE": {
-        "C_ICU": 250000,  # AED 250,000
         "daily_wage": 500,  # AED 500
         "hospitalization_cost": 45000,  # AED 45,000
         "currency_symbol": "AED",
@@ -179,17 +176,17 @@ PAYER_SEGMENTS = {
 # PAP Schemes by region (Buy-X-Get-Y patterns)
 PAP_SCHEMES = {
     "IN": [
-        {"name": "Buy 1 Get 1 Free", "code": "b1g1", "paid_cycles": 1, "free_cycles": 1, "effective_discount": 0.50},
-        {"name": "Buy 2 Get 1 Free", "code": "b2g1", "paid_cycles": 2, "free_cycles": 1, "effective_discount": 0.33},
-        {"name": "Buy 3 Get 1 Free", "code": "b3g1", "paid_cycles": 3, "free_cycles": 1, "effective_discount": 0.25},
-        {"name": "Cost Cap at 10 Cycles", "code": "cap10", "paid_cycles": 10, "free_cycles": 2, "effective_discount": 0.17},
+        {"name": "Buy 1 Get 1 Free", "code": "b1g1", "paid_periods": 1, "free_periods": 1, "effective_discount": 0.50},
+        {"name": "Buy 2 Get 1 Free", "code": "b2g1", "paid_periods": 2, "free_periods": 1, "effective_discount": 0.33},
+        {"name": "Buy 3 Get 1 Free", "code": "b3g1", "paid_periods": 3, "free_periods": 1, "effective_discount": 0.25},
+        {"name": "Cost Cap at 10 Periods", "code": "cap10", "paid_periods": 10, "free_periods": 2, "effective_discount": 0.17},
     ],
     "SG": [
-        {"name": "Buy 2 Get 1 Free", "code": "b2g1", "paid_cycles": 2, "free_cycles": 1, "effective_discount": 0.33},
-        {"name": "Buy 3 Get 1 Free", "code": "b3g1", "paid_cycles": 3, "free_cycles": 1, "effective_discount": 0.25},
+        {"name": "Buy 2 Get 1 Free", "code": "b2g1", "paid_periods": 2, "free_periods": 1, "effective_discount": 0.33},
+        {"name": "Buy 3 Get 1 Free", "code": "b3g1", "paid_periods": 3, "free_periods": 1, "effective_discount": 0.25},
     ],
     "AE": [
-        {"name": "Buy 2 Get 1 Free", "code": "b2g1", "paid_cycles": 2, "free_cycles": 1, "effective_discount": 0.33},
+        {"name": "Buy 2 Get 1 Free", "code": "b2g1", "paid_periods": 2, "free_periods": 1, "effective_discount": 0.33},
     ]
 }
 
@@ -221,35 +218,6 @@ DEFAULT_REGIONAL_PRICES_BY_INDICATION = {
     "default": {"IN": 15000, "SG": 400, "AE": 1000, "US": 900},
 }
 
-# Trust Hierarchy — CardioMetabolic & Women's Health evidence sources
-SOURCE_TRUST_TIERS = {
-    "tier_1": {
-        "weight": 1.0,
-        "sources": ["fda.gov", "ema.europa.eu", "clinicaltrials.gov", "nejm.org", "thelancet.com", "jamanetwork.com"],
-        "description": "FDA/EMA regulatory data, major general-medicine journals"
-    },
-    "tier_2": {
-        "weight": 0.7,
-        "sources": ["acc.org", "heart.org", "escardio.org", "diabetes.org", "easd.org",
-                    "menopause.org", "asbmr.org", "stroke.org", "pubmed.ncbi.nlm.nih.gov"],
-        "description": "Specialty society guidelines (ACC/AHA, ESC, ADA/EASD, NAMS, ASBMR), PubMed"
-    },
-    "tier_3": {
-        "weight": 0.4,
-        "sources": ["fiercepharma.com", "endpoints.com", "statnews.com", "reuters.com"],
-        "description": "News and industry sources"
-    }
-}
-
-# Local Hero: Regional Centers of Excellence (cardiometabolic / multispecialty)
-LOCAL_HERO_CENTERS = {
-    "IN": ["aiims.edu", "medanta.org", "narayanahealth.org", "apollohospitals.com"],
-    "SG": ["nhcs.com.sg", "sgh.com.sg", "nuh.com.sg"],
-    "AE": ["clevelandclinicabudhabi.ae", "mediclinic.ae"]
-}
-
-# Default T_leak (time to next treatment) in months
-DEFAULT_T_LEAK_MONTHS = 6
 
 # Superstar Drug Metadata (Fallback for when Web Sweeper fails)
 LOCAL_DRUG_METADATA = {

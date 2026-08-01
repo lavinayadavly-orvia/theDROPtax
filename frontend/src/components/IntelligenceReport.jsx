@@ -25,7 +25,7 @@ const LIGHT = {
     barAsset: '#0F766E',
     barCompetitor: '#DC2626',
     barBase: '#1D4ED8',
-    barToxicity: '#D97706',
+    barAdverseEvent: '#D97706',
     barFailure: '#7C3AED',
     barSubsidy: '#0F766E',
     barPatient: '#DC2626',
@@ -78,7 +78,7 @@ function ReportValueBridge({ data, currencySymbol }) {
                         contentStyle={{ background: LIGHT.bg, border: `1px solid ${LIGHT.border}`, color: LIGHT.text }} />
                     <Legend wrapperStyle={{ color: LIGHT.text, fontSize: 12 }} />
                     <Bar isAnimationActive={false} dataKey="base_cost" name="Base Cost" stackId="a" fill={LIGHT.barBase} />
-                    <Bar isAnimationActive={false} dataKey="adverse_event_cost" name="Adverse Event Cost" stackId="a" fill={LIGHT.barToxicity} />
+                    <Bar isAnimationActive={false} dataKey="adverse_event_cost" name="Adverse Event Cost" stackId="a" fill={LIGHT.barAdverseEvent} />
                     <Bar isAnimationActive={false} dataKey="treatment_failure_cost" name="Treatment Failure Cost" stackId="a" fill={LIGHT.barFailure} radius={[4, 4, 0, 0]} />
                 </BarChart>
             </ResponsiveContainer>
@@ -88,14 +88,14 @@ function ReportValueBridge({ data, currencySymbol }) {
 
 // ─── Patient Cash Flow chart ──────────────────────────────────────────────────
 function ReportCashFlow({ data, currencySymbol }) {
-    const cycles = data?.cycles || [];
-    const avgPays = cycles.length ? cycles.reduce((s, c) => s + (c.patient_pay || 0), 0) / cycles.length : 0;
+    const periods = data?.periods || [];
+    const avgPays = periods.length ? periods.reduce((s, c) => s + (c.patient_pay || 0), 0) / periods.length : 0;
     return (
         <div style={{ width: '100%', height: 260 }}>
             <ResponsiveContainer width="100%" height={260}>
-                <ComposedChart data={cycles} margin={{ top: 8, right: 24, left: 24, bottom: 8 }}>
+                <ComposedChart data={periods} margin={{ top: 8, right: 24, left: 24, bottom: 8 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke={LIGHT.grid} />
-                    <XAxis dataKey="cycle" tick={{ fill: LIGHT.text, fontSize: 12 }} />
+                    <XAxis dataKey="period" tick={{ fill: LIGHT.text, fontSize: 12 }} />
                     <YAxis tickFormatter={v => `${currencySymbol}${(v / 1000).toFixed(0)}k`} tick={{ fill: LIGHT.muted, fontSize: 11 }} />
                     <Tooltip formatter={(v, name) => [`${currencySymbol}${v.toLocaleString('en-US')}`, name]}
                         contentStyle={{ background: LIGHT.bg, border: `1px solid ${LIGHT.border}`, color: LIGHT.text }} />
@@ -208,7 +208,7 @@ export default function IntelligenceReport({ onClose, selectedDrug, selectedRegi
         },
     ];
 
-    const cashFlowData = { pap_scheme: pricingModel?.pap_scheme_applied || 'Standard', cycles: pricingModel?.period_data || [] };
+    const cashFlowData = { pap_scheme: pricingModel?.pap_scheme_applied || 'Standard', periods: pricingModel?.period_data || [] };
 
     // Determine which sections have data
     const hasCalcData = !!calculationResults && !!calculationResults.drug_cost;
@@ -269,7 +269,7 @@ export default function IntelligenceReport({ onClose, selectedDrug, selectedRegi
                             {[
                                 { label: 'Comparator', value: selectedDrug.competitor_name || 'Standard of Care' },
                                 { label: 'Region', value: selectedRegion?.name },
-                                { label: 'List Price / Cycle', value: `${currencySymbol}${calcRes.drug_cost != null ? calcRes.drug_cost.toLocaleString('en-US') : 'N/A'}` },
+                                { label: 'List Price / Period', value: `${currencySymbol}${calcRes.drug_cost != null ? calcRes.drug_cost.toLocaleString('en-US') : 'N/A'}` },
                             ].map(({ label, value }) => (
                                 <div key={label}>
                                     <div className="text-xs uppercase tracking-wider mb-1" style={{ color: LIGHT.muted }}>{label}</div>
@@ -333,11 +333,11 @@ export default function IntelligenceReport({ onClose, selectedDrug, selectedRegi
                     </ReportSection>
 
                     {/* ── Section 3: Patient Cash Flow ── */}
-                    <ReportSection number="3" title="Treatment Cycle Economics — Patient Cash Flow" notRun={!hasCashFlow}>
+                    <ReportSection number="3" title="Treatment Period Economics — Patient Cash Flow" notRun={!hasCashFlow}>
                         {hasCashFlow && (
                             <>
                                 <p className="text-xs mb-4" style={{ color: LIGHT.muted }}>
-                                    Patient cash flows per cycle under the applied PAP scheme: <strong>{cashFlowData.pap_scheme}</strong>
+                                    Patient cash flows per period under the applied PAP scheme: <strong>{cashFlowData.pap_scheme}</strong>
                                 </p>
                                 <ReportCashFlow data={cashFlowData} currencySymbol={currencySymbol} />
                             </>

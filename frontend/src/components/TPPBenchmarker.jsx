@@ -17,13 +17,13 @@ import { getEndpointsForDrug, resolveIndication } from '../lib/therapyAreas';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 const API = (BACKEND_URL && BACKEND_URL.startsWith('http')) ? `${BACKEND_URL}/api` : '/api';
 
-// Subsidy schemes with their effective cycle ratios
+// Subsidy schemes with their effective paid-period ratios
 const SUBSIDY_SCHEMES = [
-  { id: 'none', name: 'No Subsidy', cyclesPaid: 12, totalCycles: 12 },
-  { id: 'bogo', name: 'Buy 1 Get 1 Free', cyclesPaid: 6, totalCycles: 12 },
-  { id: '8of12', name: '8 of 12 Paid', cyclesPaid: 8, totalCycles: 12 },
-  { id: '6of12', name: '6 of 12 Paid', cyclesPaid: 6, totalCycles: 12 },
-  { id: 'cap3', name: '3-Cycle Cap', cyclesPaid: 3, totalCycles: 12 },
+  { id: 'none', name: 'No Subsidy', periodsPaid: 12, totalPeriods: 12 },
+  { id: 'bogo', name: 'Buy 1 Get 1 Free', periodsPaid: 6, totalPeriods: 12 },
+  { id: '8of12', name: '8 of 12 Paid', periodsPaid: 8, totalPeriods: 12 },
+  { id: '6of12', name: '6 of 12 Paid', periodsPaid: 6, totalPeriods: 12 },
+  { id: 'cap3', name: '3-Period Cap', periodsPaid: 3, totalPeriods: 12 },
 ];
 
 // Comorbidity chips for patient profile (CardioMetabolic / Women's Health)
@@ -41,7 +41,7 @@ function MethodologySection({
   competitorAsset,
   subsidyScheme,
   discountPercent,
-  totalCycles,
+  totalPeriods,
   populationScale,
   effectiveUserPrice,
   effectiveCompPrice,
@@ -54,7 +54,7 @@ function MethodologySection({
   const [isExpanded, setIsExpanded] = useState(false);
 
   const scheme = SUBSIDY_SCHEMES.find(s => s.id === subsidyScheme);
-  const subsidyFactor = scheme ? (scheme.cyclesPaid / scheme.totalCycles) : 1;
+  const subsidyFactor = scheme ? (scheme.periodsPaid / scheme.totalPeriods) : 1;
   const discountFactor = 1 - (discountPercent / 100);
 
   // Data inputs with sources
@@ -121,9 +121,9 @@ function MethodologySection({
   const pricingCalculations = [
     {
       metric: 'Subsidy Factor',
-      formula: `${scheme?.cyclesPaid || 12} / ${scheme?.totalCycles || 12}`,
+      formula: `${scheme?.periodsPaid || 12} / ${scheme?.totalPeriods || 12}`,
       result: subsidyFactor.toFixed(2),
-      description: `${scheme?.name || 'No Subsidy'} - cycles paid / total cycles`
+      description: `${scheme?.name || 'No Subsidy'} - periods paid / total periods`
     },
     {
       metric: 'Discount Factor',
@@ -146,14 +146,14 @@ function MethodologySection({
     {
       metric: 'Your Asset Total Exposure',
       formula: `effective_price × periods × population`,
-      result: `${currencySymbol}${(effectiveUserPrice * totalCycles * populationScale).toLocaleString()}`,
-      description: `${currencySymbol}${effectiveUserPrice.toLocaleString()} × ${totalCycles} periods × ${populationScale.toLocaleString()} patients`
+      result: `${currencySymbol}${(effectiveUserPrice * totalPeriods * populationScale).toLocaleString()}`,
+      description: `${currencySymbol}${effectiveUserPrice.toLocaleString()} × ${totalPeriods} periods × ${populationScale.toLocaleString()} patients`
     },
     {
       metric: 'Competitor Total Exposure',
       formula: `effective_price × periods × population`,
-      result: `${currencySymbol}${(effectiveCompPrice * totalCycles * populationScale).toLocaleString()}`,
-      description: `${currencySymbol}${effectiveCompPrice.toLocaleString()} × ${totalCycles} periods × ${populationScale.toLocaleString()} patients`
+      result: `${currencySymbol}${(effectiveCompPrice * totalPeriods * populationScale).toLocaleString()}`,
+      description: `${currencySymbol}${effectiveCompPrice.toLocaleString()} × ${totalPeriods} periods × ${populationScale.toLocaleString()} patients`
     },
   ];
 
@@ -393,7 +393,7 @@ function AssetCard({
   subsidyScheme = null,
   discountPercent = 0,
   comorbidities = [],
-  totalCycles = 12,
+  totalPeriods = 12,
   populationScale = 1000,
   selectedPayer = 'oop',
   regulatoryOverride = 'AI Auto-Detect',
@@ -416,8 +416,8 @@ function AssetCard({
   const comorbidityPenalty = comorbidities.length * 2;
   const effectiveAeRate = baseAeRate > 0 ? baseAeRate + comorbidityPenalty : 0;
 
-  // Compute Cost for 1 Patient (Effective Price * Total Cycles) + the new Adherence Waste Penalty
-  const baseCostPerPatient = effectivePrice * totalCycles;
+  // Compute Cost for 1 Patient (Effective Price * Total Periods) + the new Adherence Waste Penalty
+  const baseCostPerPatient = effectivePrice * totalPeriods;
   const nonComplianceRatio = 1 - (adherencePct / 100);
   const nonCompliancePenalty = baseCostPerPatient * nonComplianceRatio;
   const costPerPatient = baseCostPerPatient + nonCompliancePenalty;
@@ -717,7 +717,7 @@ function AssetCard({
                 {currencySymbol}{costPerPatient.toLocaleString()}
               </span>
               <span className="text-[10px] text-muted-foreground">
-                Based on {totalCycles} treatment periods {adherencePct < 100 ? `(+ waste penalty)` : ''}
+                Based on {totalPeriods} treatment periods {adherencePct < 100 ? `(+ waste penalty)` : ''}
               </span>
             </div>
           </div>
@@ -778,7 +778,7 @@ export function TPPBenchmarker({ theme, textPrimary, textSecondary, cardBg, bord
   const [drawerOpen, setDrawerOpen] = useState(true);
   const [subsidyScheme, setSubsidyScheme] = useState('none');
   const [discountPercent, setDiscountPercent] = useState(0);
-  const [totalCycles, setTotalCycles] = useState(12);
+  const [totalPeriods, setTotalPeriods] = useState(12);
   const [populationScale, setPopulationScale] = useState(1000);
 
   // Comorbidity State
@@ -1052,7 +1052,7 @@ export function TPPBenchmarker({ theme, textPrimary, textSecondary, cardBg, bord
 
     // 2. Subsidy Scheme Adjustment
     const scheme = SUBSIDY_SCHEMES.find(s => s.id === subsidyScheme);
-    const subsidyFactor = scheme ? scheme.cyclesPaid / scheme.totalCycles : 1;
+    const subsidyFactor = scheme ? scheme.periodsPaid / scheme.totalPeriods : 1;
 
     // 3. Additional Discount percentage negotiated
     const discountFactor = 1 - (discountPercent / 100);
@@ -1083,8 +1083,8 @@ export function TPPBenchmarker({ theme, textPrimary, textSecondary, cardBg, bord
     // we should be careful. Here, we calculate purely the waste/re-administration cost
     // of non-adherence as a standalone penalty.
     const nonComplianceRatio = 1 - ((assetObj.adherencePct || 100) / 100);
-    // Non-compliance penalty: Cost * nonComplianceRatio * totalCycles * population
-    return calculateEffectivePrice(basePrice) * nonComplianceRatio * totalCycles * populationScale;
+    // Non-compliance penalty: Cost * nonComplianceRatio * totalPeriods * population
+    return calculateEffectivePrice(basePrice) * nonComplianceRatio * totalPeriods * populationScale;
   };
 
   // Calculate financial exposure difference
@@ -1092,8 +1092,8 @@ export function TPPBenchmarker({ theme, textPrimary, textSecondary, cardBg, bord
     const userEffective = calculateEffectivePrice(userAsset.marketPrice);
     const compEffective = calculateEffectivePrice(competitorAsset.marketPrice);
 
-    const userBaseExposure = userEffective * totalCycles * populationScale;
-    const compBaseExposure = compEffective * totalCycles * populationScale;
+    const userBaseExposure = userEffective * totalPeriods * populationScale;
+    const compBaseExposure = compEffective * totalPeriods * populationScale;
 
     const userPenalty = getNonCompliancePenalty(userAsset, userAsset.marketPrice);
     const compPenalty = getNonCompliancePenalty(competitorAsset, competitorAsset.marketPrice);
@@ -1200,7 +1200,7 @@ export function TPPBenchmarker({ theme, textPrimary, textSecondary, cardBg, bord
             subsidyScheme={subsidyScheme && scheme ? scheme.name : null}
             discountPercent={discountPercent}
             comorbidities={selectedComorbidities}
-            totalCycles={totalCycles}
+            totalPeriods={totalPeriods}
             populationScale={populationScale}
             selectedPayer={selectedPayer}
             regulatoryOverride={assetRegulatoryOverride}
@@ -1234,7 +1234,7 @@ export function TPPBenchmarker({ theme, textPrimary, textSecondary, cardBg, bord
             subsidyScheme={subsidyScheme && scheme ? scheme.name : null}
             discountPercent={discountPercent}
             comorbidities={selectedComorbidities}
-            totalCycles={totalCycles}
+            totalPeriods={totalPeriods}
             populationScale={populationScale}
             selectedPayer={selectedPayer}
             regulatoryOverride={competitorRegulatoryOverride}
@@ -1310,7 +1310,7 @@ export function TPPBenchmarker({ theme, textPrimary, textSecondary, cardBg, bord
                     </SelectContent>
                   </Select>
                   <div className="text-xs text-muted-foreground mt-1">
-                    {SUBSIDY_SCHEMES.find(s => s.id === subsidyScheme)?.cyclesPaid} of {SUBSIDY_SCHEMES.find(s => s.id === subsidyScheme)?.totalCycles} cycles paid
+                    {SUBSIDY_SCHEMES.find(s => s.id === subsidyScheme)?.periodsPaid} of {SUBSIDY_SCHEMES.find(s => s.id === subsidyScheme)?.totalPeriods} periods paid
                   </div>
                 </div>
 
@@ -1338,11 +1338,11 @@ export function TPPBenchmarker({ theme, textPrimary, textSecondary, cardBg, bord
 
                 <Separator className="bg-white/10" />
 
-                {/* Total Cycles */}
+                {/* Total Periods */}
                 <div>
                   <div className="flex items-center gap-2 mb-2">
                     <Label className="text-xs uppercase tracking-widest text-muted-foreground">
-                      Treatment Duration: {totalCycles} cycles
+                      Treatment Duration: {totalPeriods} periods
                     </Label>
                     <TooltipProvider>
                       <Tooltip delayDuration={300}>
@@ -1362,9 +1362,9 @@ export function TPPBenchmarker({ theme, textPrimary, textSecondary, cardBg, bord
                     </TooltipProvider>
                   </div>
                   <Slider
-                    data-testid="cycles-slider"
-                    value={[totalCycles]}
-                    onValueChange={([val]) => setTotalCycles(val)}
+                    data-testid="periods-slider"
+                    value={[totalPeriods]}
+                    onValueChange={([val]) => setTotalPeriods(val)}
                     min={1}
                     max={24}
                     step={1}
@@ -1492,10 +1492,10 @@ export function TPPBenchmarker({ theme, textPrimary, textSecondary, cardBg, bord
                   <tr>
                     <td className={`py-3 px-3 font-bold ${textPrimary}`}>Total Exposure ({populationScale.toLocaleString()} pts)</td>
                     <td className={`text-right py-3 px-3 font-data font-bold text-[#008080]`}>
-                      {currencySymbol}{(effectiveUserPrice * totalCycles * populationScale).toLocaleString()}
+                      {currencySymbol}{(effectiveUserPrice * totalPeriods * populationScale).toLocaleString()}
                     </td>
                     <td className={`text-right py-3 px-3 font-data font-bold text-[#E53E3E]`}>
-                      {currencySymbol}{(effectiveCompPrice * totalCycles * populationScale).toLocaleString()}
+                      {currencySymbol}{(effectiveCompPrice * totalPeriods * populationScale).toLocaleString()}
                     </td>
                     <td className={`text-right py-3 px-3 font-data font-bold ${calculateExposureDiff() > 0 ? 'text-[#E53E3E]' : 'text-[#008080]'}`}>
                       {currencySymbol}{Math.abs(calculateExposureDiff()).toLocaleString()}
@@ -1515,7 +1515,7 @@ export function TPPBenchmarker({ theme, textPrimary, textSecondary, cardBg, bord
           competitorAsset={competitorAsset}
           subsidyScheme={subsidyScheme}
           discountPercent={discountPercent}
-          totalCycles={totalCycles}
+          totalPeriods={totalPeriods}
           populationScale={populationScale}
           effectiveUserPrice={effectiveUserPrice}
           effectiveCompPrice={effectiveCompPrice}

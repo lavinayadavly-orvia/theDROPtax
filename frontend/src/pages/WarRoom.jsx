@@ -47,7 +47,7 @@ export default function WarRoom() {
   const [pricingModel, setPricingModel] = useState(null);
 
   // Module A: Competitive Thunderdome State
-  const [showToxicityTax, setShowToxicityTax] = useState(true);
+  const [showAdverseEventCost, setShowAdverseEventCost] = useState(true);
 
   // Custom Competitors State (up to 5) - managed globally via AppContext
   const [competitorSearch, setCompetitorSearch] = useState('');
@@ -64,7 +64,7 @@ export default function WarRoom() {
 
   // Discontinuation Cliff Simulator State
   const [cliffSimEnabled, setCliffSimEnabled] = useState(false);
-  const [fundedCycles, setFundedCycles] = useState([6]);
+  const [fundedPeriods, setFundedPeriods] = useState([6]);
 
   // Active Tab State
   const [activeTab, setActiveTab] = useState('thunderdome');
@@ -123,7 +123,7 @@ export default function WarRoom() {
             element: '.tour-competitive-thunderdome',
             popover: {
               title: 'Competitive Thunderdome',
-              description: 'Model head-to-head scenarios by adding competitors and factoring in hidden toxicity management costs.',
+              description: 'Model head-to-head scenarios by adding competitors and factoring in hidden adverse-event management costs.',
               side: 'top',
               align: 'center'
             }
@@ -264,7 +264,7 @@ export default function WarRoom() {
     setCompetitorSearch('');
 
     try {
-      // Fetch competitor data (pricing and toxicity) with indication context
+      // Fetch competitor data (pricing and safety) with indication context
       const currentIndication = selectedDrug.indication || '';
       const response = await axios.get(
         `${API}/competitor/analyze?competitor_name=${encodeURIComponent(drug.name)}&region_code=${selectedRegion.code}&indication=${encodeURIComponent(currentIndication)}`
@@ -374,18 +374,18 @@ export default function WarRoom() {
   // Uses heorData (real regional costs) when available, falls back to calculationResults
   const getCompetitiveData = () => {
     const drugCost = heorData?.drug_base_cost ?? calculationResults.drug_cost;
-    const aePerCycle = heorData?.ae_management_cost ?? Math.round((calculationResults.commercial_brain?.drug_severe_ae_rate || 0.15) * 3 * 50000);
+    const aePerPeriod = heorData?.ae_management_cost ?? Math.round((calculationResults.commercial_brain?.drug_severe_ae_rate || 0.15) * 3 * 50000);
     const competitorBase = heorData?.standard_of_care_cost ?? calculationResults.competitor_base_cost;
     const competitorAe = calculationResults.breakdown?.adverse_event_cost ?? 0;
 
     const drugAeRate = calculationResults.commercial_brain?.drug_severe_ae_rate || 0.15;
-    const drugToxicityCost = Math.round(drugAeRate * aePerCycle);
+    const drugAeCostValue = Math.round(drugAeRate * aePerPeriod);
 
     const data = [
       {
         name: selectedDrug.name,
         'Base Cost': drugCost,
-        'AE Mgmt. Cost': showToxicityTax ? drugToxicityCost : 0,
+        'AE Mgmt. Cost': showAdverseEventCost ? drugAeCostValue : 0,
         fill: '#008080',
         isSubject: true
       }
@@ -394,7 +394,7 @@ export default function WarRoom() {
     data.push({
       name: selectedDrug.competitor_name || 'Standard',
       'Base Cost': competitorBase,
-      'AE Mgmt. Cost': showToxicityTax ? (heorData ? Math.round(0.30 * aePerCycle) : competitorAe) : 0,
+      'AE Mgmt. Cost': showAdverseEventCost ? (heorData ? Math.round(0.30 * aePerPeriod) : competitorAe) : 0,
       fill: '#737373',
       isDefault: true
     });
@@ -404,7 +404,7 @@ export default function WarRoom() {
       data.push({
         name: comp.isOffLabel ? `${comp.name} [OFF-LABEL]` : comp.name,
         'Base Cost': comp.baseCost,
-        'AE Mgmt. Cost': showToxicityTax ? comp.aeMgmtCost : 0,
+        'AE Mgmt. Cost': showAdverseEventCost ? comp.aeMgmtCost : 0,
         fill: competitorColors[idx % competitorColors.length],
         isCustom: true,
         fullName: comp.name
@@ -716,16 +716,16 @@ export default function WarRoom() {
 
                   {/* Show Adverse-Event Cost Toggle */}
                   <div className="flex items-center gap-2">
-                    <Label htmlFor="toxicity-toggle" className="text-sm font-normal text-muted-foreground cursor-pointer">
+                    <Label htmlFor="adverse-event-toggle" className="text-sm font-normal text-muted-foreground cursor-pointer">
                       <InfoTooltip content="The hidden financial burden of managing serious adverse events and related hospitalization">
                         Show Adverse-Event Cost
                       </InfoTooltip>
                     </Label>
                     <Switch
-                      id="toxicity-toggle"
-                      data-testid="toxicity-tax-toggle"
-                      checked={showToxicityTax}
-                      onCheckedChange={setShowToxicityTax}
+                      id="adverse-event-toggle"
+                      data-testid="adverse-event-cost-toggle"
+                      checked={showAdverseEventCost}
+                      onCheckedChange={setShowAdverseEventCost}
                     />
                   </div>
                 </div>
@@ -969,7 +969,7 @@ export default function WarRoom() {
                           // Calculate rescue cost
                           const rescueCost = Math.round(calculationResults.total_liability * 0.4);
                           toast.warning(
-                            `Warning: Discontinuation at Cycle ${fundedCycles[0]} triggers a ${selectedRegion.currency_symbol}${rescueCost.toLocaleString()} Deferred Cost Spike. Continuing therapy is more cost-effective.`,
+                            `Warning: Discontinuation at Period ${fundedPeriods[0]} triggers a ${selectedRegion.currency_symbol}${rescueCost.toLocaleString()} Deferred Cost Spike. Continuing therapy is more cost-effective.`,
                             { duration: 8000 }
                           );
                         }
@@ -982,25 +982,25 @@ export default function WarRoom() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
-                {/* Funded Cycles Slider */}
+                {/* Funded Periods Slider */}
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <Label className="text-sm text-muted-foreground">
                       <InfoTooltip content="Number of treatment periods before funding stops">
-                        Funded Cycles
+                        Funded Periods
                       </InfoTooltip>
                     </Label>
-                    <span className={`font-data ${textPrimary} text-lg`}>{fundedCycles[0]} Cycles</span>
+                    <span className={`font-data ${textPrimary} text-lg`}>{fundedPeriods[0]} Periods</span>
                   </div>
                   <Slider
-                    data-testid="funded-cycles-slider"
-                    value={fundedCycles}
+                    data-testid="funded-periods-slider"
+                    value={fundedPeriods}
                     onValueChange={(value) => {
-                      setFundedCycles(value);
+                      setFundedPeriods(value);
                       if (cliffSimEnabled) {
                         const rescueCost = Math.round(calculationResults.total_liability * 0.4);
                         toast.warning(
-                          `Warning: Discontinuation at Cycle ${value[0]} triggers a ${selectedRegion.currency_symbol}${rescueCost.toLocaleString()} Deferred Cost Spike. Continuing therapy is more cost-effective.`,
+                          `Warning: Discontinuation at Period ${value[0]} triggers a ${selectedRegion.currency_symbol}${rescueCost.toLocaleString()} Deferred Cost Spike. Continuing therapy is more cost-effective.`,
                           { duration: 5000 }
                         );
                       }
@@ -1011,9 +1011,9 @@ export default function WarRoom() {
                     className="w-full"
                   />
                   <div className="flex justify-between text-xs text-muted-foreground font-data">
-                    <span>1 Cycle</span>
-                    <span>6 Cycles</span>
-                    <span>12 Cycles</span>
+                    <span>1 Period</span>
+                    <span>6 Periods</span>
+                    <span>12 Periods</span>
                   </div>
                 </div>
 
@@ -1022,26 +1022,26 @@ export default function WarRoom() {
                   <ResponsiveContainer width="100%" height="100%">
                     <ComposedChart
                       data={(() => {
-                        const stopCycle = fundedCycles[0];
+                        const stopPeriod = fundedPeriods[0];
                         const monthlyDrugCost = calculationResults.drug_cost / 12;
                         const rescueCost = Math.round(calculationResults.total_liability * 0.4);
 
                         const data = [];
                         for (let i = 1; i <= 12; i++) {
                           if (cliffSimEnabled) {
-                            if (i <= stopCycle) {
+                            if (i <= stopPeriod) {
                               // Funded periods - normal drug cost
                               data.push({
-                                cycle: `C${i}`,
+                                period: `P${i}`,
                                 treatment: monthlyDrugCost,
                                 rescue: 0,
-                                isStop: i === stopCycle,
+                                isStop: i === stopPeriod,
                                 isFunded: true
                               });
-                            } else if (i === stopCycle + 1) {
+                            } else if (i === stopPeriod + 1) {
                               // Rescue cost spike
                               data.push({
-                                cycle: `C${i}`,
+                                period: `P${i}`,
                                 treatment: 0,
                                 rescue: rescueCost,
                                 isStop: false,
@@ -1051,7 +1051,7 @@ export default function WarRoom() {
                             } else {
                               // Post-discontinuation (palliation/ongoing)
                               data.push({
-                                cycle: `C${i}`,
+                                period: `P${i}`,
                                 treatment: 0,
                                 rescue: 0,
                                 isStop: false,
@@ -1061,7 +1061,7 @@ export default function WarRoom() {
                           } else {
                             // No simulation - just show normal treatment costs
                             data.push({
-                              cycle: `C${i}`,
+                              period: `P${i}`,
                               treatment: monthlyDrugCost,
                               rescue: 0,
                               isStop: false,
@@ -1074,7 +1074,7 @@ export default function WarRoom() {
                     >
                       <CartesianGrid strokeDasharray="3 3" stroke="#262626" opacity={0.3} />
                       <XAxis
-                        dataKey="cycle"
+                        dataKey="period"
                         stroke="#737373"
                         tick={{ fill: '#737373', fontSize: 11, fontFamily: 'JetBrains Mono' }}
                       />
@@ -1103,10 +1103,10 @@ export default function WarRoom() {
                       {/* Treatment bars */}
                       <Bar dataKey="treatment" fill="#008080" radius={[4, 4, 0, 0]}>
                         {(() => {
-                          const stopCycle = fundedCycles[0];
+                          const stopPeriod = fundedPeriods[0];
                           const cells = [];
                           for (let i = 0; i < 12; i++) {
-                            if (cliffSimEnabled && i >= stopCycle) {
+                            if (cliffSimEnabled && i >= stopPeriod) {
                               cells.push(<Cell key={i} fill="#262626" />);
                             } else {
                               cells.push(<Cell key={i} fill="#008080" />);
@@ -1122,7 +1122,7 @@ export default function WarRoom() {
                       {/* Funding Stop Line */}
                       {cliffSimEnabled && (
                         <ReferenceLine
-                          x={`C${fundedCycles[0]}`}
+                          x={`C${fundedPeriods[0]}`}
                           stroke="#F59E0B"
                           strokeWidth={2}
                           strokeDasharray="6 4"
@@ -1144,10 +1144,10 @@ export default function WarRoom() {
                   <div className="p-4 bg-[#008080]/10 border border-[#008080]/30 rounded-sm">
                     <div className="text-xs uppercase tracking-widest text-[#008080] mb-1">FUNDED TREATMENT</div>
                     <div className={`font-data ${textPrimary} text-xl`}>
-                      {selectedRegion.currency_symbol}{Math.round((calculationResults.drug_cost / 12) * fundedCycles[0]).toLocaleString()}
+                      {selectedRegion.currency_symbol}{Math.round((calculationResults.drug_cost / 12) * fundedPeriods[0]).toLocaleString()}
                     </div>
                     <div className="text-xs text-muted-foreground mt-1">
-                      {fundedCycles[0]} periods × {selectedRegion.currency_symbol}{Math.round(calculationResults.drug_cost / 12).toLocaleString()}
+                      {fundedPeriods[0]} periods × {selectedRegion.currency_symbol}{Math.round(calculationResults.drug_cost / 12).toLocaleString()}
                     </div>
                   </div>
 
@@ -1173,7 +1173,7 @@ export default function WarRoom() {
                     <div className={`font-data text-xl ${cliffSimEnabled ? 'text-[#F59E0B] font-bold' : 'text-muted-foreground'}`}>
                       {cliffSimEnabled
                         ? `${selectedRegion.currency_symbol}${(
-                          Math.round((calculationResults.drug_cost / 12) * fundedCycles[0]) +
+                          Math.round((calculationResults.drug_cost / 12) * fundedPeriods[0]) +
                           Math.round(calculationResults.total_liability * 0.4)
                         ).toLocaleString()}`
                         : '—'
@@ -1198,30 +1198,30 @@ export default function WarRoom() {
                       {cliffSimEnabled ? (
                         <div className="space-y-3">
                           <p className={`text-sm ${textPrimary}`}>
-                            Stopping treatment at <span className="font-data font-bold text-[#F59E0B]">Cycle {fundedCycles[0]}</span> triggers
+                            Stopping treatment at <span className="font-data font-bold text-[#F59E0B]">Period {fundedPeriods[0]}</span> triggers
                             a <span className="font-data font-bold text-[#E53E3E]">{selectedRegion.currency_symbol}{Math.round(calculationResults.total_liability * 0.4).toLocaleString()}</span> Deferred Cost Spike.
                           </p>
                           <p className={`text-sm ${textPrimary}`}>
                             <span className="font-bold">Total Projected Liability:</span>{' '}
                             <span className="font-data text-[#F59E0B]">
                               {selectedRegion.currency_symbol}{(
-                                Math.round((calculationResults.drug_cost / 12) * fundedCycles[0]) +
+                                Math.round((calculationResults.drug_cost / 12) * fundedPeriods[0]) +
                                 Math.round(calculationResults.total_liability * 0.4)
                               ).toLocaleString()}
                             </span>
                           </p>
                           <p className={`text-sm ${textPrimary}`}>
-                            <span className="font-bold">Full 12-Cycle Treatment:</span>{' '}
+                            <span className="font-bold">Full 12-Period Treatment:</span>{' '}
                             <span className="font-data text-[#008080]">
                               {selectedRegion.currency_symbol}{calculationResults.drug_cost.toLocaleString()}
                             </span>
                           </p>
-                          {(Math.round((calculationResults.drug_cost / 12) * fundedCycles[0]) + Math.round(calculationResults.total_liability * 0.4)) > calculationResults.drug_cost && (
+                          {(Math.round((calculationResults.drug_cost / 12) * fundedPeriods[0]) + Math.round(calculationResults.total_liability * 0.4)) > calculationResults.drug_cost && (
                             <div className="mt-4 p-3 bg-[#E53E3E]/20 rounded-sm">
                               <p className={`text-sm font-bold ${textPrimary}`}>
                                 Discontinuation creates <span className="text-[#E53E3E] font-data">
                                   {selectedRegion.currency_symbol}{(
-                                    (Math.round((calculationResults.drug_cost / 12) * fundedCycles[0]) + Math.round(calculationResults.total_liability * 0.4)) -
+                                    (Math.round((calculationResults.drug_cost / 12) * fundedPeriods[0]) + Math.round(calculationResults.total_liability * 0.4)) -
                                     calculationResults.drug_cost
                                   ).toLocaleString()} additional unfunded exposure
                                 </span> vs. completing full therapy.
@@ -1303,7 +1303,7 @@ export default function WarRoom() {
                     {pricingModel && (
                       <>
                         <div>
-                          <Label className="text-sm text-muted-foreground mb-2 block">List Price/Cycle</Label>
+                          <Label className="text-sm text-muted-foreground mb-2 block">List Price/Period</Label>
                           <div className={`font-data ${textPrimary} text-xl`}>
                             {pricingModel.currency_symbol}{pricingModel.list_price_per_period?.toLocaleString()}
                           </div>
@@ -1324,12 +1324,12 @@ export default function WarRoom() {
                     )}
                   </div>
 
-                  {/* Cycle-Based Chart */}
+                  {/* Period-Based Chart */}
                   {pricingModel && pricingModel.period_data && (
                     <div style={{ height: '250px' }}>
                       <ResponsiveContainer width="100%" height="100%">
                         <ComposedChart data={pricingModel.period_data.map(c => ({
-                          name: `C${c.cycle}`,
+                          name: `C${c.period}`,
                           patient: c.patient_pay,
                           insurer: c.insurer_pay,
                           govt: c.govt_pay,
