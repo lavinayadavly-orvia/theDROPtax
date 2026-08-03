@@ -87,7 +87,13 @@ def sitemap_urls(source, refresh=False):
         age_h = (time.time() - os.path.getmtime(cache)) / 3600
         if age_h < 24:
             with open(cache) as f:
-                return json.load(f)
+                cached = json.load(f)
+            # Never trust an empty cache. A failed or capped crawl once wrote
+            # zero URLs for MrMed, and the empty result was then served for 24
+            # hours as though the retailer had no catalogue — turning a bug
+            # into a silent "no listing found" for every molecule.
+            if cached:
+                return cached
 
     seen_maps, product_urls = set(), []
     queue = [source["sitemap"]]
