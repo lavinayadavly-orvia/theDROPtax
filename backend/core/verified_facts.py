@@ -27,6 +27,13 @@ year-one and steady-state costs separately.
 
 from typing import Dict, Any, Optional
 
+# Auto-generated from FDA labels via DailyMed (verify_from_dailymed.py).
+# Hand-curated entries below take precedence over the generated ones.
+try:
+    from .verified_facts_dailymed import DAILYMED_FACTS, UNMATCHED as DAILYMED_UNMATCHED
+except ImportError:  # generated file not present yet
+    DAILYMED_FACTS, DAILYMED_UNMATCHED = {}, []
+
 
 VERIFIED_FACTS: Dict[str, Dict[str, Any]] = {
 
@@ -82,11 +89,25 @@ VERIFIED_FACTS: Dict[str, Dict[str, Any]] = {
 }
 
 
+def _merged() -> Dict[str, Dict[str, Any]]:
+    """Generated FDA-label facts, overlaid with hand-curated entries."""
+    merged: Dict[str, Dict[str, Any]] = {}
+    for key, rec in DAILYMED_FACTS.items():
+        merged[key] = {**rec, "facts": dict(rec.get("facts", {}))}
+    for key, rec in VERIFIED_FACTS.items():
+        if key in merged:
+            merged[key]["facts"].update(rec.get("facts", {}))
+            merged[key]["not_yet_verified"] = rec.get("not_yet_verified", [])
+        else:
+            merged[key] = rec
+    return merged
+
+
 def get_verified(molecule_or_brand: str) -> Optional[Dict[str, Any]]:
     """Return the verified-fact record for a molecule, or None."""
     if not molecule_or_brand:
         return None
-    return VERIFIED_FACTS.get(molecule_or_brand.strip().lower())
+    return _merged().get(molecule_or_brand.strip().lower())
 
 
 def verified_value(molecule: str, fact_key: str):
@@ -113,8 +134,10 @@ def doses_per_year(molecule: str):
 
 def verification_summary() -> Dict[str, Any]:
     """What has been source-verified so far, for surfacing in the UI."""
+    all_recs = _merged()
     return {
-        "molecules_verified": len(VERIFIED_FACTS),
+        "molecules_verified": len(all_recs),
+        "unmatched": DAILYMED_UNMATCHED,
         "molecules": {
             name: {
                 "verified_fields": sorted(rec.get("facts", {}).keys()),
@@ -122,6 +145,6 @@ def verification_summary() -> Dict[str, Any]:
                 "sources": sorted({f.get("source_url") for f in rec.get("facts", {}).values()
                                    if f.get("source_url")}),
             }
-            for name, rec in VERIFIED_FACTS.items()
+            for name, rec in all_recs.items()
         },
     }
