@@ -8,6 +8,7 @@ import openpyxl
 from datetime import datetime, timezone
 from motor.motor_asyncio import AsyncIOMotorClient
 from core.therapy_areas import resolve_indication
+from core.verified_facts import get_verified, doses_per_year
 
 MONGO_URL = os.environ.get("MONGO_URL")
 DB_NAME = os.environ.get("DB_NAME", "droptax")
@@ -350,6 +351,38 @@ async def main():
                 }
             }
             
+            # ── Source-verified overlay ───────────────────────────────
+            # Facts read from an authoritative document override the workbook,
+            # and carry their citation so the UI can show where each came from.
+            _vf = get_verified(molecule_name)
+            if _vf:
+                verified_provenance = {}
+                for fkey, fval in _vf.get("facts", {}).items():
+                    verified_provenance[fkey] = {
+                        k: fval.get(k) for k in ("value", "source_name", "source_url", "retrieved", "quote")
+                        if fval.get(k) is not None
+                    }
+                drug_doc["verified_facts"] = verified_provenance
+                drug_doc["verification_outstanding"] = _vf.get("not_yet_verified", [])
+
+                # Loading-dose regimen: a flat monthly figure cannot express
+                # "3 doses in year 1, then 2". Model both explicitly.
+                y1, maint = doses_per_year(molecule_name)
+                if y1 and maint and price_info.get("unit_price"):
+                    unit = price_info["unit_price"]
+                    drug_doc["doses_year_1"] = y1
+                    drug_doc["doses_maintenance"] = maint
+                    drug_doc["cost_year_1"] = round(unit * y1)
+                    drug_doc["cost_maintenance_year"] = round(unit * maint)
+                    drug_doc["global_price_inr"] = round(unit * maint / 12)   # steady state
+                    drug_doc["price_note"] = (
+                        f"Loading-dose regimen: {y1} doses in year 1, {maint}/year thereafter "
+                        f"(FDA label). Monthly figure is steady-state; year 1 costs more. "
+                        f"Unit price itself is still unverified."
+                    )
+                if _vf.get("facts", {}).get("manufacturer"):
+                    drug_doc["manufacturers"] = _vf["facts"]["manufacturer"]["value"]
+
             drugs_to_insert.append(drug_doc)
             
     # Flag programme text that is category boilerplate rather than a
