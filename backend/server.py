@@ -307,7 +307,8 @@ async def get_regional_price(drug_name: str, indication: str, region_code: str) 
     except Exception:
         pass
 
-    # 2. Indication-matched default price table
+    # 2. Indication-matched class price — a labelled estimate, not a guess at
+    #    this specific drug's price.
     indication_lower = (indication or "").lower()
     matched_price = next(
         (DEFAULT_REGIONAL_PRICES_BY_INDICATION[k].get(region)
@@ -316,11 +317,13 @@ async def get_regional_price(drug_name: str, indication: str, region_code: str) 
         None
     )
     if matched_price:
-        return {"monthly_price": matched_price, "is_estimated": True}
+        return {"monthly_price": matched_price, "is_estimated": True,
+                "price_note": "Indication-class average — not this drug's actual price."}
 
-    # 3. Hard fallback
-    fallback = DEFAULT_REGIONAL_PRICES_BY_INDICATION["default"].get(region, 250000)
-    return {"monthly_price": fallback, "is_estimated": True}
+    # 3. No price could be resolved. Return None rather than a fabricated
+    #    figure; callers surface this as "Data unavailable" and flag it.
+    return {"monthly_price": None, "is_estimated": True,
+            "price_note": "No price found for this drug in the selected region — enter manually."}
 
 
 async def get_payer_segments_for_region(region_code: str) -> list:
@@ -481,7 +484,7 @@ async def calculate_pricing(request: PricingRequest):
     """
     # Get regional price (not conversion)
     price_info = await get_regional_price(request.drug_name, "", request.region_code)
-    list_price = price_info["monthly_price"]
+    list_price = price_info["monthly_price"] or 0
     
     # Calculate period costs
     period_result = await calculate_period_costs(
@@ -525,7 +528,7 @@ async def get_drug_pricing(drug_name: str, region_code: str = "IN", payer_segmen
     indication = drug.get("indication", "") if drug else ""
     
     price_info = await get_regional_price(drug_name, indication, region_code)
-    list_price = price_info["monthly_price"]
+    list_price = price_info["monthly_price"] or 0
     
     period_result = await calculate_period_costs(
         list_price=list_price,
@@ -2361,13 +2364,15 @@ async def calculate_liability(drug_id: str, region_code: str = "IN"):
     # Base per-period costs (list price × 12 periods standard assumption)
     drug_price_info = await get_regional_price(drug_data["name"], indication, region_code)
     comp_price_info = await get_regional_price(drug_data.get("competitor_name", "Standard of Care"), indication, region_code)
-    drug_cost = drug_price_info["monthly_price"] * 12
-    competitor_base = comp_price_info["monthly_price"] * 12
+    _drug_monthly = drug_price_info["monthly_price"]
+    _comp_monthly = comp_price_info["monthly_price"]
+    drug_cost = _drug_monthly * 12 if _drug_monthly is not None else None
+    competitor_base = _comp_monthly * 12 if _comp_monthly is not None else None
     ae_cost = value["c_adverse_events"] or 0
-    competitor_total = competitor_base + ae_cost
+    competitor_total = (competitor_base + ae_cost) if competitor_base is not None else None
 
     total_liability = value["total_liability"]
-    liability_ratio = round(total_liability / drug_cost, 2) if (total_liability is not None and drug_cost > 0) else None
+    liability_ratio = round(total_liability / drug_cost, 2) if (total_liability is not None and drug_cost) else None
 
     # Applicability ("Brain") — reuse cached profile or recompute for this region
     applicability = drug_data.get("applicability") or resolve_applicability(
@@ -2378,9 +2383,17 @@ async def calculate_liability(drug_id: str, region_code: str = "IN"):
         "status": "unavailable" if data_incomplete else "complete", "missing_fields": [], "issues": []}
 
     # Economic recommendation — honest when data is incomplete
-    if total_liability is None:
+    if drug_cost is None:
+        signal = "INSUFFICIENT_DATA"
+        message = ("No price could be resolved for this drug in this region, so the economic model "
+                   "cannot be computed. Enter a price to proceed (no figure is estimated).")
+    elif total_liability is None:
         signal = "INSUFFICIENT_DATA"
         message = "Primary endpoint unavailable — the value model cannot be computed. Enter the clinical endpoint to proceed (no figure is estimated)."
+    elif competitor_base is None:
+        signal = "INSUFFICIENT_DATA"
+        message = ("No comparator price could be resolved, so the head-to-head economic argument "
+                   "cannot be computed. Enter a comparator price to proceed.")
     else:
         signal = "POSITIVE" if total_liability > competitor_base else "NEUTRAL"
         message = (f"Total Cost of Care ({value['currency_symbol']}{total_liability:,.0f}) "
@@ -2470,19 +2483,19 @@ async def calculate_liability(drug_id: str, region_code: str = "IN"):
             "drug_id": drug_id,
             "drug_name": drug_data.get("name"),
             "region_code": region_code,
-            "drug_cost": round(drug_cost, 2),
-            "competitor_price": round(competitor_base, 2),
+            "drug_cost": round(drug_cost, 2) if drug_cost is not None else None,
+            "competitor_price": round(competitor_base, 2) if competitor_base is not None else None,
             "adverse_event_cost": round(ae_cost, 2),
             "projected_liability": total_liability,
             "liability_breakdown": value["breakdown"],
             "liability_ratio": liability_ratio,
-            "competitor_total_cost": round(competitor_total, 2),
+            "competitor_total_cost": round(competitor_total, 2) if competitor_total is not None else None,
             "recommendation": {"signal": signal, "message": message},
         },
         "total_liability": total_liability,
-        "drug_cost": round(drug_cost, 2),
-        "competitor_base_cost": round(competitor_base, 2),
-        "competitor_total_cost": round(competitor_total, 2),
+        "drug_cost": round(drug_cost, 2) if drug_cost is not None else None,
+        "competitor_base_cost": round(competitor_base, 2) if competitor_base is not None else None,
+        "competitor_total_cost": round(competitor_total, 2) if competitor_total is not None else None,
         "breakdown": value["breakdown"],
         "currency": region.currency,
         "currency_symbol": value["currency_symbol"],

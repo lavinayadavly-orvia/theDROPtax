@@ -52,24 +52,94 @@ def strip_oncology(text: str) -> str:
 def is_oncology_only(molecule_name: str) -> bool:
     return (molecule_name or "").strip().lower() in ONCOLOGY_ONLY_MOLECULES
 
-def parse_indicative_price(price_str):
-    if not price_str:
-        return 0.0
-    try:
-        # Remove currency symbol, commas, and space
-        cleaned = price_str.replace('₹', '').replace(',', '').strip()
-        # Check for range like "2–5" or "100–120" or "4-10" or "4 - 10"
-        match_range = re.findall(r'(\d+(?:\.\d+)?)\s*[\-–]\s*(\d+(?:\.\d+)?)', cleaned)
-        if match_range:
-            low, high = float(match_range[0][0]), float(match_range[0][1])
-            return (low + high) / 2.0
-        # Single number
-        match_num = re.findall(r'\d+(?:\.\d+)?', cleaned)
-        if match_num:
-            return float(match_num[0])
-    except Exception:
-        pass
-    return 0.0
+# ── Price parsing ─────────────────────────────────────────────────────────
+# Workbook prices come in mixed units ("₹10–18 / tab", "~₹1.2 lakh / dose",
+# "₹14,000–27,500 / month", "Hospital only"). The platform models cost per
+# TREATMENT PERIOD (a month), so a unit price must be normalised — and where
+# the dosing frequency is genuinely unknown we say so rather than guess.
+
+# Units whose monthly multiplier is known or conventionally assumed.
+_UNIT_TO_MONTHLY = {
+    "month": (1.0, False), "mo": (1.0, False), "monthly": (1.0, False),
+    "day": (30.0, False), "daily": (30.0, False),
+    # Solid oral forms: assume once-daily dosing. This is a convention, not a
+    # fact about the molecule, so it is flagged as an assumption.
+    "tab": (30.0, True), "tablet": (30.0, True), "cap": (30.0, True), "capsule": (30.0, True),
+    "course": (1.0, True), "pack": (1.0, True),
+}
+
+# Dosing frequency stated in free text, applied to per-dose/vial/pen prices.
+_FREQ_PATTERNS = [
+    (r"twice[- ]yearly|6[- ]monthly|every 6 months|biannual", 1.0 / 6),
+    (r"3[- ]monthly|quarterly|every 3 months", 1.0 / 3),
+    (r"\bweekly\b|once a week|/\s*week", 4.3),
+    (r"twice[- ]weekly", 8.6),
+    (r"\bfortnightly\b|every 2 weeks|biweekly", 2.15),
+    (r"\bmonthly\b|once a month", 1.0),
+    (r"\bdaily\b|once[- ]daily|od\b", 30.0),
+]
+
+
+def _parse_amount(text):
+    """Return a rupee amount from a fragment, honouring Indian lakh/crore."""
+    cleaned = text.replace("₹", "").replace(",", "")
+    mult = 1.0
+    low = cleaned.lower()
+    if "lakh" in low or "lac" in low:
+        mult = 100000.0
+    elif "crore" in low:
+        mult = 10000000.0
+
+    rng = re.search(r"(\d+(?:\.\d+)?)\s*[\-–—]\s*(\d+(?:\.\d+)?)", cleaned)
+    if rng:
+        return ((float(rng.group(1)) + float(rng.group(2))) / 2.0) * mult
+    num = re.search(r"(\d+(?:\.\d+)?)", cleaned)
+    if num:
+        return float(num.group(1)) * mult
+    return None
+
+
+def parse_price(price_str):
+    """Parse a workbook price into a monthly-equivalent cost.
+
+    Returns {monthly, unit_price, unit, is_estimated, note} where `monthly` is
+    None when it genuinely cannot be derived — never a fabricated number.
+    """
+    raw = (price_str or "").strip()
+    if not raw or not re.search(r"\d", raw):
+        return {"monthly": None, "unit_price": None, "unit": None, "is_estimated": True,
+                "note": f"No numeric price in source ({raw or 'blank'}) — enter manually."}
+
+    unit_price = _parse_amount(raw)
+    if unit_price is None:
+        return {"monthly": None, "unit_price": None, "unit": None, "is_estimated": True,
+                "note": "Price could not be parsed — enter manually."}
+
+    unit_m = re.search(r"/\s*([a-zA-Z][\w\- ]*)", raw)
+    unit = unit_m.group(1).strip().lower() if unit_m else None
+    unit_key = (unit or "").split()[0] if unit else None
+
+    # 1. Unit maps directly to a monthly multiplier
+    if unit_key in _UNIT_TO_MONTHLY:
+        mult, assumed = _UNIT_TO_MONTHLY[unit_key]
+        note = (f"Assumes once-daily dosing of one {unit_key} (30/month)." if assumed
+                else f"Priced per {unit_key}.")
+        return {"monthly": round(unit_price * mult), "unit_price": unit_price,
+                "unit": unit, "is_estimated": assumed, "note": note}
+
+    # 2. Per dose/vial/pen etc — look for a stated dosing frequency
+    low = raw.lower()
+    for pattern, mult in _FREQ_PATTERNS:
+        if re.search(pattern, low):
+            return {"monthly": round(unit_price * mult), "unit_price": unit_price, "unit": unit,
+                    "is_estimated": True,
+                    "note": f"Priced per {unit or 'unit'}; monthly cost derived from the stated dosing frequency."}
+
+    # 3. Frequency unknown — report the unit price, not a guessed monthly cost
+    return {"monthly": None, "unit_price": unit_price, "unit": unit, "is_estimated": True,
+            "note": f"Priced per {unit or 'unit'} but dosing frequency is not stated — "
+                    f"monthly cost cannot be derived. Enter the frequency to complete the model."}
+
 
 def make_slug(name):
     return re.sub(r'[^a-z0-9]+', '-', name.lower()).strip('-')
@@ -156,7 +226,8 @@ async def main():
             indications = cleaned
             notes = strip_oncology(str(notes)) if notes else notes
 
-            price = parse_indicative_price(price_raw)
+            price_info = parse_price(price_raw)
+            price = price_info["monthly"]          # monthly-equivalent, or None
             slug = make_slug(molecule_name)
             
             # Resolve the therapy-area registry entry for this indication.
@@ -190,7 +261,14 @@ async def main():
                 "indication": indications,
                 "mechanism_of_action": sub_category,
                 "launch_date": launch_approx,
-                "global_price_inr": price if price > 0 else 100.0,
+                # Monthly-equivalent cost. None when it cannot honestly be
+                # derived — the UI shows "Data unavailable" rather than a guess.
+                "global_price_inr": price,
+                "price_per_unit": price_info["unit_price"],
+                "price_unit": price_info["unit"],
+                "price_is_estimated": price_info["is_estimated"],
+                "price_note": price_info["note"],
+                "price_source_text": price_raw or None,
                 "has_multiple_indications": False,
                 "indications_available": [{"indication": indications}],
                 "primary_endpoint_key": (_pe["key"] if _pe else None),
@@ -203,7 +281,7 @@ async def main():
                 "secondary_endpoints": [],
                 "clinical_confidence": 0.0,
                 "competitor_name": "Standard of Care",
-                "competitor_price_inr": max(1.0, round(price * 0.5)) if price > 0 else 50.0,
+                "competitor_price_inr": round(price * 0.5) if price else None,
                 "drug_severe_ae_rate": toxic_rate,
                 "competitor_severe_ae_rate": round(toxic_rate + 0.05, 2),
                 "drug_ae_is_estimated": True,
@@ -240,9 +318,9 @@ async def main():
                     "is_available": True
                 },
                 "regional_prices": {
-                    "IN": price if price > 0 else 100.0,
-                    "SG": max(1, int((price if price > 0 else 100.0) / 60)),
-                    "AE": max(1, int((price if price > 0 else 100.0) / 22))
+                    "IN": price,
+                    "SG": (max(1, int(price / 60)) if price else None),
+                    "AE": (max(1, int(price / 22)) if price else None)
                 }
             }
             
