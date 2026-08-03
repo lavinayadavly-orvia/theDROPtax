@@ -355,7 +355,9 @@ async def calculate_period_costs(
     list_price: float,
     region_code: str,
     payer_segment: str,
-    num_periods: int = 12
+    num_periods: int = 12,
+    drug_pap_code: Optional[str] = None,
+    patient_program: Optional[str] = None,
 ) -> dict:
     """
     Calculate period-by-period patient cost based on payer segment + PAP scheme.
@@ -388,12 +390,16 @@ async def calculate_period_costs(
             pap_eligible = False
     insurer_pct = max(0.0, 1.0 - copay_pct - govt_discount)
 
-    # ── Resolve best PAP scheme (OOP-only) ─────────────────────────────────
+    # ── Resolve the patient-assistance scheme ──────────────────────────────
+    # A scheme is applied ONLY when this specific drug has a verified,
+    # structured programme (pap_scheme_code on the drug record). Free-text
+    # programme descriptions are surfaced as context but never used to infer
+    # a discount, and no generic scheme is auto-applied — otherwise every
+    # out-of-pocket drug would appear to be half price.
     best_pap = None
-    if pap_eligible:
+    if pap_eligible and drug_pap_code:
         region_paps = PAP_SCHEMES.get(region, [])
-        if region_paps:
-            best_pap = min(region_paps, key=lambda s: s["paid_periods"])
+        best_pap = next((sch for sch in region_paps if sch["code"] == drug_pap_code), None)
 
     # ── Build period data ────────────────────────────────────────────────────
     period_data = []
@@ -440,11 +446,18 @@ async def calculate_period_costs(
 
     # ── Deal Architect advice ────────────────────────────────────────────────
     deal_advice = None
-    if pap_eligible and not best_pap:
-        deal_advice = f"Negotiate a PAP scheme with the manufacturer to reduce patient OOP burden."
-    elif best_pap:
-        deal_advice = (f"PAP scheme '{best_pap['name']}' applied. "
+    if best_pap:
+        deal_advice = (f"Verified scheme '{best_pap['name']}' applied. "
                        f"Effective discount: {int(best_pap['effective_discount'] * 100)}% on list price.")
+    elif patient_program:
+        # A real programme exists but is not a verified price discount (e.g.
+        # zero-interest EMI spreads the cost without reducing it).
+        deal_advice = (f"Programme on record: {patient_program}. Instalment or support programmes "
+                       f"do not reduce the total cost, so the list price is shown unchanged. "
+                       f"Verify terms before modelling a discount.")
+    elif pap_eligible:
+        deal_advice = ("No verified patient-assistance scheme on record for this drug. "
+                       "Full out-of-pocket cost shown.")
 
     return {
         "segment": seg_data.get("name", payer_segment),
@@ -483,6 +496,7 @@ async def calculate_pricing(request: PricingRequest):
     Respects payer segment and regional pricing
     """
     # Get regional price (not conversion)
+    _drug = await db.drugs.find_one({"name": {"$regex": f"^{request.drug_name}$", "$options": "i"}}, {"_id": 0})
     price_info = await get_regional_price(request.drug_name, "", request.region_code)
     list_price = price_info["monthly_price"] or 0
     
@@ -491,7 +505,9 @@ async def calculate_pricing(request: PricingRequest):
         list_price=list_price,
         region_code=request.region_code,
         payer_segment=request.payer_segment,
-        num_periods=request.num_periods
+        num_periods=request.num_periods,
+        drug_pap_code=(_drug.get("pap_scheme_code") if _drug else None),
+        patient_program=(_drug.get("patient_program") if _drug else None),
     )
 
     regional_constants = REGIONAL_CONSTANTS.get(request.region_code.upper(), REGIONAL_CONSTANTS["IN"])
@@ -534,7 +550,9 @@ async def get_drug_pricing(drug_name: str, region_code: str = "IN", payer_segmen
         list_price=list_price,
         region_code=region_code,
         payer_segment=payer_segment,
-        num_periods=12
+        num_periods=12,
+        drug_pap_code=(drug.get("pap_scheme_code") if drug else None),
+        patient_program=(drug.get("patient_program") if drug else None),
     )
 
     regional_constants = REGIONAL_CONSTANTS.get(region_code.upper(), REGIONAL_CONSTANTS["IN"])
@@ -2525,9 +2543,15 @@ async def recommend_pap(
     
     region = RegionConfig(**region_data)
     
-    drug_price_inr = drug_data.get("global_price_inr", 1000000)
+    drug_price_inr = drug_data.get("global_price_inr")
+    if not drug_price_inr:
+        raise HTTPException(
+            status_code=422,
+            detail="No price on record for this drug — a patient-assistance scheme cannot be "
+                   "modelled without one. Enter a price first (no figure is estimated).",
+        )
     headline_price = drug_price_inr * region.conversion_rate_from_inr
-    
+
     pap_result = calculate_pap_scheme(headline_price, patient_wallet_monthly, target_roi)
     
     return {
@@ -2595,10 +2619,16 @@ async def generate_dossier(drug_id: str, region_code: str = "IN"):
     competitor_ae_rate = drug_data.get("competitor_severe_ae_rate")
     value = calculate_value_engine(primary_value, drug_data.get("indication", ""), competitor_ae_rate, region_code)
 
-    drug_price_inr = drug_data.get("global_price_inr", 1000000)
-    competitor_price_inr = drug_data.get("competitor_price_inr", 80000)
+    drug_price_inr = drug_data.get("global_price_inr")
+    competitor_price_inr = drug_data.get("competitor_price_inr")
+    if not drug_price_inr:
+        raise HTTPException(
+            status_code=422,
+            detail="No price on record for this drug — a value dossier cannot be generated "
+                   "without one. Enter a price first (no figure is estimated).",
+        )
     drug_cost = drug_price_inr * region.conversion_rate_from_inr
-    competitor_base = competitor_price_inr * region.conversion_rate_from_inr
+    competitor_base = (competitor_price_inr * region.conversion_rate_from_inr) if competitor_price_inr else 0
     competitor_total = competitor_base + (value["c_adverse_events"] or 0)
 
     # Build calculation dict for PDF (None-safe when data is incomplete)

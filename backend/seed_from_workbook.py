@@ -236,12 +236,9 @@ async def main():
             # user fills them in. Only the (estimated) safety rate is seeded.
             _entry = resolve_indication(indications)
             _pe = _entry["primary_endpoint"] if _entry else None
-            if category == "Metabolic":
-                toxic_rate = 0.12
-            elif category == "Women's Health":
-                toxic_rate = 0.10
-            else:  # CVD / CVS / other
-                toxic_rate = 0.15
+            # The workbook carries no safety data. Inventing a per-category
+            # adverse-event rate would present a guess as fact, so these stay
+            # unresolved and the UI reports them as unavailable.
 
             # Build complete drug document
             drug_doc = {
@@ -282,8 +279,8 @@ async def main():
                 "clinical_confidence": 0.0,
                 "competitor_name": "Standard of Care",
                 "competitor_price_inr": round(price * 0.5) if price else None,
-                "drug_severe_ae_rate": toxic_rate,
-                "competitor_severe_ae_rate": round(toxic_rate + 0.05, 2),
+                "drug_severe_ae_rate": None,
+                "competitor_severe_ae_rate": None,
                 "drug_ae_is_estimated": True,
                 "competitor_ae_is_estimated": True,
                 "drug_adverse_events": ["Nausea", "Headache", "Fatigue"],

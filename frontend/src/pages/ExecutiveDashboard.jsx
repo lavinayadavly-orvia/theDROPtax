@@ -535,7 +535,7 @@ export default function ExecutiveDashboard() {
                     onClick={() => handleSelectDrug(drug.id, drug.name, drug.indication)}
                   >
                     <div className="flex items-center justify-between">
-                      <span className="font-data font-bold text-sm text-white group-hover:text-[#008080] transition-colors">{drug.name}</span>
+                      <span className="font-data font-bold text-sm group-hover:text-[#008080] transition-colors" style={{ color: textColor }}>{drug.name}</span>
                       {drug.indication && (
                         <span className="text-[10px] uppercase tracking-wider text-muted-foreground opacity-70">{drug.type || 'Therapy'}</span>
                       )}
@@ -963,7 +963,7 @@ export default function ExecutiveDashboard() {
                 <Card className="glass-card">
                   <CardContent className="p-4 flex flex-col justify-center">
                     <span className="text-xs text-muted-foreground mb-1">Cost per Treatment Period</span>
-                    <span className="text-3xl font-data font-black text-white">
+                    <span className="text-3xl font-data font-black" style={{ color: textColor }}>
                       {selectedDrug.global_price_inr
                         ? `${selectedRegion?.currency_symbol}${selectedDrug.global_price_inr.toLocaleString()}`
                         : <span className="text-lg text-amber-500">Data unavailable</span>}
@@ -1016,11 +1016,11 @@ export default function ExecutiveDashboard() {
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Route / Formulation</div>
-                        <div className="text-sm font-bold text-white mt-0.5">{selectedDrug.route_form || 'Oral'}</div>
+                        <div className="text-sm font-bold mt-0.5" style={{ color: textColor }}>{selectedDrug.route_form || 'Oral'}</div>
                       </div>
                       <div>
                         <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Common Strengths</div>
-                        <div className="text-sm font-bold text-white mt-0.5">{selectedDrug.common_strengths || 'Standard'}</div>
+                        <div className="text-sm font-bold mt-0.5" style={{ color: textColor }}>{selectedDrug.common_strengths || 'Standard'}</div>
                       </div>
                     </div>
                     <div>
@@ -1053,7 +1053,7 @@ export default function ExecutiveDashboard() {
                       </div>
                       <div>
                         <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Efficacy Metric</div>
-                        <div className="text-sm font-bold text-white mt-0.5">
+                        <div className="text-sm font-bold mt-0.5" style={{ color: textColor }}>
                           {getEfficacyLabel(selectedDrug, calculation?.commercial_brain)}
                         </div>
                       </div>
@@ -1063,7 +1063,7 @@ export default function ExecutiveDashboard() {
                         <div className="text-[10px] uppercase tracking-wider text-muted-foreground">
                           {getEndpointsForDrug(selectedDrug)?.hazardRatioLabel || 'Hazard Ratio'}
                         </div>
-                        <div className="text-sm font-bold text-white mt-0.5">
+                        <div className="text-sm font-bold mt-0.5" style={{ color: textColor }}>
                           {selectedDrug.hazard_ratio ?? <span className="text-amber-500">Data unavailable</span>}
                         </div>
                       </div>
@@ -1071,7 +1071,7 @@ export default function ExecutiveDashboard() {
                         <div className="text-[10px] uppercase tracking-wider text-muted-foreground">
                           {getEndpointsForDrug(selectedDrug)?.secondaryEndpoints?.[0]?.label || 'Secondary Endpoint'}
                         </div>
-                        <div className="text-sm font-bold text-white mt-0.5">
+                        <div className="text-sm font-bold mt-0.5" style={{ color: textColor }}>
                           {selectedDrug.secondary_endpoints?.[0]?.value ?? <span className="text-amber-500">Data unavailable</span>}
                         </div>
                       </div>
