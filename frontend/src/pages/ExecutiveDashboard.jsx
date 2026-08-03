@@ -628,11 +628,15 @@ export default function ExecutiveDashboard() {
               const localRegulator = REGULATOR_LABELS[selectedRegion?.code] ||
                 selectedDrug.regional_availability?.local_regulator;
 
-              // Find indication-specific approval if available
-              let approvalYear;
-              if (selectedDrug.indication?.toLowerCase().includes('endometrial')) {
-                approvalYear = '2022';
-              } else if (selectedDrug.indications_available && Array.isArray(selectedDrug.indications_available)) {
+              // A source-verified approval year supersedes the reference
+              // workbook, which had Inclisiran at "Jan 2024" against an FDA
+              // label stating 2021. Verified values carry their citation.
+              const verifiedApproval = selectedDrug.verified_facts?.us_initial_approval_year;
+              let approvalYear = verifiedApproval?.value;
+              let approvalSource = verifiedApproval?.source_url || null;
+              let approvalIsVerified = Boolean(approvalYear);
+
+              if (!approvalYear && Array.isArray(selectedDrug.indications_available)) {
                 const indMatch = selectedDrug.indications_available.find(
                   ind => ind.indication?.toLowerCase() === selectedDrug.indication?.toLowerCase()
                 );
@@ -648,8 +652,28 @@ export default function ExecutiveDashboard() {
                   <div className="text-xs uppercase tracking-widest text-muted-foreground mb-1">
                     INDICATION APPROVAL
                   </div>
-                  <div className="font-data mb-4" style={{ color: textColor }}>
-                    {selectedDrug.regional_availability?.global_approval?.agency} {approvalYear}
+                  <div className="font-data mb-4 flex items-center gap-2" style={{ color: textColor }}>
+                    <span>
+                      {selectedDrug.regional_availability?.global_approval?.agency || 'FDA'} {approvalYear || '—'}
+                    </span>
+                    {approvalIsVerified ? (
+                      <a
+                        href={approvalSource || '#'}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title="Verified against the FDA label — click to open the source"
+                        className="text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded border border-teal-500/40 text-teal-600 dark:text-teal-400 no-underline"
+                      >
+                        Verified
+                      </a>
+                    ) : (
+                      <span
+                        title="From the reference workbook; not checked against a primary source"
+                        className="text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded border border-amber-500/40 text-amber-600 dark:text-amber-400"
+                      >
+                        Unverified
+                      </span>
+                    )}
                   </div>
                   <div className="text-xs uppercase tracking-widest text-muted-foreground mb-1">
                     {selectedRegion.name.toUpperCase()} STATUS

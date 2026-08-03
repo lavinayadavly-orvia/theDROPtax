@@ -114,3 +114,24 @@ def test_market_scan_does_not_assert_absence_of_threats():
     src = inspect.getsource(server.web_sweeper_news)
     assert "no immediate patent or generic threats detected in recent intelligence audits" not in src, \
         "The platform is asserting an absence of threats it never checked for"
+
+
+def test_no_hardcoded_indication_approval_year():
+    """A leftover rule set the approval year to 2022 for any indication
+    containing "endometrial" — a hardcoded value from the oncology era."""
+    src = open(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(
+        os.path.abspath(__file__)))), "frontend", "src", "pages", "ExecutiveDashboard.jsx")).read()
+    assert "endometrial" not in src.lower(), "Hardcoded indication approval year is back"
+    assert "approvalYear = '2022'" not in src
+
+
+def test_verified_facts_supersede_the_workbook_in_the_ui():
+    """Verification must be applied, not merely recorded. The database held
+    both "Jan 2024" (workbook) and 2021 (FDA label) and the UI showed the
+    workbook value."""
+    src = open(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(
+        os.path.abspath(__file__)))), "frontend", "src", "pages", "ExecutiveDashboard.jsx")).read()
+    assert "verified_facts?.us_initial_approval_year" in src, \
+        "The UI is not preferring the verified approval year"
+    # And the provenance must be visible to the user.
+    assert "Unverified" in src and "Verified" in src
