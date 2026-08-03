@@ -146,6 +146,9 @@ def extract_pack(title):
     # Strip retailer branding first: "... | 1mg" is the site name, not a dose.
     t = re.sub(r"\s*[|\-–]\s*(1mg|Tata 1mg|Netmeds|PharmEasy|Apollo Pharmacy|MrMed)\b.*$",
                "", t, flags=re.IGNORECASE)
+    # Promotional text carries percentages that are discounts, not strengths.
+    t = re.sub(r"save up to[^,]*", " ", t, flags=re.IGNORECASE)
+    t = re.sub(r"\b\d+%\s*(off|discount)", " ", t, flags=re.IGNORECASE)
     strength = None
     m = re.search(r"(\d+(?:\.\d+)?\s?(?:mg|mcg|g|ml|iu|%))", t, re.IGNORECASE)
     if m:
@@ -190,11 +193,34 @@ def extract_field(html, patterns):
     return None
 
 
+# Tokens that appear in thousands of unrelated drug names. Matching on these
+# pulls in the wrong molecule entirely: "acid" matched "Zoledronic acid" to a
+# rabeprazole brand, and "depot" matched hydroxyprogesterone to leuprolide.
+GENERIC_TOKENS = {
+    "acid", "acids", "depot", "tablet", "tablets", "capsule", "capsules",
+    "injection", "injections", "solution", "syrup", "suspension", "cream",
+    "sodium", "potassium", "calcium", "magnesium", "chloride", "sulfate",
+    "sulphate", "hydrochloride", "acetate", "citrate", "maleate", "tartrate",
+    "succinate", "fumarate", "phosphate", "nitrate", "oral", "forte", "plus",
+    "cream", "gel", "drops", "spray", "patch", "inhaler", "powder", "sachet",
+    "extended", "release", "prolonged", "combination", "hydrate", "monohydrate",
+}
+
+
 def slug_tokens(name):
-    """Normalised tokens used to match a molecule to a product URL."""
+    """Distinctive tokens used to match a molecule to a product URL.
+
+    Generic pharmaceutical words are removed, because matching on them
+    associates a molecule with an unrelated product that merely shares a
+    salt name or dose form.
+    """
     clean = re.sub(r"\(.*?\)", " ", name).lower()
     clean = re.split(r"[+/]", clean)[0]
-    return [t for t in re.split(r"[^a-z0-9]+", clean) if len(t) > 3]
+    toks = [t for t in re.split(r"[^a-z0-9]+", clean) if len(t) > 3]
+    distinctive = [t for t in toks if t not in GENERIC_TOKENS]
+    # If a name is entirely generic words, fall back to the longest token so
+    # the molecule is still attempted rather than silently skipped.
+    return distinctive or (sorted(toks, key=len, reverse=True)[:1] if toks else [])
 
 
 async def main():
