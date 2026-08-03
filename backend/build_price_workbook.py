@@ -132,10 +132,33 @@ NON_PRODUCT_MARKERS = (
 )
 
 
-def looks_like_wrong_product(title, molecule):
+# An injectable molecule cannot be sold as a tablet. Zoledronic acid is an IV
+# infusion, so a "Zolic 20 MG Capsule" listing is a different drug regardless
+# of what the reference workbook lists as its brands.
+ORAL_FORMS = ("tablet", "capsule", "syrup", "suspension", "drops", "sachet", "powder")
+INJECTABLE_FORMS = ("injection", "infusion", "vial", "ampoule", "prefilled", "pfs", "syringe")
+
+
+def form_conflicts_with_route(title, route):
+    """True when the listing's dose form contradicts the molecule's route."""
+    t = (title or "").lower()
+    if not route:
+        return False
+    is_oral_listing = any(f in t for f in ORAL_FORMS)
+    is_inj_listing = any(f in t for f in INJECTABLE_FORMS)
+    if route in ("iv_bolus", "iv_infusion", "sc_injection"):
+        return is_oral_listing and not is_inj_listing
+    if route == "oral":
+        return is_inj_listing and not is_oral_listing
+    return False
+
+
+def looks_like_wrong_product(title, molecule, route=None):
     """Reject listings that are not the medicine in question."""
     t = (title or "").lower()
     if any(mark in t for mark in NON_PRODUCT_MARKERS):
+        return True
+    if form_conflicts_with_route(title, route):
         return True
     return False
 
@@ -239,7 +262,8 @@ async def main():
         molecules = [{"name": m, "key_brands": "", "category": ""} for m in args.molecule]
     else:
         molecules = []
-        async for d in db.drugs.find({}, {"_id": 0, "name": 1, "key_brands": 1, "category": 1}):
+        async for d in db.drugs.find({}, {"_id": 0, "name": 1, "key_brands": 1,
+                                          "category": 1, "route": 1}):
             molecules.append(d)
         molecules.sort(key=lambda d: d["name"])
         if args.limit:
@@ -304,7 +328,7 @@ async def main():
             title = extract_field(html, [r"<title>([^<]{5,140})</title>"])
             mfr = extract_field(html, [r'"manufacturer"\s*:\s*"([^"]{2,80})"',
                                        r"Marketer</[^>]+>\s*<[^>]+>([^<]{2,80})<"])
-            if looks_like_wrong_product(title, name):
+            if looks_like_wrong_product(title, name, mol.get("route")):
                 misses.append((name, f"{src['name']}: listing is not this medicine "
                                      f"({str(title)[:60]}) — rejected"))
             elif price is None and mrp is None:
@@ -322,6 +346,27 @@ async def main():
             time.sleep(REQUEST_DELAY_SEC)
         mark = "✓" if found_any else "—"
         print(f"  [{i:3}/{len(molecules)}] {name[:30]:32} {mark} {len(picked)} retailer(s)")
+
+    # ── Cross-retailer agreement ─────────────────────────────────────────
+    # Independent retailers pricing the same molecule should broadly agree.
+    # Where three sources cluster and a fourth is orders of magnitude away,
+    # the outlier is far more likely to be a mismatched product than a bargain.
+    from statistics import median
+    by_mol = defaultdict(list)
+    for r in rows:
+        if r["selling_price_inr"]:
+            by_mol[r["molecule"]].append(r["selling_price_inr"])
+    for r in rows:
+        peers = by_mol.get(r["molecule"], [])
+        if len(peers) < 2 or not r["selling_price_inr"]:
+            r["agreement"] = "single source" if len(peers) == 1 else ""
+            continue
+        med = median(peers)
+        ratio = (r["selling_price_inr"] / med) if med else 0
+        if ratio > 5 or ratio < 0.2:
+            r["agreement"] = f"OUTLIER — {ratio:.1f}x the median of {len(peers)} listings; verify product"
+        else:
+            r["agreement"] = f"consistent with {len(peers)} listings"
 
     # ── Write the NEW workbook ───────────────────────────────────────────
     out = args.out or os.path.join(
@@ -342,8 +387,9 @@ async def main():
     for r in rows:
         ws.append([r["molecule"], r["category"], r["retailer"], r["product"], r["manufacturer"],
                    r.get("strength"), r.get("pack"),
-                   r["selling_price_inr"], r["mrp_inr"], r["source_url"], r["retrieved_utc"]])
-    for col, w in zip("ABCDEFGHIJK", (26, 16, 16, 44, 24, 12, 8, 18, 14, 62, 22)):
+                   r["selling_price_inr"], r["mrp_inr"], r.get("agreement", ""),
+                   r["source_url"], r["retrieved_utc"]])
+    for col, w in zip("ABCDEFGHIJKL", (26, 16, 16, 44, 24, 12, 8, 18, 14, 46, 62, 22)):
         ws.column_dimensions[col].width = w
     ws.freeze_panes = "A2"
 
@@ -385,6 +431,13 @@ async def main():
                "these are markup defaults, not prices."],
         ["d1", "Listings that are not the medicine (diagnostic panels, "
                "combination anaesthetics) are rejected, not priced."],
+        ["d1b", "Listings whose dose form contradicts the molecule's route are "
+                "rejected: zoledronic acid is an infusion, so a capsule listing "
+                "is a different drug even though the reference workbook lists "
+                "that brand against it."],
+        ["d3", "The cross-retailer check compares each price to the median of "
+               "the other listings. Treat any row marked OUTLIER as unverified "
+               "until the product has been opened and read."],
         ["d2", "Strength and pack size are captured because retailers list "
                "different packs. Do not compare prices across different packs."],
         ["d", "Matching is by URL token, so a row may occasionally point at a "
