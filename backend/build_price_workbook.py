@@ -113,6 +113,44 @@ def sitemap_urls(source, refresh=False):
     return product_urls
 
 
+# Values that appear as placeholders in retailer markup rather than real
+# prices. PharmEasy returned 1000 as the MRP on every row sampled; Apollo
+# returned 2999 and 99999. Treating these as prices silently corrupts the model.
+SENTINEL_PRICES = {1000.0, 2999.0, 9999.0, 99999.0, 999999.0}
+
+# A molecule name can appear in things that are not that medicine — diagnostic
+# panels, combination anaesthetics, lab bookings.
+NON_PRODUCT_MARKERS = (
+    "deaminase", " csf", "book ", " test", "test online", "diagnostic",
+    "lab test", "profile", "panel", "checkup", "check-up", "scan",
+)
+
+
+def looks_like_wrong_product(title, molecule):
+    """Reject listings that are not the medicine in question."""
+    t = (title or "").lower()
+    if any(mark in t for mark in NON_PRODUCT_MARKERS):
+        return True
+    return False
+
+
+def extract_pack(title):
+    """Strength and pack size, so prices are only compared like for like."""
+    t = title or ""
+    # Strip retailer branding first: "... | 1mg" is the site name, not a dose.
+    t = re.sub(r"\s*[|\-–]\s*(1mg|Tata 1mg|Netmeds|PharmEasy|Apollo Pharmacy|MrMed)\b.*$",
+               "", t, flags=re.IGNORECASE)
+    strength = None
+    m = re.search(r"(\d+(?:\.\d+)?\s?(?:mg|mcg|g|ml|iu|%))", t, re.IGNORECASE)
+    if m:
+        strength = m.group(1).strip()
+    pack = None
+    m = re.search(r"(\d+)\s*(?:'|&#x27;)?\s*[sS]\b|\((\d+)\)", t)
+    if m:
+        pack = m.group(1) or m.group(2)
+    return strength, pack
+
+
 def extract_price(html):
     """Pull selling price and MRP from a product page. None when absent."""
     price = mrp = None
@@ -130,6 +168,11 @@ def extract_price(html):
                 price = min(rupees[:6])
             if mrp is None:
                 mrp = max(rupees[:6])
+    # Discard placeholder values rather than passing them off as prices.
+    if mrp in SENTINEL_PRICES:
+        mrp = None
+    if price in SENTINEL_PRICES:
+        price = None
     return price, mrp
 
 
@@ -229,13 +272,18 @@ async def main():
             title = extract_field(html, [r"<title>([^<]{5,140})</title>"])
             mfr = extract_field(html, [r'"manufacturer"\s*:\s*"([^"]{2,80})"',
                                        r"Marketer</[^>]+>\s*<[^>]+>([^<]{2,80})<"])
-            if price is None and mrp is None:
+            if looks_like_wrong_product(title, name):
+                misses.append((name, f"{src['name']}: listing is not this medicine "
+                                     f"({str(title)[:60]}) — rejected"))
+            elif price is None and mrp is None:
                 misses.append((name, f"{src['name']}: page had no readable price"))
             else:
                 found_any = True
+                strength, pack = extract_pack(title)
                 rows.append({
                     "molecule": name, "category": mol.get("category", ""),
                     "retailer": src["name"], "product": title, "manufacturer": mfr,
+                    "strength": strength, "pack": pack,
                     "selling_price_inr": price, "mrp_inr": mrp,
                     "source_url": url, "retrieved_utc": stamp,
                 })
@@ -252,7 +300,8 @@ async def main():
     ws = wb.active
     ws.title = "Sourced Prices"
     headers = ["Molecule", "Category", "Retailer", "Product listing", "Manufacturer",
-               "Selling price (INR)", "MRP (INR)", "Source URL", "Retrieved (UTC)"]
+               "Strength", "Pack", "Selling price (INR)", "MRP (INR)",
+               "Source URL", "Retrieved (UTC)"]
     ws.append(headers)
     for c in ws[1]:
         c.font = Font(bold=True, color="FFFFFF")
@@ -260,8 +309,9 @@ async def main():
         c.alignment = Alignment(vertical="center")
     for r in rows:
         ws.append([r["molecule"], r["category"], r["retailer"], r["product"], r["manufacturer"],
+                   r.get("strength"), r.get("pack"),
                    r["selling_price_inr"], r["mrp_inr"], r["source_url"], r["retrieved_utc"]])
-    for col, w in zip("ABCDEFGHI", (26, 16, 16, 44, 24, 18, 14, 62, 22)):
+    for col, w in zip("ABCDEFGHIJK", (26, 16, 16, 44, 24, 12, 8, 18, 14, 62, 22)):
         ws.column_dimensions[col].width = w
     ws.freeze_panes = "A2"
 
@@ -298,6 +348,13 @@ async def main():
               "as at the retrieval timestamp."],
         ["c", "Listing price is not net realised price. Trade margin, GST and "
               "institutional discounts are not visible in retail listings."],
+        ["d0", "Placeholder MRPs are discarded. PharmEasy returned 1000 as the "
+               "MRP on every row sampled, and Apollo returned 2999 and 99999; "
+               "these are markup defaults, not prices."],
+        ["d1", "Listings that are not the medicine (diagnostic panels, "
+               "combination anaesthetics) are rejected, not priced."],
+        ["d2", "Strength and pack size are captured because retailers list "
+               "different packs. Do not compare prices across different packs."],
         ["d", "Matching is by URL token, so a row may occasionally point at a "
               "different strength or pack. Check the product listing column."],
         ["e", "Molecules absent from a retailer's catalogue are listed on the "
