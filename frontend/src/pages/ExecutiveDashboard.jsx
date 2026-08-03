@@ -64,7 +64,7 @@ const STATIC_PAYER_SEGMENTS = {
 };
 
 export default function ExecutiveDashboard() {
-  const { selectedDrug, setSelectedDrug, selectedRegion, calculationResults, setCalculationResults, assetRegulatoryOverride, theme, clearSession, customCompetitors, hasSeenTour, setHasSeenTour, runTourPhaseB, setRunTourPhaseB } = useApp();
+  const { selectedDrug, setSelectedDrug, selectedRegion, calculationResults, setCalculationResults, assetRegulatoryOverride, theme, clearSession, hasSeenTour, setHasSeenTour, runTourPhaseB, setRunTourPhaseB } = useApp();
   const [calculation, setCalculation] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -118,7 +118,7 @@ export default function ExecutiveDashboard() {
             element: '.tour-cost-metrics',
             popover: {
               title: 'Step 2: Effective Cost',
-              description: 'We dynamically calculate the actual out-of-pocket cost per period based on regional subsidies.',
+              description: 'We calculate the actual out-of-pocket cost at the point it falls due, based on regional subsidies.',
               side: 'left',
               align: 'start'
             }
@@ -395,7 +395,7 @@ export default function ExecutiveDashboard() {
 
   // Prepare period chart data for "sawtooth" visualization
   const periodChartData = pricingModel?.period_data?.map(c => ({
-    name: `C${c.period}`,
+    name: `D${c.period}`,
     period: c.period,
     patient: c.patient_pay,
     insurer: c.insurer_pay,
@@ -715,7 +715,7 @@ export default function ExecutiveDashboard() {
                   <div className="text-xs uppercase tracking-widest text-muted-foreground mb-1">EFFECTIVE PATIENT COST</div>
                   <div className="text-3xl font-data font-bold text-[#10B981]">
                     {pricingModel.currency_symbol}{pricingModel.effective_monthly_cost?.toLocaleString()}
-                    <span className="text-sm text-muted-foreground font-normal"> /period</span>
+                    <span className="text-sm text-muted-foreground font-normal"> /dose</span>
                   </div>
                   <div className="text-xs text-muted-foreground mt-1">
                     {selectedPayer?.toUpperCase() === 'OOP' || selectedPayer?.toLowerCase() === 'oop'
@@ -763,7 +763,7 @@ export default function ExecutiveDashboard() {
             {pricingModel && (
               <div className="text-xs" style={{ color: mutedColor }}>
                 <span>List Price: </span>
-                <span className="font-data">{pricingModel.currency_symbol}{pricingModel.list_price_per_period?.toLocaleString()}/period</span>
+                <span className="font-data">{pricingModel.currency_symbol}{pricingModel.list_price_per_period?.toLocaleString()}/dose</span>
               </div>
             )}
 
@@ -850,57 +850,7 @@ export default function ExecutiveDashboard() {
                       )}
                     </div>
 
-                    {/* 07 – ICER (conditional) */}
-                    {(() => {
-                      const activeComp = customCompetitors?.length > 0
-                        ? { name: customCompetitors[0].name, price: customCompetitors[0].baseCost }
-                        : { name: selectedDrug.competitor_name, price: selectedDrug.competitor_price_inr };
-
-                      if (activeComp.name && activeComp.price && calculation.commercial_brain?.event_probability != null) {
-                        return (
-                          <div className="heor-point heor-point--icer">
-                            <div className="heor-point-icon">📐</div>
-                            <div className="heor-point-content">
-                              <div className="heor-point-header">
-                                <span className="heor-point-num">07</span>
-                                HEAD-TO-HEAD ECONOMIC COMPARISON (ICER)
-                              </div>
-                              <p className="heor-point-text">
-                                Incremental cost vs <strong>{activeComp.name}</strong>:{' '}
-                                <span className="heor-metric-teal">
-                                  {selectedRegion.currency_symbol}{Math.abs(calculation.drug_cost - activeComp.price).toLocaleString()}
-                                </span>.{' '}
-                                Expressed as incremental cost per unit of downstream event risk avoided:{' '}
-                                <span className="heor-metric-amber">
-                                  {selectedRegion.currency_symbol}{(
-                                    Math.abs(calculation.drug_cost - activeComp.price) /
-                                    Math.max(1 - calculation.commercial_brain.event_probability, 0.01)
-                                  ).toLocaleString(undefined, { maximumFractionDigits: 0 })}
-                                </span> per unit risk avoided.{' '}
-                                {calculation.drug_cost < (activeComp.price + (calculation.breakdown?.adverse_event_cost || 0))
-                                  ? <><span className="heor-badge heor-badge--green">DOMINANT STRATEGY</span> — lower total cost, superior tolerability profile.</>
-                                  : <>Enter <strong>Deal Architect</strong> to model outcome-based contracts that cap net cost at payer-acceptable ICER thresholds.</>}
-                              </p>
-                            </div>
-                          </div>
-                        );
-                      } else {
-                        return (
-                          <div className="heor-point heor-point--muted">
-                            <div className="heor-point-icon">📐</div>
-                            <div className="heor-point-content">
-                              <div className="heor-point-header">
-                                <span className="heor-point-num">07</span>
-                                HEAD-TO-HEAD ECONOMIC COMPARISON (ICER)
-                              </div>
-                              <p className="heor-point-text">
-                                Add a comparator drug via the War Room's <strong>Competitive Thunderdome</strong> module to activate Incremental Cost-Effectiveness Ratio modelling against {selectedDrug.name}.
-                              </p>
-                            </div>
-                          </div>
-                        );
-                      }
-                    })()}       {/* Hazard Ratio */}
+                    {/* Hazard Ratio */}
                     {calculation.commercial_brain.hazard_ratio && (
                       <div className="flex justify-between items-center p-2 rounded-sm" style={{ backgroundColor: theme === 'dark' ? '#1A1A1A' : '#F5F5F5' }}>
                         <div className="text-xs text-muted-foreground">Hazard Ratio (HR)</div>
@@ -1004,12 +954,33 @@ export default function ExecutiveDashboard() {
               <div className="grid grid-cols-3 gap-6">
                 <Card className="glass-card">
                   <CardContent className="p-4 flex flex-col justify-center">
-                    <span className="text-xs text-muted-foreground mb-1">Cost per Treatment Period</span>
-                    <span className="text-3xl font-data font-black" style={{ color: textColor }}>
-                      {selectedDrug.global_price_inr
-                        ? `${selectedRegion?.currency_symbol}${selectedDrug.global_price_inr.toLocaleString()}`
-                        : <span className="text-lg text-amber-500">Data unavailable</span>}
-                    </span>
+                    {/* Cost is shown at the point it actually falls due. A dose
+                        given twice a year is paid in full on the day, not as a
+                        monthly instalment, and smoothing it hides the barrier. */}
+                    {selectedDrug.cost_per_dose ? (
+                      <>
+                        <span className="text-xs text-muted-foreground mb-1">Cost per Dose (payable at administration)</span>
+                        <span className="text-3xl font-data font-black" style={{ color: textColor }}>
+                          {selectedRegion?.currency_symbol}{selectedDrug.cost_per_dose.toLocaleString()}
+                        </span>
+                        {selectedDrug.doses_year_1 && (
+                          <span className="text-[11px] text-muted-foreground mt-1">
+                            {selectedDrug.doses_year_1} doses in year 1 ·{' '}
+                            {selectedRegion?.currency_symbol}{(selectedDrug.cost_year_1 || 0).toLocaleString()} first year,
+                            then {selectedDrug.doses_maintenance}/year
+                          </span>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        <span className="text-xs text-muted-foreground mb-1">Cost per Dispense</span>
+                        <span className="text-3xl font-data font-black" style={{ color: textColor }}>
+                          {selectedDrug.global_price_inr
+                            ? `${selectedRegion?.currency_symbol}${selectedDrug.global_price_inr.toLocaleString()}`
+                            : <span className="text-lg text-amber-500">Data unavailable</span>}
+                        </span>
+                      </>
+                    )}
                   </CardContent>
                 </Card>
 

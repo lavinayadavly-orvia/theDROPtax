@@ -370,15 +370,20 @@ async def main():
                 y1, maint = doses_per_year(molecule_name)
                 if y1 and maint and price_info.get("unit_price"):
                     unit = price_info["unit_price"]
+                    # A dose paid for in one go is not an instalment. Spreading
+                    # a 6-monthly injection across months invents a payment
+                    # schedule the patient does not have, and hides the real
+                    # barrier: the whole amount falls due on the day of the dose.
                     drug_doc["doses_year_1"] = y1
                     drug_doc["doses_maintenance"] = maint
+                    drug_doc["cost_per_dose"] = round(unit)
+                    drug_doc["payment_event"] = "per dose at administration"
                     drug_doc["cost_year_1"] = round(unit * y1)
                     drug_doc["cost_maintenance_year"] = round(unit * maint)
-                    drug_doc["global_price_inr"] = round(unit * maint / 12)   # steady state
                     drug_doc["price_note"] = (
-                        f"Loading-dose regimen: {y1} doses in year 1, {maint}/year thereafter "
-                        f"(FDA label). Monthly figure is steady-state; year 1 costs more. "
-                        f"Unit price itself is still unverified."
+                        f"{y1} doses in year 1, {maint}/year thereafter (FDA label). "
+                        f"Each dose is paid in full at administration — the cost is not "
+                        f"spread across months. Unit price itself is still unverified."
                     )
                 if _vf.get("facts", {}).get("manufacturer"):
                     drug_doc["manufacturers"] = _vf["facts"]["manufacturer"]["value"]
