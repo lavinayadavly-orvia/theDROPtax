@@ -95,3 +95,22 @@ def test_boilerplate_programme_text_does_not_drive_assistance():
     import server
     src = inspect.getsource(server.resolve_applicability)
     assert "programme_is_generic" in src, "Boilerplate programme text is being trusted again"
+
+
+def test_no_hardcoded_cost_band_label():
+    """"Low-Cost Maintenance" was a fixed label shown on every drug, including
+    a 20,000/month specialty injectable."""
+    src = open(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(
+        os.path.abspath(__file__)))), "frontend", "src", "pages", "ExecutiveDashboard.jsx")).read()
+    # The label may exist, but only as one branch of a price-derived decision.
+    assert "global_price_inr" in src.split("Low-Cost Maintenance")[0][-1200:], \
+        "Cost band label must be derived from the drug's price, not hardcoded"
+    assert "High-Cost Specialty" in src, "Price banding is missing"
+
+
+def test_market_scan_does_not_assert_absence_of_threats():
+    """Claiming "no threats detected" without running a scan is an assertion."""
+    import server
+    src = inspect.getsource(server.web_sweeper_news)
+    assert "no immediate patent or generic threats detected in recent intelligence audits" not in src, \
+        "The platform is asserting an absence of threats it never checked for"

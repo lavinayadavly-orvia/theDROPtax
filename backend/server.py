@@ -1032,7 +1032,9 @@ async def web_sweeper_news(drug_name: str, region: str = "Global") -> list:
                     seen_urls.add(url)
         
         # Generate AI Summary if we have content
-        summary = "The market landscape for this asset remains stable with no immediate patent or generic threats detected in recent intelligence audits."
+        # No claim is made until real intelligence is retrieved. Saying "no
+        # threats detected" when nothing was searched is an assertion, not a finding.
+        summary = None
         if news_items and openai_client:
             try:
                 combined_text = "\n\n".join(raw_contents[:5])
@@ -2614,7 +2616,9 @@ async def get_drug_news(drug_id: str, region: str = "Global"):
     
     if not result or not result.get("sources"):
         logger.info(f"No threats found for {drug_name} - market stable")
-        return {"summary": "The market landscape for this asset remains stable with no immediate patent or generic threats detected.", "sources": []}
+        return {"summary": None, "sources": [],
+                "status": "not_run",
+                "note": "Market intelligence was not retrieved (no search/LLM configured). No conclusion about patent or generic threats can be drawn."}
     
     return result
 

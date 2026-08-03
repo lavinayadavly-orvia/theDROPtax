@@ -952,9 +952,27 @@ export default function ExecutiveDashboard() {
                   Affordability & Formulation Profile
                 </h3>
               </div>
-              <div className="text-xs text-teal-600 dark:text-teal-400 bg-teal-500/10 border border-teal-500/20 rounded px-2.5 py-1 uppercase tracking-wider font-semibold">
-                Low-Cost Maintenance
-              </div>
+              {(() => {
+                // Derived from the drug's actual cost, not a fixed label.
+                const monthly = selectedDrug.global_price_inr;
+                if (monthly == null) {
+                  return (
+                    <div className="text-xs text-amber-600 dark:text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded px-2.5 py-1 uppercase tracking-wider font-semibold">
+                      Cost Not Established
+                    </div>
+                  );
+                }
+                const band = monthly >= 15000
+                  ? { label: 'High-Cost Specialty', cls: 'text-red-600 dark:text-red-400 bg-red-500/10 border-red-500/20' }
+                  : monthly >= 2000
+                    ? { label: 'Mid-Cost Therapy', cls: 'text-amber-600 dark:text-amber-400 bg-amber-500/10 border-amber-500/20' }
+                    : { label: 'Low-Cost Maintenance', cls: 'text-teal-600 dark:text-teal-400 bg-teal-500/10 border-teal-500/20' };
+                return (
+                  <div className={`text-xs border rounded px-2.5 py-1 uppercase tracking-wider font-semibold ${band.cls}`}>
+                    {band.label}
+                  </div>
+                );
+              })()}
             </div>
 
             <div className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
@@ -1126,8 +1144,27 @@ export default function ExecutiveDashboard() {
                 ) : (
                   <Card className="war-room-surface">
                     <CardContent className="p-4 text-center">
-                      <ShieldCheck className="w-8 h-8 mx-auto mb-2 text-[#008080]" />
-                      <div className="text-sm font-semibold" style={{ color: textColor }}>No Active Market Threats Detected</div>
+                      {news.status === 'not_run' ? (
+                        <>
+                          <AlertTriangle className="w-8 h-8 mx-auto mb-2 text-amber-500" />
+                          <div className="text-sm font-semibold" style={{ color: textColor }}>
+                            Market Scan Not Run
+                          </div>
+                          <div className="text-xs text-muted-foreground mt-1 max-w-md mx-auto">
+                            {news.note || 'No market intelligence was retrieved, so no conclusion about patent or generic threats can be drawn.'}
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <ShieldCheck className="w-8 h-8 mx-auto mb-2 text-[#008080]" />
+                          <div className="text-sm font-semibold" style={{ color: textColor }}>
+                            No threats found in this scan
+                          </div>
+                          <div className="text-xs text-muted-foreground mt-1">
+                            Absence of findings is not evidence that none exist.
+                          </div>
+                        </>
+                      )}
                     </CardContent>
                   </Card>
                 )}
