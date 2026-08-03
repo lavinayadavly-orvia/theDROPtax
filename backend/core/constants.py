@@ -49,6 +49,53 @@ REGIONAL_CONSTANTS = {
     }
 }
 
+
+# ──────────────────────────────────────────────────────────────────────────
+# MODEL ASSUMPTIONS REGISTER
+# ──────────────────────────────────────────────────────────────────────────
+# Every parameter below is an ASSUMPTION, not a sourced fact. A health-economic
+# model cannot run without event costs, income and coverage shares — but the
+# platform must never present model output as if these were measured values.
+#
+# `sourced: False` means the figure has NO authoritative reference behind it and
+# is a placeholder awaiting real data. Replace the value AND set a `source`
+# before using any output for a payer submission or commercial decision.
+#
+# To source these properly you need, per region:
+#   major_event_cost      — costing study / insurance claims for MI, stroke,
+#                           HF admission, fracture (e.g. PMJAY package rates)
+#   complication_cost     — outpatient complication management cost
+#   monthly_salary        — official median household income statistics
+#   retail_mrp_multiplier — observed retail MRP vs institutional tender price
+#   coverage shares       — payer policy documents / scheme rules
+#   pregnancy/fertility   — antenatal + delivery package rates; ART cycle cost
+
+MODEL_ASSUMPTIONS = {
+    "major_event_cost":      {"sourced": False, "source": None,
+                              "note": "Placeholder. Needs regional costing study or scheme package rates."},
+    "complication_cost":     {"sourced": False, "source": None,
+                              "note": "Placeholder. Needs outpatient complication costing."},
+    "monthly_salary":        {"sourced": False, "source": None,
+                              "note": "Placeholder. Needs official median household income."},
+    "retail_mrp_multiplier": {"sourced": False, "source": None,
+                              "note": "Placeholder. Needs observed retail vs tender price data."},
+    "pregnancy_cost":        {"sourced": False, "source": None,
+                              "note": "Placeholder. Needs antenatal + delivery package cost."},
+    "fertility_cycle_cost":  {"sourced": False, "source": None,
+                              "note": "Placeholder. Needs ART cycle cost survey."},
+    "setting_coverage_share": {"sourced": False, "source": None,
+                              "note": "Placeholder. Needs payer policy documents per region."},
+    "endpoint_scaling":      {"sourced": False, "source": None,
+                              "note": "Normalisation scale for each primary endpoint. A modelling "
+                                      "choice for comparability, not a clinical threshold."},
+}
+
+
+def unsourced_assumptions():
+    """Names of model parameters still running on placeholder values."""
+    return [k for k, v in MODEL_ASSUMPTIONS.items() if not v.get("sourced")]
+
+
 # ──────────────────────────────────────────────────────────────────────────
 # Site-of-care coverage rules (THE market-access nuance)
 # The SAME drug reimburses & prices differently by where it is administered:

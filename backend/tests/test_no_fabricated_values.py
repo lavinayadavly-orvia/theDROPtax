@@ -70,3 +70,28 @@ def test_seeder_does_not_invent_prices():
     src = open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                             "seed_from_workbook.py")).read()
     assert "else 100.0" not in src, "Missing prices are being backfilled with a default again"
+
+
+def test_competitor_price_is_not_derived_from_the_drug_price():
+    """The seeder set competitor price to 50% of the drug's — an invented fact."""
+    src = open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                            "seed_from_workbook.py")).read()
+    assert "price * 0.5" not in src, "Competitor price is being fabricated from the drug price again"
+
+
+def test_model_assumptions_are_declared_not_hidden():
+    """Economic parameters are assumptions; they must be registered and flagged."""
+    from core.constants import MODEL_ASSUMPTIONS, unsourced_assumptions
+    for key in ("major_event_cost", "monthly_salary", "setting_coverage_share",
+                "retail_mrp_multiplier", "endpoint_scaling"):
+        assert key in MODEL_ASSUMPTIONS, f"{key} must be declared in the assumptions register"
+        assert "sourced" in MODEL_ASSUMPTIONS[key]
+    # Until real sources are supplied these must report as unsourced.
+    assert unsourced_assumptions(), "Placeholders must not silently report as sourced"
+
+
+def test_boilerplate_programme_text_does_not_drive_assistance():
+    """89% of workbook programme entries are category filler, not real programmes."""
+    import server
+    src = inspect.getsource(server.resolve_applicability)
+    assert "programme_is_generic" in src, "Boilerplate programme text is being trusted again"

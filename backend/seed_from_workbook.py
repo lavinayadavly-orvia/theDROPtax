@@ -141,6 +141,26 @@ def parse_price(price_str):
                     f"monthly cost cannot be derived. Enter the frequency to complete the model."}
 
 
+
+# ── Source-data provenance ────────────────────────────────────────────────
+# The workbook is a compiled reference, not a verified price list. Free-text
+# columns repeat across many rows (e.g. "Low-cost generic — Jan Aushadhi"
+# appears on 114 drugs), which is a category statement rather than a
+# programme specific to that molecule. Boilerplate must not drive commercial
+# logic, so it is detected by repetition and flagged.
+
+BOILERPLATE_MIN_REPEATS = 5
+
+
+def find_boilerplate(values):
+    """Return the set of free-text values repeated often enough to be filler."""
+    counts = {}
+    for v in values:
+        if v:
+            counts[str(v).strip()] = counts.get(str(v).strip(), 0) + 1
+    return {v for v, n in counts.items() if n >= BOILERPLATE_MIN_REPEATS}
+
+
 def make_slug(name):
     return re.sub(r'[^a-z0-9]+', '-', name.lower()).strip('-')
 
@@ -182,6 +202,7 @@ async def main():
     sheet_mappings = [m for m in sheet_mappings if m["sheet_name"]]
     
     drugs_to_insert = []
+    all_programme_text = []
     skipped_oncology = []
     cleaned_indications = []
 
@@ -211,6 +232,7 @@ async def main():
             notes = row[9] or ""
             # v2 workbook: real Patient Support Programme (PSP) columns
             patient_program = row[10] if len(row) > 10 else None
+            all_programme_text.append(patient_program)
             program_sponsor = row[11] if len(row) > 11 else None
             
             if not molecule_name:
@@ -255,6 +277,11 @@ async def main():
                 # Real patient-support-programme data from the workbook (not invented)
                 "patient_program": strip_oncology(str(patient_program)) if patient_program else None,
                 "program_sponsor_type": strip_oncology(str(program_sponsor)) if program_sponsor else None,
+                # Provenance: the workbook is a compiled reference, not a
+                # verified source. Nothing derived from it is presented as fact.
+                "source_provenance": "workbook_reference_unverified",
+                "price_verified": False,
+                "programme_verified": False,
                 "indication": indications,
                 "mechanism_of_action": sub_category,
                 "launch_date": launch_approx,
@@ -278,7 +305,9 @@ async def main():
                 "secondary_endpoints": [],
                 "clinical_confidence": 0.0,
                 "competitor_name": "Standard of Care",
-                "competitor_price_inr": round(price * 0.5) if price else None,
+                # A comparator's price is a fact about a different drug — it
+                # cannot be derived from this one. Left unset until sourced.
+                "competitor_price_inr": None,
                 "drug_severe_ae_rate": None,
                 "competitor_severe_ae_rate": None,
                 "drug_ae_is_estimated": True,
@@ -323,7 +352,19 @@ async def main():
             
             drugs_to_insert.append(drug_doc)
             
+    # Flag programme text that is category boilerplate rather than a
+    # drug-specific programme, so downstream logic ignores it.
+    boilerplate = find_boilerplate(all_programme_text)
+    generic_count = 0
+    for doc in drugs_to_insert:
+        pp = doc.get("patient_program")
+        is_generic = bool(pp and pp.strip() in boilerplate)
+        doc["programme_is_generic"] = is_generic
+        if is_generic:
+            generic_count += 1
+
     print(f"Parsed {len(drugs_to_insert)} drugs total.")
+    print(f"  {generic_count} of {len(drugs_to_insert)} programme entries are category boilerplate (flagged, not used for assistance logic).")
     
     # We delete existing drugs and seed fresh
     print("Clearing 'drugs' collection...")

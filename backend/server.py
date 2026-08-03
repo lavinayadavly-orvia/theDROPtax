@@ -31,6 +31,8 @@ from core.constants import (
     PAP_SCHEMES,
     LOCAL_DRUG_METADATA,
     SETTING_COVERAGE_RULES,
+    MODEL_ASSUMPTIONS,
+    unsourced_assumptions,
 )
 from core.therapy_areas import (
     resolve_indication,
@@ -2179,8 +2181,13 @@ def resolve_applicability(drug: dict, indication: str, list_price, region_code: 
 
     # Real patient-support-programme data from the drug record (workbook), if present.
     # A named programme is evidence, not a guess — it overrides the heuristic.
-    psp_text = (drug or {}).get("patient_program") or ""
-    psp_sponsor = (drug or {}).get("program_sponsor_type") or ""
+    # Only a drug-SPECIFIC programme counts as evidence. Category boilerplate
+    # (e.g. "Low-cost generic — Jan Aushadhi", repeated across 114 drugs) is
+    # context, not a programme for this molecule, and must not drive the
+    # assistance verdict.
+    _programme_is_generic = bool((drug or {}).get("programme_is_generic"))
+    psp_text = "" if _programme_is_generic else ((drug or {}).get("patient_program") or "")
+    psp_sponsor = "" if _programme_is_generic else ((drug or {}).get("program_sponsor_type") or "")
     psp_lower = psp_text.lower()
     has_real_financial_psp = any(k in psp_lower for k in ("emi", "bogo", "financial", "subsid", "free", "assistance", "pap"))
     is_govt_free = any(k in psp_lower for k in ("govt", "government", "jan aushadhi", "janaushadhi", "family-planning", "family planning"))
@@ -2470,6 +2477,16 @@ async def calculate_liability(drug_id: str, region_code: str = "IN"):
         },
         "applicability": applicability,
         "data_quality": data_quality,
+        # Model provenance: which economic parameters are still placeholders.
+        # Output must not be read as measured fact while these are unsourced.
+        "model_assumptions": {
+            "unsourced": unsourced_assumptions(),
+            "detail": MODEL_ASSUMPTIONS,
+            "warning": ("Economic parameters (event costs, income, coverage shares) are "
+                        "placeholders without an authoritative source. Drug-level facts are "
+                        "never estimated, but model output is assumption-dependent."),
+        },
+        "source_provenance": drug_data.get("source_provenance"),
         "commercial_brain": {
             "event_probability": value["event_probability"],
             "event_label": value["event_label"],
