@@ -14,6 +14,8 @@ REGIONAL_CONSTANTS = {
         "regulator_name": "Central Drugs Standard Control Organisation",
         "monthly_salary": 30000,
         "major_event_cost": 1800000,   # cost of a major acute clinical event (MI/stroke/fracture/HF hosp)
+        "pregnancy_cost": 60000,       # antenatal + delivery cost of an unintended pregnancy
+        "fertility_cycle_cost": 250000,  # cost of one ART/IVF cycle
         "complication_cost": 150000,   # cost of managing a chronic-disease complication
         "retail_mrp_multiplier": 1.35  # home/retail MRP vs institutional/tender price
     },
@@ -27,6 +29,8 @@ REGIONAL_CONSTANTS = {
         "monthly_salary": 5000,
         "major_event_cost": 85000,
         "complication_cost": 15000,
+        "pregnancy_cost": 12000,
+        "fertility_cycle_cost": 15000,
         "retail_mrp_multiplier": 1.20
     },
     "AE": {
@@ -39,6 +43,8 @@ REGIONAL_CONSTANTS = {
         "monthly_salary": 15000,
         "major_event_cost": 250000,
         "complication_cost": 45000,
+        "pregnancy_cost": 25000,
+        "fertility_cycle_cost": 40000,
         "retail_mrp_multiplier": 1.25
     }
 }

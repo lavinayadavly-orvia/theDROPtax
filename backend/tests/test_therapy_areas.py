@@ -52,7 +52,7 @@ def test_every_entry_is_well_formed():
         for field in ("key", "label", "unit", "direction", "norm"):
             assert field in pe, f"{key} primary_endpoint missing {field}"
         assert pe["direction"] in {"higher_better", "lower_better"}
-        assert pe["norm"]["type"] in {"months", "reduction_pct", "rate_pct", "hr", "mmhg"}
+        assert pe["norm"]["type"] in {"months", "reduction_pct", "rate_pct", "hr", "mmhg", "inverse_rate"}
         assert entry["treatment_model"] in {"acute_single_dose", "fixed_course", "chronic_ongoing"}
         assert entry["route_default"] in {"iv_bolus", "iv_infusion", "sc_injection", "oral"}
 
@@ -185,3 +185,21 @@ def test_new_endpoints_normalise_in_the_right_direction():
     assert event_probability_from_primary(tocolysis, 80.0) < event_probability_from_primary(tocolysis, 20.0)
     anticoag = resolve_indication("Non-valvular AF; VTE")          # HR, lower_better
     assert event_probability_from_primary(anticoag, 0.65) < event_probability_from_primary(anticoag, 0.95)
+
+
+def test_pearl_index_is_inverted_lower_is_better():
+    """Contraception: a lower Pearl Index must score as higher efficacy."""
+    contra = resolve_indication("Contraception")
+    assert contra["primary_endpoint"]["key"] == "pearl_index"
+    excellent = event_probability_from_primary(contra, 0.2)   # IUD-level
+    poor = event_probability_from_primary(contra, 8.0)        # typical-use failure
+    assert excellent < poor
+
+
+def test_every_event_cost_key_exists_in_regional_constants():
+    """A registry event must map to a real regional cost, or the engine silently zeroes."""
+    from core.constants import REGIONAL_CONSTANTS
+    for region, consts in REGIONAL_CONSTANTS.items():
+        for key, entry in INDICATION_REGISTRY.items():
+            ck = entry["event"]["cost_key"]
+            assert ck in consts, f"{region} missing cost key '{ck}' needed by '{key}'"

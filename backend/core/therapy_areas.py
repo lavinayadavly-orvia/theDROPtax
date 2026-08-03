@@ -33,6 +33,7 @@ from typing import Optional, Dict, Any, List
 #   "rate_pct"      a higher-better % (responder / functional independence); e = value / good
 #   "hr"            hazard ratio (lower-better); RRR = 1 - HR; e = RRR / good
 #   "mmhg"          absolute mmHg reduction (lower-better outcome); e = value / good
+#   "inverse_rate"  raw lower-better rate (e.g. Pearl Index); e = 1 - value / good
 # `good` is the value at which efficacy is considered maximal for scaling.
 
 def _clamp(x: float, lo: float = 0.0, hi: float = 1.0) -> float:
@@ -55,6 +56,8 @@ def normalize_efficacy(norm: Dict[str, Any], value: Optional[float]) -> Optional
     if ntype == "hr":
         rrr = 1.0 - v
         return _clamp(rrr / good)
+    if ntype == "inverse_rate":
+        return _clamp(1.0 - (v / good))
     if ntype in ("months", "reduction_pct", "rate_pct", "mmhg"):
         return _clamp(v / good)
     return None
@@ -87,7 +90,8 @@ INDICATION_REGISTRY: Dict[str, Dict[str, Any]] = {
         "category": "CVD",
         "indication": "Cardiovascular Risk Reduction",
         "aliases": ["cv risk reduction", "mace reduction", "cardiovascular outcomes", "ascvd risk reduction",
-                    "secondary prevention", "post-pci", "acute coronary syndrome", "acs", "antiplatelet"],
+                    "secondary prevention", "secondary stroke prevention", "post-pci", "acute coronary syndrome",
+                    "acs", "antiplatelet"],
         "primary_endpoint": {
             "key": "mace_hr", "label": "3-pt MACE Risk Reduction", "unit": "HR", "direction": "lower_better",
             "norm": {"type": "hr", "good": 0.30},
@@ -114,7 +118,8 @@ INDICATION_REGISTRY: Dict[str, Dict[str, Any]] = {
     "heart failure": {
         "category": "CVD",
         "indication": "Heart Failure",
-        "aliases": ["hfref", "hfpef", "chronic heart failure", "cardiac failure", "heart-failure"],
+        "aliases": ["hfref", "hfpef", "chronic heart failure", "cardiac failure", "heart-failure",
+                    "refractory edema", "refractory oedema"],
         "primary_endpoint": {
             "key": "hf_event_hr", "label": "CV-death / HF-hospitalisation HR", "unit": "HR", "direction": "lower_better",
             "norm": {"type": "hr", "good": 0.25},
@@ -272,6 +277,357 @@ INDICATION_REGISTRY: Dict[str, Dict[str, Any]] = {
         ],
     },
 
+    "gout": {
+        "category": "Metabolic",
+        "indication": "Gout / Hyperuricaemia",
+        "aliases": ["hyperuricemia", "hyperuricaemia", "chronic gout", "gout flare", "urate", "anti-gout", "urate stones"],
+        "primary_endpoint": {
+            "key": "urate_target", "label": "Serum Urate <6 mg/dL Attainment", "unit": "%", "direction": "higher_better",
+            "norm": {"type": "rate_pct", "good": 80.0},
+            "definition": "Proportion achieving the guideline serum-urate target of <6 mg/dL.",
+        },
+        "secondary_endpoints": [
+            {"key": "flare_rate", "label": "Gout Flare Rate Reduction", "unit": "%", "direction": "lower_better",
+             "definition": "Reduction in acute gout flares."},
+            {"key": "tophus", "label": "Tophus Resolution", "unit": "%", "direction": "higher_better",
+             "definition": "Proportion with resolution of tophi."},
+        ],
+        "safety_label": "Serious AEs",
+        "hazard_ratio_label": None,
+        "event": {"label": "Acute gout flare / joint damage", "cost_key": "complication_cost"},
+        "treatment_model": "chronic_ongoing", "route_default": "oral", "care_settings": ["HOME"],
+        "search_terms": ['"{drug}" serum urate target 6 mg/dL gout trial', '"{drug}" gout flare reduction urate-lowering'],
+        "comorbidity_rules": [
+            {"id": "renal", "label": "Renal Impairment", "note": "Dose-adjust urate-lowering therapy by eGFR."},
+            {"id": "cardiac", "label": "Cardiac Disease", "note": "CV safety labelling applies to febuxostat."},
+        ],
+    },
+    "hypothyroidism": {
+        "category": "Metabolic",
+        "indication": "Hypothyroidism",
+        "aliases": ["thyroid replacement", "goiter", "goitre", "tsh suppression", "myxedema", "myxoedema", "underactive thyroid"],
+        "primary_endpoint": {
+            "key": "tsh_normalisation", "label": "TSH Normalisation", "unit": "%", "direction": "higher_better",
+            "norm": {"type": "rate_pct", "good": 85.0},
+            "definition": "Proportion achieving a TSH level within the reference range on replacement therapy.",
+        },
+        "secondary_endpoints": [
+            {"key": "free_t4", "label": "Free T4 Normalisation", "unit": "%", "direction": "higher_better",
+             "definition": "Proportion with free T4 in range."},
+            {"key": "symptom_score", "label": "Symptom Score Improvement", "unit": "%", "direction": "higher_better",
+             "definition": "Improvement in hypothyroid symptom burden."},
+        ],
+        "safety_label": "Serious AEs",
+        "hazard_ratio_label": None,
+        "event": {"label": "Uncontrolled hypothyroidism complication", "cost_key": "complication_cost"},
+        "treatment_model": "chronic_ongoing", "route_default": "oral", "care_settings": ["HOME"],
+        "search_terms": ['"{drug}" hypothyroidism TSH normalisation levothyroxine trial', '"{drug}" thyroid replacement efficacy'],
+        "comorbidity_rules": [
+            {"id": "cardiac", "label": "Cardiac Disease", "note": "Start low and titrate in ischaemic heart disease."},
+        ],
+    },
+    "hyperthyroidism": {
+        "category": "Metabolic",
+        "indication": "Hyperthyroidism",
+        "aliases": ["antithyroid", "graves", "toxic goiter", "toxic goitre", "thyrotoxicosis", "overactive thyroid"],
+        "primary_endpoint": {
+            "key": "euthyroid_rate", "label": "Biochemical Euthyroidism", "unit": "%", "direction": "higher_better",
+            "norm": {"type": "rate_pct", "good": 85.0},
+            "definition": "Proportion achieving normal thyroid function on antithyroid therapy.",
+        },
+        "secondary_endpoints": [
+            {"key": "remission_rate", "label": "Remission Rate", "unit": "%", "direction": "higher_better",
+             "definition": "Sustained remission after a treatment course."},
+            {"key": "relapse_rate", "label": "Relapse Rate", "unit": "%", "direction": "lower_better",
+             "definition": "Relapse after therapy withdrawal."},
+        ],
+        "safety_label": "Agranulocytosis / hepatotoxicity",
+        "hazard_ratio_label": None,
+        "event": {"label": "Thyrotoxic crisis / uncontrolled hyperthyroidism", "cost_key": "complication_cost"},
+        "treatment_model": "fixed_course", "route_default": "oral", "care_settings": ["HOME"],
+        "search_terms": ['"{drug}" hyperthyroidism euthyroid remission antithyroid trial', '"{drug}" Graves disease treatment outcomes'],
+        "comorbidity_rules": [
+            {"id": "hepatic", "label": "Hepatic Impairment", "note": "Propylthiouracil carries hepatotoxicity risk."},
+        ],
+    },
+    "mineral and bone disorder": {
+        "category": "Metabolic",
+        "indication": "Mineral & Bone Disorder (CKD-MBD / Hypoparathyroidism)",
+        "aliases": ["renal osteodystrophy", "hypoparathyroidism", "rickets", "ckd-mbd", "active vitamin d"],
+        "primary_endpoint": {
+            "key": "pth_control", "label": "PTH / Calcium Control", "unit": "%", "direction": "higher_better",
+            "norm": {"type": "rate_pct", "good": 75.0},
+            "definition": "Proportion achieving target parathyroid hormone and serum calcium levels.",
+        },
+        "secondary_endpoints": [
+            {"key": "serum_calcium", "label": "Serum Calcium Normalisation", "unit": "%", "direction": "higher_better",
+             "definition": "Proportion with corrected serum calcium in range."},
+        ],
+        "safety_label": "Hypercalcaemia",
+        "hazard_ratio_label": None,
+        "event": {"label": "Bone disease / fracture", "cost_key": "complication_cost"},
+        "treatment_model": "chronic_ongoing", "route_default": "oral", "care_settings": ["HOME"],
+        "search_terms": ['"{drug}" renal osteodystrophy PTH calcium control trial', '"{drug}" active vitamin D hypoparathyroidism'],
+        "comorbidity_rules": [
+            {"id": "renal", "label": "Renal Impairment", "note": "Monitor calcium-phosphate product in CKD."},
+        ],
+    },
+    "contraception": {
+        "category": "Women's Health",
+        "indication": "Contraception",
+        "aliases": ["contraceptive", "emergency contraception", "family planning", "cycle regulation",
+                    "long-acting contraception", "oral contraceptive"],
+        "primary_endpoint": {
+            "key": "pearl_index", "label": "Pearl Index", "unit": "per 100 woman-years", "direction": "lower_better",
+            "norm": {"type": "inverse_rate", "good": 9.0},
+            "definition": "Pregnancies per 100 woman-years of use. Lower is better; ~9 (typical-use failure) is treated as the worst end of the scale.",
+        },
+        "secondary_endpoints": [
+            {"key": "continuation_rate", "label": "12-month Continuation Rate", "unit": "%", "direction": "higher_better",
+             "definition": "Proportion still using the method at 12 months."},
+            {"key": "cycle_control", "label": "Cycle Control", "unit": "%", "direction": "higher_better",
+             "definition": "Proportion with predictable bleeding patterns."},
+        ],
+        "safety_label": "Serious AEs (VTE risk)",
+        "hazard_ratio_label": None,
+        "event": {"label": "Unintended pregnancy", "cost_key": "pregnancy_cost"},
+        "treatment_model": "chronic_ongoing", "route_default": "oral", "care_settings": ["HOME"],
+        "search_terms": ['"{drug}" contraceptive Pearl Index efficacy trial', '"{drug}" contraception continuation discontinuation'],
+        "comorbidity_rules": [
+            {"id": "bleeding_risk", "label": "Thrombotic Risk", "note": "Combined hormonal methods raise VTE risk."},
+            {"id": "hypertension", "label": "Hypertension", "note": "Combined methods contraindicated in uncontrolled hypertension."},
+        ],
+    },
+    "infertility": {
+        "category": "Women's Health",
+        "indication": "Infertility / Assisted Reproduction",
+        "aliases": ["ovarian stimulation", "controlled ovarian stimulation", "ivf", "iui", "art",
+                    "ovulation trigger", "ovulation induction", "luteal support", "anovulation",
+                    "anovulatory infertility", "premature lh surge", "endometrial preparation"],
+        "primary_endpoint": {
+            "key": "clinical_pregnancy_rate", "label": "Clinical Pregnancy Rate per Cycle", "unit": "%",
+            "direction": "higher_better", "norm": {"type": "rate_pct", "good": 40.0},
+            "definition": "Proportion of treatment cycles resulting in a clinically confirmed pregnancy.",
+        },
+        "secondary_endpoints": [
+            {"key": "live_birth_rate", "label": "Live Birth Rate", "unit": "%", "direction": "higher_better",
+             "definition": "Proportion of cycles resulting in a live birth."},
+            {"key": "oocytes_retrieved", "label": "Oocytes Retrieved", "unit": "count", "direction": "higher_better",
+             "definition": "Mean number of oocytes retrieved per cycle."},
+        ],
+        "safety_label": "Ovarian hyperstimulation (OHSS)",
+        "hazard_ratio_label": None,
+        "event": {"label": "Failed cycle requiring repeat treatment", "cost_key": "fertility_cycle_cost"},
+        "treatment_model": "fixed_course", "route_default": "sc_injection", "care_settings": ["OPD", "HOME"],
+        "search_terms": ['"{drug}" clinical pregnancy rate live birth IVF randomised trial', '"{drug}" ovarian stimulation oocytes OHSS'],
+        "comorbidity_rules": [
+            {"id": "ohss_risk", "label": "OHSS Risk", "note": "High responders need trigger and protocol adjustment."},
+        ],
+    },
+    "polycystic ovary syndrome": {
+        "category": "Women's Health",
+        "indication": "Polycystic Ovary Syndrome (PCOS)",
+        "aliases": ["pcos", "hirsutism", "anti-androgen", "acne/hirsutism", "pmdd"],
+        "primary_endpoint": {
+            "key": "ovulation_rate", "label": "Ovulation / Menstrual Regularity Rate", "unit": "%",
+            "direction": "higher_better", "norm": {"type": "rate_pct", "good": 80.0},
+            "definition": "Proportion achieving ovulation or regular menstrual cycles.",
+        },
+        "secondary_endpoints": [
+            {"key": "hirsutism_score", "label": "Hirsutism Score Improvement", "unit": "%", "direction": "higher_better",
+             "definition": "Improvement in modified Ferriman-Gallwey score."},
+            {"key": "androgen_level", "label": "Free Androgen Index", "unit": "%", "direction": "lower_better",
+             "definition": "Reduction in circulating free androgens."},
+        ],
+        "safety_label": "Serious AEs",
+        "hazard_ratio_label": None,
+        "event": {"label": "Anovulatory infertility / metabolic sequelae", "cost_key": "complication_cost"},
+        "treatment_model": "chronic_ongoing", "route_default": "oral", "care_settings": ["HOME"],
+        "search_terms": ['"{drug}" PCOS ovulation rate menstrual regularity trial', '"{drug}" hirsutism androgen PCOS'],
+        "comorbidity_rules": [
+            {"id": "diabetes", "label": "Insulin Resistance", "note": "Frequently coexists; metabolic screening advised."},
+        ],
+    },
+    "hyperprolactinaemia": {
+        "category": "Women's Health",
+        "indication": "Hyperprolactinaemia",
+        "aliases": ["hyperprolactinemia", "prolactin", "lactation suppression", "galactagogue",
+                    "stimulation of lactation", "dopamine agonist"],
+        "primary_endpoint": {
+            "key": "prolactin_normalisation", "label": "Prolactin Normalisation", "unit": "%",
+            "direction": "higher_better", "norm": {"type": "rate_pct", "good": 85.0},
+            "definition": "Proportion achieving normal serum prolactin on therapy.",
+        },
+        "secondary_endpoints": [
+            {"key": "menses_restored", "label": "Restoration of Menses / Ovulation", "unit": "%", "direction": "higher_better",
+             "definition": "Proportion regaining regular ovulatory cycles."},
+        ],
+        "safety_label": "Serious AEs",
+        "hazard_ratio_label": None,
+        "event": {"label": "Persistent infertility / symptom burden", "cost_key": "complication_cost"},
+        "treatment_model": "chronic_ongoing", "route_default": "oral", "care_settings": ["HOME"],
+        "search_terms": ['"{drug}" hyperprolactinaemia prolactin normalisation trial', '"{drug}" cabergoline bromocriptine efficacy'],
+        "comorbidity_rules": [
+            {"id": "cardiac", "label": "Cardiac Valvulopathy", "note": "Dose-dependent valvulopathy risk with ergot dopamine agonists."},
+        ],
+    },
+    "medical termination of pregnancy": {
+        "category": "Women's Health",
+        "indication": "Medical Termination of Pregnancy",
+        "aliases": ["medical abortion", "termination of pregnancy", "abortion", "antiprogestin"],
+        "primary_endpoint": {
+            "key": "complete_abortion", "label": "Complete Abortion Rate", "unit": "%", "direction": "higher_better",
+            "norm": {"type": "rate_pct", "good": 95.0},
+            "definition": "Proportion achieving complete uterine evacuation without surgical intervention.",
+        },
+        "secondary_endpoints": [
+            {"key": "surgical_intervention", "label": "Surgical Intervention Required", "unit": "%", "direction": "lower_better",
+             "definition": "Proportion requiring surgical completion."},
+        ],
+        "safety_label": "Haemorrhage / infection",
+        "hazard_ratio_label": None,
+        "event": {"label": "Incomplete abortion requiring surgery", "cost_key": "complication_cost"},
+        "treatment_model": "acute_single_dose", "route_default": "oral", "care_settings": ["OPD"],
+        "search_terms": ['"{drug}" medical abortion complete abortion rate trial', '"{drug}" mifepristone misoprostol regimen efficacy'],
+        "comorbidity_rules": [
+            {"id": "bleeding_risk", "label": "Bleeding Risk", "note": "Assess anaemia and coagulopathy before use."},
+        ],
+    },
+    "recurrent pregnancy loss": {
+        "category": "Women's Health",
+        "indication": "Recurrent Pregnancy Loss / Preterm Birth Prevention",
+        "aliases": ["recurrent miscarriage", "threatened miscarriage", "prevention of recurrent miscarriage",
+                    "progestogen", "luteal phase support"],
+        "primary_endpoint": {
+            "key": "live_birth_rate", "label": "Live Birth Rate", "unit": "%", "direction": "higher_better",
+            "norm": {"type": "rate_pct", "good": 75.0},
+            "definition": "Proportion achieving a live birth with prophylactic progestogen therapy.",
+        },
+        "secondary_endpoints": [
+            {"key": "miscarriage_rate", "label": "Miscarriage Rate", "unit": "%", "direction": "lower_better",
+             "definition": "Proportion experiencing pregnancy loss."},
+        ],
+        "safety_label": "Serious AEs",
+        "hazard_ratio_label": None,
+        "event": {"label": "Pregnancy loss / preterm birth", "cost_key": "major_event_cost"},
+        "treatment_model": "fixed_course", "route_default": "oral", "care_settings": ["HOME"],
+        "search_terms": ['"{drug}" recurrent miscarriage live birth progesterone trial', '"{drug}" preterm birth prevention progestogen'],
+        "comorbidity_rules": [],
+    },
+    "rh alloimmunisation prophylaxis": {
+        "category": "Women's Health",
+        "indication": "Rh(D) Alloimmunisation Prophylaxis",
+        "aliases": ["rh prophylaxis", "anti-d", "rho immunoglobulin", "alloimmunization", "alloimmunisation"],
+        "primary_endpoint": {
+            "key": "sensitisation_prevented", "label": "Sensitisation Prevention Rate", "unit": "%",
+            "direction": "higher_better", "norm": {"type": "rate_pct", "good": 98.0},
+            "definition": "Proportion of Rh-negative mothers protected from Rh(D) alloimmunisation.",
+        },
+        "secondary_endpoints": [
+            {"key": "hdfn_rate", "label": "Haemolytic Disease of Newborn", "unit": "%", "direction": "lower_better",
+             "definition": "Incidence of haemolytic disease in subsequent pregnancies."},
+        ],
+        "safety_label": "Serious AEs",
+        "hazard_ratio_label": None,
+        "event": {"label": "Haemolytic disease of the fetus/newborn", "cost_key": "major_event_cost"},
+        "treatment_model": "acute_single_dose", "route_default": "sc_injection", "care_settings": ["IPD", "OPD"],
+        "search_terms": ['"{drug}" anti-D prophylaxis Rh alloimmunisation prevention', '"{drug}" haemolytic disease newborn prevention'],
+        "comorbidity_rules": [],
+    },
+    "vulvovaginal candidiasis": {
+        "category": "Women's Health",
+        "indication": "Vulvovaginal Candidiasis",
+        "aliases": ["vaginal candidiasis", "vulvovaginal antifungal", "thrush", "vaginal antifungal"],
+        "primary_endpoint": {
+            "key": "mycological_cure", "label": "Mycological Cure Rate", "unit": "%", "direction": "higher_better",
+            "norm": {"type": "rate_pct", "good": 90.0},
+            "definition": "Proportion with negative culture at test-of-cure.",
+        },
+        "secondary_endpoints": [
+            {"key": "symptom_resolution", "label": "Symptom Resolution", "unit": "%", "direction": "higher_better",
+             "definition": "Proportion with clinical symptom resolution."},
+            {"key": "recurrence_rate", "label": "Recurrence Rate", "unit": "%", "direction": "lower_better",
+             "definition": "Proportion with recurrence within 6 months."},
+        ],
+        "safety_label": "Serious AEs",
+        "hazard_ratio_label": None,
+        "event": {"label": "Recurrent or complicated infection", "cost_key": "complication_cost"},
+        "treatment_model": "fixed_course", "route_default": "oral", "care_settings": ["HOME"],
+        "search_terms": ['"{drug}" vulvovaginal candidiasis mycological cure trial', '"{drug}" vaginal antifungal efficacy recurrence'],
+        "comorbidity_rules": [
+            {"id": "diabetes", "label": "Diabetes", "note": "Poor glycaemic control drives recurrence."},
+        ],
+    },
+    "pulmonary arterial hypertension": {
+        "category": "CVD",
+        "indication": "Pulmonary Arterial Hypertension",
+        "aliases": ["pah", "cteph", "pulmonary hypertension", "chronic thromboembolic ph"],
+        "primary_endpoint": {
+            "key": "six_min_walk", "label": "6-Minute Walk Distance Improvement", "unit": "m",
+            "direction": "higher_better", "norm": {"type": "rate_pct", "good": 50.0},
+            "definition": "Increase in six-minute walk distance from baseline — the standard PAH functional endpoint.",
+        },
+        "secondary_endpoints": [
+            {"key": "who_fc", "label": "WHO Functional Class Improvement", "unit": "%", "direction": "higher_better",
+             "definition": "Proportion improving WHO functional class."},
+            {"key": "clinical_worsening", "label": "Time to Clinical Worsening HR", "unit": "HR", "direction": "lower_better",
+             "definition": "Hazard ratio for clinical worsening events."},
+        ],
+        "safety_label": "Serious AEs (hypotension)",
+        "hazard_ratio_label": "Clinical-worsening HR",
+        "event": {"label": "PAH hospitalisation / clinical worsening", "cost_key": "major_event_cost"},
+        "treatment_model": "chronic_ongoing", "route_default": "oral", "care_settings": ["HOME", "OPD"],
+        "search_terms": ['"{drug}" pulmonary arterial hypertension six minute walk distance trial',
+                         '"{drug}" PAH WHO functional class clinical worsening'],
+        "comorbidity_rules": [
+            {"id": "hypotension", "label": "Hypotension", "note": "Vasodilators lower systemic BP; contraindicated with nitrates/PDE5i."},
+        ],
+    },
+    "peripheral arterial disease": {
+        "category": "CVD",
+        "indication": "Peripheral Arterial Disease",
+        "aliases": ["pad", "intermittent claudication", "claudication", "peripheral vascular disease"],
+        "primary_endpoint": {
+            "key": "walking_distance", "label": "Pain-Free Walking Distance Improvement", "unit": "%",
+            "direction": "higher_better", "norm": {"type": "rate_pct", "good": 50.0},
+            "definition": "Percentage improvement in maximal or pain-free walking distance.",
+        },
+        "secondary_endpoints": [
+            {"key": "abi", "label": "Ankle-Brachial Index", "unit": "%", "direction": "higher_better",
+             "definition": "Improvement in ankle-brachial index."},
+        ],
+        "safety_label": "Serious AEs",
+        "hazard_ratio_label": "Limb-event HR",
+        "event": {"label": "Critical limb ischaemia / revascularisation", "cost_key": "major_event_cost"},
+        "treatment_model": "chronic_ongoing", "route_default": "oral", "care_settings": ["HOME"],
+        "search_terms": ['"{drug}" intermittent claudication walking distance trial', '"{drug}" peripheral arterial disease outcomes'],
+        "comorbidity_rules": [
+            {"id": "cardiac", "label": "Heart Failure", "note": "Cilostazol contraindicated in heart failure."},
+        ],
+    },
+    "cerebral vasospasm": {
+        "category": "CVS",
+        "indication": "Cerebral Vasospasm (post-Subarachnoid Haemorrhage)",
+        "aliases": ["vasospasm", "subarachnoid hemorrhage", "subarachnoid haemorrhage", "sah"],
+        "primary_endpoint": {
+            "key": "favourable_outcome", "label": "Favourable Neurological Outcome", "unit": "%",
+            "direction": "higher_better", "norm": {"type": "rate_pct", "good": 60.0},
+            "definition": "Proportion achieving a favourable neurological outcome (e.g. GOS 4-5) after subarachnoid haemorrhage.",
+        },
+        "secondary_endpoints": [
+            {"key": "delayed_ischaemia", "label": "Delayed Cerebral Ischaemia", "unit": "%", "direction": "lower_better",
+             "definition": "Incidence of delayed cerebral ischaemia."},
+        ],
+        "safety_label": "Hypotension",
+        "hazard_ratio_label": "Poor-outcome HR",
+        "event": {"label": "Delayed cerebral ischaemia / disability", "cost_key": "major_event_cost"},
+        "treatment_model": "fixed_course", "route_default": "oral", "care_settings": ["IPD"],
+        "search_terms": ['"{drug}" subarachnoid haemorrhage vasospasm neurological outcome trial',
+                         '"{drug}" delayed cerebral ischaemia nimodipine'],
+        "comorbidity_rules": [
+            {"id": "hypotension", "label": "Hypotension", "note": "Monitor BP closely during infusion."},
+        ],
+    },
     # ═══════════════ CVS — Cerebrovascular & Acute Vascular ═══════════════
     "acute ischemic stroke": {
         "category": "CVS",
@@ -456,7 +812,7 @@ INDICATION_REGISTRY: Dict[str, Dict[str, Any]] = {
     "uterine fibroids": {
         "category": "Women's Health",
         "indication": "Uterine Fibroids",
-        "aliases": ["uterine leiomyoma", "fibroids", "myoma"],
+        "aliases": ["uterine leiomyoma", "uterine fibroid", "fibroids", "myoma", "fibroid symptoms"],
         "primary_endpoint": {
             "key": "mbl_responder", "label": "Menstrual Blood-Loss Responder (<80 mL & ≥50% ↓)", "unit": "%", "direction": "higher_better",
             "norm": {"type": "rate_pct", "good": 70.0},

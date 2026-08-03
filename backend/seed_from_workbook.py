@@ -21,7 +21,7 @@ DB_NAME = os.environ.get("DB_NAME", "droptax")
 # 1. Molecules whose PRIMARY purpose is oncology — excluded entirely.
 ONCOLOGY_ONLY_MOLECULES = {
     "tamoxifen", "anastrozole", "exemestane", "letrozole",
-    "fulvestrant", "toremifene", "megestrol",
+    "fulvestrant", "toremifene", "megestrol", "rasburicase",
 }
 
 # 2. Oncology phrases stripped from otherwise-relevant drugs' indication text.
