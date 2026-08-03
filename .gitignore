@@ -8,3 +8,6 @@ backend/venv/
 .DS_Store
 frontend/build/
 frontend/dist/
+
+# sitemap index cache (regenerated, not source)
+backend/.sitemap_cache/
