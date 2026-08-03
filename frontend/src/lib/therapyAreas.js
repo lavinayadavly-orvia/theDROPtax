@@ -7,8 +7,7 @@ export const INDICATION_REGISTRY = {
   'cardiovascular risk reduction': {
     category: 'CVD', indication: 'Cardiovascular Risk Reduction',
     aliases: ['cv risk reduction', 'mace reduction', 'cardiovascular outcomes', 'ascvd risk reduction',
-      'secondary prevention', 'post-pci', 'acute coronary syndrome', 'acs', 'antiplatelet',
-      'stroke prevention', 'atrial fibrillation', 'thromboembolism', 'anticoagul', 'antithrombotic'],
+      'secondary prevention', 'post-pci', 'acute coronary syndrome', 'acs', 'antiplatelet'],
     primaryEndpoint: { key: 'mace_hr', label: '3-pt MACE Risk Reduction', unit: 'HR', direction: 'lower_better',
       definition: 'Hazard ratio for 3-point Major Adverse Cardiovascular Events (CV death, MI, stroke). HR<1 means fewer events.' },
     secondaryEndpoints: [
@@ -118,7 +117,8 @@ export const INDICATION_REGISTRY = {
   // ── Women's Health — Gynecology ──
   'vasomotor symptoms': {
     category: "Women's Health", indication: 'Vasomotor Symptoms',
-    aliases: ['vms', 'menopause', 'menopausal hot flashes', 'hot flushes'],
+    aliases: ['vms', 'menopause', 'menopausal hot flashes', 'hot flushes', 'menopausal symptoms',
+      'menopausal hrt', 'hormone replacement', 'atrophic vaginitis', 'hypoestrogenism'],
     primaryEndpoint: { key: 'vms_frequency', label: 'VMS Frequency Reduction', unit: '%', direction: 'lower_better',
       definition: 'Percentage reduction in frequency of moderate-to-severe vasomotor symptoms.' },
     secondaryEndpoints: [
@@ -177,6 +177,121 @@ export const INDICATION_REGISTRY = {
     safetyLabel: 'Serious AEs', hazardRatioLabel: null,
     treatmentModel: 'chronic_ongoing', routeDefault: 'oral',
     placeholder: 'e.g., Heavy Menstrual Bleeding',
+  },
+  'chronic stable angina': {
+    category: 'CVD', indication: 'Chronic Stable Angina',
+    aliases: ['angina', 'angina pectoris', 'antianginal', 'stable angina', 'anginal prophylaxis'],
+    primaryEndpoint: { key: 'angina_frequency', label: 'Angina Frequency Reduction', unit: '%', direction: 'lower_better',
+      definition: 'Percentage reduction in weekly angina episodes vs baseline; ~50% treated as maximal for scoring.' },
+    secondaryEndpoints: [
+      { key: 'ett', label: 'Exercise Tolerance Time', unit: 'sec' },
+      { key: 'gtn_use', label: 'Short-acting Nitrate Use', unit: '%' },
+    ],
+    safetyLabel: 'Serious AEs', hazardRatioLabel: 'Ischaemic-event HR',
+    treatmentModel: 'chronic_ongoing', routeDefault: 'oral',
+    placeholder: 'e.g., Chronic Stable Angina',
+  },
+  'arrhythmia': {
+    category: 'CVD', indication: 'Cardiac Arrhythmia (Rhythm Control)',
+    aliases: ['arrhythmias', 'ventricular arrhythmia', 'atrial flutter', 'sinus rhythm', 'supraventricular', 'svt', 'tachycardia', 'vt/vf', 'antiarrhythmic'],
+    primaryEndpoint: { key: 'sinus_rhythm', label: 'Sinus-Rhythm Maintenance', unit: '%', direction: 'higher_better',
+      definition: 'Proportion maintaining sinus rhythm (or free of arrhythmia recurrence) at follow-up.' },
+    secondaryEndpoints: [
+      { key: 'recurrence_hr', label: 'Arrhythmia Recurrence HR', unit: 'HR' },
+      { key: 'hosp_rate', label: 'Cardiovascular Hospitalisation', unit: '%' },
+    ],
+    safetyLabel: 'Proarrhythmia / serious AEs', hazardRatioLabel: 'Recurrence HR',
+    treatmentModel: 'chronic_ongoing', routeDefault: 'oral',
+    placeholder: 'e.g., Cardiac Arrhythmia (Rhythm Control)',
+  },
+  'venous thromboembolism': {
+    category: 'CVD', indication: 'Thromboembolism Prevention (AF / VTE)',
+    aliases: ['vte', 'non-valvular af', 'deep vein thrombosis', 'dvt', 'pulmonary embolism', 'anticoagulation', 'anticoagulant', 'mechanical heart valve', 'valve prosthesis', 'thromboprophylaxis', 'antithrombotic'],
+    primaryEndpoint: { key: 'stroke_se_hr', label: 'Stroke / Systemic-Embolism HR', unit: 'HR', direction: 'lower_better',
+      definition: 'Hazard ratio for stroke or systemic embolism (AF) or recurrent VTE vs comparator.' },
+    secondaryEndpoints: [
+      { key: 'vte_recurrence', label: 'VTE Recurrence HR', unit: 'HR' },
+      { key: 'acm_hr', label: 'All-cause Mortality HR', unit: 'HR' },
+    ],
+    safetyLabel: 'Major bleeding', hazardRatioLabel: 'Stroke/SE HR',
+    treatmentModel: 'chronic_ongoing', routeDefault: 'oral',
+    placeholder: 'e.g., Thromboembolism Prevention (AF / VTE)',
+  },
+  'postpartum haemorrhage': {
+    category: 'Women\'s Health', indication: 'Postpartum Haemorrhage (Prevention & Treatment)',
+    aliases: ['pph', 'postpartum hemorrhage', 'uterine atony', 'uterotonic', 'uterine involution', 'refractory pph'],
+    primaryEndpoint: { key: 'pph_reduction', label: 'PPH Incidence Reduction (blood loss ≥500 mL)', unit: '%', direction: 'lower_better',
+      definition: 'Relative reduction in the proportion of women with postpartum blood loss ≥500 mL.' },
+    secondaryEndpoints: [
+      { key: 'mean_blood_loss', label: 'Mean Blood Loss', unit: 'mL' },
+      { key: 'transfusion_rate', label: 'Transfusion Rate', unit: '%' },
+    ],
+    safetyLabel: 'Serious AEs', hazardRatioLabel: 'Haemorrhage HR',
+    treatmentModel: 'acute_single_dose', routeDefault: 'iv_bolus',
+    placeholder: 'e.g., Postpartum Haemorrhage (Prevention & Treatment)',
+  },
+  'preterm labour': {
+    category: 'Women\'s Health', indication: 'Preterm Labour (Tocolysis)',
+    aliases: ['tocolysis', 'tocolytic', 'threatened preterm labor', 'threatened preterm labour', 'preterm birth', 'suppression of preterm labor'],
+    primaryEndpoint: { key: 'delay_48h', label: 'Birth Delayed ≥48 h', unit: '%', direction: 'higher_better',
+      definition: 'Proportion of women undelivered 48 hours after starting tocolysis — the window for antenatal steroids and transfer.' },
+    secondaryEndpoints: [
+      { key: 'delay_7d', label: 'Birth Delayed ≥7 days', unit: '%' },
+      { key: 'nicu_admission', label: 'NICU Admission', unit: '%' },
+    ],
+    safetyLabel: 'Serious maternal AEs', hazardRatioLabel: 'Preterm-birth HR',
+    treatmentModel: 'fixed_course', routeDefault: 'iv_infusion',
+    placeholder: 'e.g., Preterm Labour (Tocolysis)',
+  },
+  'labour induction': {
+    category: 'Women\'s Health', indication: 'Labour Induction & Cervical Ripening',
+    aliases: ['induction of labor', 'induction of labour', 'cervical ripening', 'cervical priming', 'augmentation of labor', 'augmentation of labour'],
+    primaryEndpoint: { key: 'vaginal_delivery_24h', label: 'Vaginal Delivery within 24 h', unit: '%', direction: 'higher_better',
+      definition: 'Proportion achieving vaginal delivery within 24 hours of induction.' },
+    secondaryEndpoints: [
+      { key: 'caesarean_rate', label: 'Caesarean Section Rate', unit: '%' },
+      { key: 'time_to_delivery', label: 'Induction-to-Delivery Interval', unit: 'hours' },
+    ],
+    safetyLabel: 'Uterine hyperstimulation', hazardRatioLabel: 'Caesarean HR',
+    treatmentModel: 'acute_single_dose', routeDefault: 'iv_infusion',
+    placeholder: 'e.g., Labour Induction & Cervical Ripening',
+  },
+  'iron deficiency anaemia': {
+    category: 'Women\'s Health', indication: 'Iron-Deficiency Anaemia (Pregnancy & Postpartum)',
+    aliases: ['iron-deficiency anemia', 'iron deficiency anemia', 'antianemic', 'anaemia', 'megaloblastic anemia', 'neural-tube-defect prevention', 'iron deficiency'],
+    primaryEndpoint: { key: 'hb_increase', label: 'Haemoglobin Increase', unit: 'g/dL', direction: 'higher_better',
+      definition: 'Mean rise in haemoglobin from baseline; ~3 g/dL treated as maximal correction for scoring.' },
+    secondaryEndpoints: [
+      { key: 'ferritin', label: 'Ferritin Repletion', unit: 'ng/mL' },
+      { key: 'transfusion_avoided', label: 'Transfusion Avoidance', unit: '%' },
+    ],
+    safetyLabel: 'Serious AEs', hazardRatioLabel: null,
+    treatmentModel: 'fixed_course', routeDefault: 'oral',
+    placeholder: 'e.g., Iron-Deficiency Anaemia (Pregnancy & Postpartum)',
+  },
+  'pre-eclampsia': {
+    category: 'Women\'s Health', indication: 'Pre-eclampsia / Eclampsia',
+    aliases: ['eclampsia', 'severe pre-eclampsia', 'seizure prophylaxis', 'pre-eclamptic'],
+    primaryEndpoint: { key: 'eclampsia_hr', label: 'Eclamptic Seizure Risk Reduction', unit: 'HR', direction: 'lower_better',
+      definition: 'Hazard ratio for eclamptic seizure vs comparator or placebo.' },
+    secondaryEndpoints: [
+      { key: 'maternal_mortality', label: 'Maternal Mortality', unit: '%' },
+    ],
+    safetyLabel: 'Serious maternal AEs', hazardRatioLabel: 'Seizure HR',
+    treatmentModel: 'acute_single_dose', routeDefault: 'iv_infusion',
+    placeholder: 'e.g., Pre-eclampsia / Eclampsia',
+  },
+  'fetal lung maturation': {
+    category: 'Women\'s Health', indication: 'Fetal Lung Maturation (Antenatal Corticosteroid)',
+    aliases: ['antenatal corticosteroid', 'fetal lung maturity', 'respiratory distress syndrome prophylaxis'],
+    primaryEndpoint: { key: 'rds_hr', label: 'Neonatal RDS Risk Reduction', unit: 'HR', direction: 'lower_better',
+      definition: 'Hazard ratio for neonatal respiratory distress syndrome after antenatal corticosteroid.' },
+    secondaryEndpoints: [
+      { key: 'neonatal_mortality', label: 'Neonatal Mortality', unit: '%' },
+    ],
+    safetyLabel: 'Serious AEs', hazardRatioLabel: 'RDS HR',
+    treatmentModel: 'acute_single_dose', routeDefault: 'sc_injection',
+    placeholder: 'e.g., Fetal Lung Maturation (Antenatal Corticosteroid)',
   },
 };
 

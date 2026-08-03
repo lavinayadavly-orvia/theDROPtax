@@ -77,6 +77,18 @@ def test_every_entry_is_well_formed():
     ("Uterine Fibroids", "Women's Health"),
     ("Heavy Menstrual Bleeding", "Women's Health"),
     ("Menorrhagia", "Women's Health"),            # alias
+    # Cardiology additions
+    ("Chronic stable angina", "CVD"),
+    ("Ventricular arrhythmias; AF", "CVD"),
+    ("Non-valvular AF; VTE", "CVD"),
+    # Obstetrics additions
+    ("PPH; uterine atony", "Women's Health"),
+    ("Threatened preterm labor", "Women's Health"),
+    ("Cervical ripening & induction of labor", "Women's Health"),
+    ("Iron-deficiency anemia in pregnancy", "Women's Health"),
+    ("Eclampsia/severe pre-eclampsia seizure prophylaxis", "Women's Health"),
+    ("Fetal lung maturation in threatened preterm birth", "Women's Health"),
+    ("Menopausal symptoms; atrophic vaginitis", "Women's Health"),   # HRT -> VMS
 ])
 def test_resolve_indication_and_category(text, expected_category):
     entry = resolve_indication(text)
@@ -145,3 +157,31 @@ def test_endpoints_summary_renders_available_values():
     assert "20.9" in rows[0]["value"]
     responder = next(r for r in rows if r["key"] == "responder_10")
     assert responder["available"] is True
+
+
+# ── Anticoagulant vs antiarrhythmic disambiguation ────────────────────────
+
+def test_anticoagulants_and_antiarrhythmics_do_not_collide():
+    """Both mention atrial fibrillation but need different primary endpoints."""
+    apixaban = resolve_indication("Non-valvular AF; VTE treatment/prevention")
+    amiodarone = resolve_indication("VT/VF; AF/atrial flutter; life-threatening arrhythmias")
+    assert apixaban["primary_endpoint"]["key"] == "stroke_se_hr"
+    assert amiodarone["primary_endpoint"]["key"] == "sinus_rhythm"
+    assert apixaban["safety_label"] == "Major bleeding"
+
+
+def test_obstetric_acute_drugs_are_inpatient_single_dose():
+    """Uterotonics and induction agents are given at delivery, in hospital."""
+    for text in ("PPH; uterine atony", "Induction/augmentation of labor"):
+        e = resolve_indication(text)
+        assert e["treatment_model"] == "acute_single_dose"
+        assert e["care_settings"] == ["IPD"]
+
+
+def test_new_endpoints_normalise_in_the_right_direction():
+    angina = resolve_indication("Chronic stable angina")          # lower_better reduction
+    assert event_probability_from_primary(angina, 60.0) < event_probability_from_primary(angina, 10.0)
+    tocolysis = resolve_indication("Threatened preterm labor")     # higher_better rate
+    assert event_probability_from_primary(tocolysis, 80.0) < event_probability_from_primary(tocolysis, 20.0)
+    anticoag = resolve_indication("Non-valvular AF; VTE")          # HR, lower_better
+    assert event_probability_from_primary(anticoag, 0.65) < event_probability_from_primary(anticoag, 0.95)
