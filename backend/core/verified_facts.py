@@ -76,6 +76,43 @@ VERIFIED_FACTS: Dict[str, Dict[str, Any]] = {
                 "source_url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=6fc0afca-4513-4c35-b594-6544aee29a44",
                 "retrieved": "2026-08-03",
             },
+            "ldl_c_reduction_percent": {
+                # Placebo-adjusted mean change in LDL-C at Day 510. Three
+                # pivotal trials are reported; each is kept with its own figure
+                # rather than averaged into a single synthetic number.
+                "value": 52.0,
+                "trials": {
+                    "ORION-10": {"value": 52.0, "ci": "-56%, -49%", "population": "ASCVD"},
+                    "ORION-11": {"value": 50.0, "ci": "-53%, -47%", "population": "ASCVD / ASCVD-risk equivalent"},
+                    "ORION-9":  {"value": 48.0, "ci": "-54%, -42%", "population": "HeFH"},
+                },
+                "headline_trial": "ORION-10",
+                "range": "48-52% across ORION-9/10/11",
+                "source_name": "FDA prescribing information (LEQVIO), Clinical Studies, via DailyMed",
+                "source_url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=6fc0afca-4513-4c35-b594-6544aee29a44",
+                "retrieved": "2026-08-03",
+                "quote": ("The difference between the LEQVIO and placebo groups in mean percentage "
+                          "change in LDL-C from baseline to Day 510 was -52% (95% CI: -56%, -49%; "
+                          "p < 0.0001)."),
+            },
+            "adverse_reactions": {
+                # Rates as published. No serious-adverse-event rate is given in
+                # the label, so none is recorded; the discontinuation rate is
+                # the closest published measure and is stored as itself.
+                "value": [
+                    {"reaction": "Injection site reaction", "drug_pct": 8.0, "placebo_pct": 2.0},
+                    {"reaction": "Arthralgia", "drug_pct": 5.0, "placebo_pct": 4.0},
+                    {"reaction": "Bronchitis", "drug_pct": 4.0, "placebo_pct": 3.0},
+                ],
+                "discontinuation_due_to_ae_pct": 2.5,
+                "placebo_discontinuation_pct": 1.9,
+                "serious_ae_rate_published": False,
+                "source_name": "FDA prescribing information (LEQVIO), Adverse Reactions, via DailyMed",
+                "source_url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=6fc0afca-4513-4c35-b594-6544aee29a44",
+                "retrieved": "2026-08-03",
+                "quote": ("adverse reactions led to discontinuation of treatment in 2.5% of patients "
+                          "treated with LEQVIO and 1.9% of patients treated with placebo"),
+            },
         },
         # Deliberately NOT verified yet — no authoritative Indian source read.
         # The workbook's price and brand list remain flagged as unverified.
@@ -83,7 +120,6 @@ VERIFIED_FACTS: Dict[str, Dict[str, Any]] = {
             "india_price_per_dose",
             "india_brands",
             "india_approval_date",
-            "ldl_c_reduction_percent",
         ],
     },
 }

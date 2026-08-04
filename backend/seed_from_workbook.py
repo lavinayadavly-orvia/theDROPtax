@@ -385,6 +385,27 @@ async def main():
                         f"Each dose is paid in full at administration — the cost is not "
                         f"spread across months. Unit price itself is still unverified."
                     )
+                # A verified clinical endpoint feeds the value engine directly.
+                _ldl = _vf.get("facts", {}).get("ldl_c_reduction_percent")
+                if _ldl and _pe and _pe["key"] == "ldl_reduction":
+                    drug_doc["primary_endpoint_value"] = _ldl["value"]
+                    drug_doc["primary_endpoint_is_estimated"] = False
+                    drug_doc["primary_endpoint_method"] = (
+                        f"{_ldl.get('headline_trial','pivotal trial')} "
+                        f"({_ldl.get('range','')}) — FDA label, Clinical Studies")
+                    drug_doc["clinical_confidence"] = 0.95
+
+                # Published adverse-reaction rates. The label gives no serious
+                # AE rate, so drug_severe_ae_rate stays unset rather than being
+                # filled with the discontinuation rate, which measures something
+                # different.
+                _ar = _vf.get("facts", {}).get("adverse_reactions")
+                if _ar:
+                    drug_doc["adverse_reactions_published"] = _ar["value"]
+                    drug_doc["discontinuation_due_to_ae_pct"] = _ar.get("discontinuation_due_to_ae_pct")
+                    drug_doc["serious_ae_rate_published"] = _ar.get("serious_ae_rate_published", False)
+                    drug_doc["drug_adverse_events"] = [x["reaction"] for x in _ar["value"]]
+
                 if _vf.get("facts", {}).get("manufacturer"):
                     drug_doc["manufacturers"] = _vf["facts"]["manufacturer"]["value"]
 
