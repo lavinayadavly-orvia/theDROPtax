@@ -21,7 +21,14 @@ Design notes
 Every endpoint here is defined per indication for the covered therapy areas.
 """
 
+import re
 from typing import Optional, Dict, Any, List
+
+# Anatomical modifiers that make a different disease from the one a short alias
+# would otherwise match. See resolve_indication.
+_DISEASE_CHANGING_MODIFIERS = (
+    "portal", "pulmonary", "intracranial", "ocular", "intraocular", "venous",
+)
 
 
 # ──────────────────────────────────────────────────────────────────────────
@@ -1030,11 +1037,26 @@ def resolve_indication(indication: Optional[str]) -> Optional[Dict[str, Any]]:
     key = indication.strip().lower()
     if key in _ALIAS_INDEX:
         return INDICATION_REGISTRY[_ALIAS_INDEX[key]]
+
+    # An anatomical modifier makes a different disease. Portal, pulmonary,
+    # intracranial and ocular hypertension are not systemic hypertension, but
+    # the alias "htn" sits inside all of them, so substring matching routed
+    # "portal HTN (variceal bleed prophylaxis)" to Hypertension — which would
+    # apply blood-pressure endpoints to variceal bleed prophylaxis.
+    #
+    # Where the registry genuinely holds the specific disease (pulmonary
+    # arterial hypertension), the exact/alias lookup above has already returned
+    # it. So reaching this point with a modifier present means the registry does
+    # NOT hold it, and the honest answer is None. An unmapped indication is
+    # recoverable; a confidently wrong one is not.
+    if any(re.search(rf"\b{m}\b", key) for m in _DISEASE_CHANGING_MODIFIERS):
+        return None
+
     # Substring match against canonical names + aliases (longest alias wins)
     best = None
     best_len = 0
     for alias, canonical in _ALIAS_INDEX.items():
-        if alias in key and len(alias) > best_len:
+        if re.search(rf"\b{re.escape(alias)}\b", key) and len(alias) > best_len:
             best, best_len = canonical, len(alias)
     return INDICATION_REGISTRY[best] if best else None
 
