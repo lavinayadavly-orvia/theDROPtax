@@ -216,3 +216,59 @@ def test_no_divergence_claimed_when_a_side_is_unknown():
 
 def test_small_differences_are_not_flagged_as_divergence():
     assert detect_divergence(52.0, 50.0, "LDL-C reduction") is None
+
+
+# ── Partial appraisal ─────────────────────────────────────────────────────
+# Real abstracts routinely omit follow-up duration or carry no design label.
+# Refusing to rank anything incomplete left 23 of 25 live papers unranked, so a
+# study is scored on the dimensions it did report — with the basis declared.
+
+def _partial(**overrides):
+    base = dict(study_id="P", title="Partially extracted paper", shape=9.0,
+                exposure_years=5000.0, endpoint=8.0, rigor=7.0, cohort="south_asian")
+    base.update(overrides)
+    return Study(**base)
+
+
+def test_missing_dimension_is_excluded_from_the_arithmetic_not_imputed():
+    """The renormalised score must equal the mean over PRESENT dimensions."""
+    a = appraise(_partial(exposure_years=None), Intent.EFFICACY, Region.INDIA)
+    assert a.score is None                       # strict contract unchanged
+    assert a.partial_score is not None
+    assert "size" in a.missing and "size" not in a.scored_on
+    w = WEIGHT_PROFILES[Intent.EFFICACY]
+    mass = sum(w[k] for k in a.scored_on)
+    expected = sum(w[k] / mass * a.components[k] for k in a.scored_on)
+    assert a.partial_score == pytest.approx(expected, abs=0.01)
+
+
+def test_partial_score_declares_what_it_rests_on():
+    a = appraise(_partial(rigor=None), Intent.SAFETY, Region.INDIA)
+    assert "partial" in a.basis_note and "rigor" in a.basis_note
+    assert 0 < a.weight_mass < 1.0
+
+
+def test_too_little_weight_mass_yields_no_score_at_all():
+    """A paper known only by its endpoint is not thereby a strong paper."""
+    a = appraise(_partial(shape=None, exposure_years=None, rigor=None,
+                          cohort=None), Intent.EFFICACY, Region.INDIA)
+    # endpoint (0.35) + relevance (0.05, always present) = 0.40 < MIN_WEIGHT_MASS
+    assert a.partial_score is None and a.effective_score is None
+    assert "not scored" in a.basis_note
+
+
+def test_partial_and_full_scores_share_one_ordering():
+    """Splitting them would bury a strong paper that omitted its follow-up."""
+    full = _partial(study_id="FULL", shape=5.0, endpoint=5.0, rigor=5.0)
+    thin = _partial(study_id="THIN", exposure_years=None, shape=9.5,
+                    endpoint=10.0, rigor=9.5)
+    out = rank([full, thin], Intent.EFFICACY, Region.INDIA)
+    assert out["ranked"][0].study_id == "THIN"
+    assert out["fully_scored"] == 1 and out["partially_scored"] == 1
+
+
+def test_counts_still_account_for_every_study():
+    out = rank([_partial(), _partial(study_id="Q", shape=None, exposure_years=None,
+                                     rigor=None, cohort=None, endpoint=None)],
+               Intent.EFFICACY, Region.INDIA)
+    assert len(out["ranked"]) + len(out["unscored"]) == out["total_considered"] == 2

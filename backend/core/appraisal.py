@@ -124,6 +124,25 @@ class Appraisal:
     warning_badge: Optional[str]
     unscorable_reason: Optional[str] = None
     display: Dict[str, Any] = field(default_factory=dict)
+    # Partial appraisal — see partial_score below. `score` stays None whenever
+    # anything is missing, so the strict contract is unchanged.
+    partial_score: Optional[float] = None
+    scored_on: List[str] = field(default_factory=list)
+    missing: List[str] = field(default_factory=list)
+    weight_mass: Optional[float] = None
+    basis_note: Optional[str] = None
+
+    @property
+    def effective_score(self) -> Optional[float]:
+        """What to order by: the full score when we have it, else the partial."""
+        return self.score if self.score is not None else self.partial_score
+
+
+# A partial score is only offered when the dimensions we DID extract carry at
+# least this share of the intent's weight. Below it, the surviving dimensions
+# say too little about the question being asked — a paper known only by its
+# endpoint is not thereby a strong paper, and ranking it would imply otherwise.
+MIN_WEIGHT_MASS = 0.60
 
 
 def normalise_exposure(patient_years: Optional[float]) -> Optional[float]:
@@ -187,13 +206,34 @@ def appraise(study: Study, intent: Intent, region: Region) -> Appraisal:
     if missing:
         # Partial data is reported as partial. Treating a missing component as
         # zero would silently penalise a study for a gap in our extraction.
+        #
+        # But refusing to rank anything incomplete is its own failure: real
+        # abstracts routinely omit follow-up duration or carry no design label,
+        # and a strict rule left 23 of 25 live papers unranked. So we score over
+        # the dimensions we DID read, renormalised across their weights, and say
+        # exactly which ones those were. Nothing is imputed — the missing
+        # dimension is absent from the arithmetic, not filled in.
+        present = [k for k, v in components.items() if v is not None]
+        mass = sum(weights[k] for k in present)
+        partial = None
+        contributions: Dict[str, Optional[float]] = {k: None for k in components}
+        note = f"not scored — missing {', '.join(missing)}"
+        if mass >= MIN_WEIGHT_MASS:
+            contributions = {k: round(weights[k] / mass * components[k], 3)
+                             for k in present}
+            partial = round(sum(contributions.values()), 2)
+            note = (f"partial — scored on {', '.join(present)} "
+                    f"({mass * 100:.0f}% of the weight for this question); "
+                    f"not found: {', '.join(missing)}")
         return Appraisal(
             study_id=study.study_id, title=study.title, score=None,
             components=components, weights=weights,
-            contributions={k: None for k in components},
+            contributions=contributions,
             proximity=A, proximity_tier=tier, warning_badge=badge,
-            unscorable_reason=f"not scored — missing {', '.join(missing)}",
+            unscorable_reason=note,
             display=_display(study),
+            partial_score=partial, scored_on=present, missing=missing,
+            weight_mass=round(mass, 3), basis_note=note,
         )
 
     contributions = {k: round(weights[k] * components[k], 3) for k in components}
@@ -204,6 +244,8 @@ def appraise(study: Study, intent: Intent, region: Region) -> Appraisal:
         weights=weights, contributions=contributions,
         proximity=A, proximity_tier=tier, warning_badge=badge,
         display=_display(study),
+        scored_on=list(components), missing=[], weight_mass=1.0,
+        basis_note="scored on all five dimensions",
     )
 
 
@@ -219,9 +261,14 @@ def rank(studies: List[Study], intent: Intent, region: Region) -> Dict[str, Any]
     what drove the order and let the user change it.
     """
     results = [appraise(s, intent, region) for s in studies]
-    scored = sorted([r for r in results if r.score is not None],
-                    key=lambda r: r.score, reverse=True)
-    unscored = [r for r in results if r.score is None]
+    # Fully- and partially-scored studies share one ordering, because splitting
+    # them would bury a strong paper whose abstract omitted its follow-up
+    # beneath a weak one that happened to state everything. Each carries its
+    # basis (`scored_on`, `weight_mass`) so the reader can see what the number
+    # rests on.
+    scored = sorted([r for r in results if r.effective_score is not None],
+                    key=lambda r: r.effective_score, reverse=True)
+    unscored = [r for r in results if r.effective_score is None]
     return {
         "intent": intent.value,
         "intent_label": INTENT_LABELS[intent],
@@ -229,9 +276,14 @@ def rank(studies: List[Study], intent: Intent, region: Region) -> Dict[str, Any]
         "active_weights": WEIGHT_PROFILES[intent],
         "ranked": scored,
         "unscored": unscored,          # shown, not discarded
+        "fully_scored": sum(1 for r in scored if r.score is not None),
+        "partially_scored": sum(1 for r in scored if r.score is None),
         "total_considered": len(studies),
         "note": ("Order reflects the active question. Nothing is filtered out — "
-                 "change the intent to re-rank the same evidence."),
+                 "change the intent to re-rank the same evidence. Entries marked "
+                 "partial were scored only on the dimensions their abstract "
+                 "reported; missing dimensions are excluded from the arithmetic, "
+                 "never imputed."),
     }
 
 
