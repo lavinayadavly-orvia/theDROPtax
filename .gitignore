@@ -11,3 +11,6 @@ frontend/dist/
 
 # sitemap index cache (regenerated, not source)
 backend/.sitemap_cache/
+
+# cached regulatory PDFs (re-downloadable)
+backend/.nppa_compendium.pdf
