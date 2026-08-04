@@ -135,3 +135,36 @@ def test_verified_facts_supersede_the_workbook_in_the_ui():
         "The UI is not preferring the verified approval year"
     # And the provenance must be visible to the user.
     assert "Unverified" in src and "Verified" in src
+
+
+def test_regional_price_inherits_the_records_estimation_flag():
+    """A dosing assumption must not be laundered into an exact price.
+
+    Catalogue prices are a per-unit retail price scaled to a month on an
+    ASSUMED once-daily dose — 156 of the 161 priced molecules. The record says
+    so (price_is_estimated=True, "Assumes once-daily dosing of one tab"), but
+    get_regional_price used to hardcode is_estimated=False for India, so the
+    API presented "Rs105/month" as fact. Metformin, carvedilol and captopril
+    are commonly taken two or three times a day, and cost a multiple of it.
+
+    An audited local price or a region-keyed price is genuinely exact, so
+    is_estimated=False is correct there. Only the global_price_inr branch —
+    the per-unit-times-30 figure — must inherit the record's flag.
+    """
+    import server
+    src = _source_of(server.get_regional_price)
+    branch = src[src.index('drug_doc.get("global_price_inr")'):]
+    assert '"is_estimated": False' not in branch, (
+        "The global_price_inr branch is hardcoding is_estimated=False again — "
+        "the drug record's own price_is_estimated flag must be carried through")
+    assert "price_is_estimated" in branch, (
+        "The record's estimation flag must be read, not assumed")
+
+
+def test_regional_price_projection_fetches_the_estimation_flag():
+    """Reading the flag is useless if the projection never returns it."""
+    import server
+    src = _source_of(server.get_regional_price)
+    projection = src[src.index("find_one("):src.index("find_one(") + 400]
+    assert "price_is_estimated" in projection, (
+        "price_is_estimated must be in the find_one projection or it is always None")

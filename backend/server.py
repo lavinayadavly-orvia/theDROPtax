@@ -265,8 +265,12 @@ async def get_regional_price(drug_name: str, indication: str, region_code: str) 
       0. LOCAL_DRUG_PRICES mapping
       1. MongoDB db.drugs - field 'regional_prices', 'list_price', or 'global_price_inr'
       2. DEFAULT_REGIONAL_PRICES_BY_INDICATION - lookup by indication keyword
-      3. Hard fallback: 250,000 INR / 9,000 SGD / 28,000 AED
-    Returns: { "monthly_price": int, "is_estimated": bool }
+      3. No price resolved -> monthly_price None (never a fabricated figure)
+    Returns: { "monthly_price": int|None, "is_estimated": bool, "price_note": str|None }
+
+    is_estimated is inherited from the drug record, not assumed. Catalogue
+    prices are usually per-unit scaled to a month on an assumed once-daily
+    dose; that assumption travels with the number.
     """
     region = region_code.upper()
 
@@ -281,7 +285,8 @@ async def get_regional_price(drug_name: str, indication: str, region_code: str) 
     try:
         drug_doc = await db.drugs.find_one(
             {"name": {"$regex": f"^{drug_name}$", "$options": "i"}},
-            {"_id": 0, "regional_prices": 1, "list_price": 1, "global_price_inr": 1, "indication": 1}
+            {"_id": 0, "regional_prices": 1, "list_price": 1, "global_price_inr": 1,
+             "indication": 1, "price_is_estimated": 1, "price_note": 1}
         )
         if drug_doc:
             regional_prices = drug_doc.get("regional_prices", {})
@@ -294,18 +299,29 @@ async def get_regional_price(drug_name: str, indication: str, region_code: str) 
                 price = int(drug_doc["list_price"])
                 if price > 0:
                     return {"monthly_price": price, "is_estimated": True}
-            # global_price_inr field
+            # global_price_inr field. Most catalogue prices are a per-unit retail
+            # price scaled to a month on an ASSUMED once-daily dose — the record
+            # says so in price_is_estimated/price_note. Carry that admission
+            # through instead of overwriting it with is_estimated=False: a drug
+            # taken twice or three times daily (metformin, carvedilol, captopril)
+            # costs a multiple of the figure below, and the caller must be able
+            # to see that the number rests on a dosing assumption.
             if drug_doc.get("global_price_inr"):
                 price = int(drug_doc["global_price_inr"])
                 if price > 0:
+                    record_estimated = bool(drug_doc.get("price_is_estimated", True))
+                    note = drug_doc.get("price_note")
                     if region == "IN":
-                        return {"monthly_price": price, "is_estimated": False}
+                        return {"monthly_price": price, "is_estimated": record_estimated,
+                                "price_note": note}
                     elif region == "SG":
-                        return {"monthly_price": max(1, int(price / 60)), "is_estimated": True}
+                        return {"monthly_price": max(1, int(price / 60)), "is_estimated": True,
+                                "price_note": note}
                     elif region == "AE":
-                        return {"monthly_price": max(1, int(price / 22)), "is_estimated": True}
+                        return {"monthly_price": max(1, int(price / 22)), "is_estimated": True,
+                                "price_note": note}
                     else:
-                        return {"monthly_price": price, "is_estimated": True}
+                        return {"monthly_price": price, "is_estimated": True, "price_note": note}
     except Exception:
         pass
 

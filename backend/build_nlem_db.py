@@ -149,7 +149,11 @@ async def main():
             match = next((v for k, v in listed.items() if k.startswith(token)), None)
         if match:
             on += 1
-            await db.drugs.update_one({"name": name}, {"$set": {
+            # update_many, not update_one: a molecule can hold several catalogue
+            # rows under one name — nifedipine appears under hypertension and
+            # again under tocolysis. update_one flagged only the first and left
+            # the second silently unlabelled.
+            await db.drugs.update_many({"name": name}, {"$set": {
                 "nlem_2022": {
                     "listed": True,
                     "section": match["nlem_section"],
@@ -162,7 +166,7 @@ async def main():
             }})
         else:
             off += 1
-            await db.drugs.update_one({"name": name}, {"$set": {
+            await db.drugs.update_many({"name": name}, {"$set": {
                 "nlem_2022": {"listed": False, "source_url": SOURCE_PAGE, "retrieved_utc": stamp},
                 "price_controlled": False,
             }})
