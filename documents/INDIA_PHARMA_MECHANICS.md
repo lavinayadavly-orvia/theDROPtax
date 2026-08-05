@@ -133,9 +133,30 @@ disincentive to use it, and it is not "coverage" in the insurance sense at all.
 Unspecified packages are capped at **₹1 lakh** within that limit. HBP 2.2 raised
 some rates 20–400%; ICU-with-ventilator by 100%.
 
-**CGHS** runs a separate formulary and rate list, with medicines issued through
-**empanelled local chemists** — a distinct channel again, for central government
-employees. The formulary and rate documents could not be retrieved: cghs.gov.in
+### CGHS: who approves, and what it costs, are separate questions
+
+**Who approves.** A restricted medicine is not excluded, it needs
+authorisation, and there are two routes. **STC is the Standing Technical
+Committee** — a board that must review and clear the patient's file, which a
+local wellness centre cannot do. **Non-STC** medicines are standardised in the
+CGHS digital workflow, so the local Additional Director or the Chief Medical
+Officer of the Medical Store Depot approves and dispatches directly.
+
+The route is chosen by **cost**: above roughly ₹10,000 per administration,
+₹50,000 a month, or a cancer cycle above ₹15,00,000, it goes to committee. And
+the lists move — an STC drug approved in more than 20 separate patient cases
+within six months transitions automatically to the Non-STC online list.
+Immunotherapy is the standing exception and never transitions.
+
+407 restricted medicines are loaded, 81 of them STC. **Inclisiran (Sybrava) and
+evolocumab are both STC**, so a CGHS patient reaches either only after
+committee clearance — an access fact with a lead time attached.
+
+**What it costs.** CGHS anchors to the **MSO rate contract** where one exists
+and falls back to the **NPPA ceiling** where none does. 525 contracted rates are
+loaded, each with its own contract window, because a rate is only a rate between
+its dates. Aceclofenac 100 mg is contracted at **₹0.53 a tablet**; the dearest
+row is ranibizumab at ₹4,249 a unit. The formulary and rate documents could not be retrieved: cghs.gov.in
 timed out on every path tried, including its own home page.
 
 The PM-JAY **rate table** is likewise unretrieved. The HBP 2.2 *manual* above
