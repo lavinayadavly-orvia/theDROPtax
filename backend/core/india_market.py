@@ -73,17 +73,70 @@ def classify_competition(brand_count: int, maker_count: int,
     return "few_brands"
 
 
-def india_market(drug: Dict[str, Any]) -> Dict[str, Any]:
-    """Brands, makers and what they say about competition here."""
+def from_cdsco_permissions(rows: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """Firms holding a CDSCO permission for this molecule.
+
+    Better evidence than the catalogue's key_brands list, which is curated:
+    these are named permissions with dates and reference numbers. Manufacture
+    permissions are the competition signal — a molecule ten Indian companies
+    are permitted to make is contested here whatever its patent status is
+    elsewhere. Import permissions describe how it entered, not who competes.
+    """
+    makers, importers, dates = set(), set(), []
+    for r in rows:
+        firm = (r.get("firm") or "").strip()
+        if not firm:
+            continue
+        (makers if r.get("permission_type") == "manufacture" else importers).add(firm)
+        if r.get("permission_date"):
+            dates.append(r["permission_date"])
+    return {
+        "manufacture_firms": sorted(makers),
+        "import_firms": sorted(importers),
+        "manufacture_count": len(makers),
+        "import_count": len(importers),
+        "earliest_permission": min(dates) if dates else None,
+        "permission_rows": len(rows),
+    }
+
+
+def india_market(drug: Dict[str, Any],
+                 cdsco_permissions: Optional[List[Dict[str, Any]]] = None
+                 ) -> Dict[str, Any]:
+    """Brands, makers and what they say about competition here.
+
+    CDSCO permissions, where we have them, outrank the catalogue's curated
+    brand list — they are named, dated and numbered rather than a selection of
+    brands worth knowing.
+    """
     brands = parse_list(drug.get("key_brands"))
     makers = parse_list(drug.get("manufacturers"))
     implies_more = brands["implies_more"] or makers["implies_more"]
-    state = classify_competition(len(brands["named"]), len(makers["named"]),
-                                 implies_more)
 
-    if state is None:
-        note = ("No Indian brands or makers recorded — competition here is "
-                "unknown. This is not evidence the molecule is uncontested.")
+    permissions = from_cdsco_permissions(cdsco_permissions or [])
+    # CDSCO is better EVIDENCE than the curated brand list — named, dated,
+    # numbered permissions — but it is not more COMPLETE. The consolidated
+    # r-DNA file lists one manufacturer for tenecteplase; a monthly file from
+    # the same register names another, and the catalogue names a third. Letting
+    # CDSCO override therefore turned a contested molecule into a single-brand
+    # one. Both sources are floors, so the higher floor wins and "further
+    # makers implied" survives from either.
+    state = classify_competition(
+        max(len(brands["named"]), permissions["manufacture_count"]),
+        max(len(makers["named"]), permissions["manufacture_count"]),
+        implies_more)
+
+    if permissions["manufacture_count"]:
+        note = (f"{permissions['manufacture_count']} Indian firm(s) hold a CDSCO "
+                f"permission to manufacture and market this molecule"
+                + (f", the earliest dated {permissions['earliest_permission']}"
+                   if permissions["earliest_permission"] else "")
+                + ". Named permissions, not a curated brand list.")
+    elif state is None:
+        note = ("No Indian brands, makers or CDSCO permissions recorded — "
+                "competition here is unknown. This is not evidence the molecule "
+                "is uncontested; the r-DNA register covers biologicals only and "
+                "the new-drug lists miss anything cleared by import permission.")
     elif state == "single_brand":
         note = ("One brand recorded. Where that is the whole market the "
                 "originator sets the price, but the list holds key brands "
@@ -104,7 +157,11 @@ def india_market(drug: Dict[str, Any]) -> Dict[str, Any]:
         "more_makers_implied": implies_more,
         "competition": state,
         "note": note,
-        "source_name": "DROP Tax catalogue (key brands and manufacturers)",
+        "cdsco": permissions if permissions["permission_rows"] else None,
+        "evidence": ("CDSCO permissions" if permissions["manufacture_count"]
+                     else "catalogue key brands"),
+        "source_name": ("CDSCO r-DNA register" if permissions["manufacture_count"]
+                        else "DROP Tax catalogue (key brands and manufacturers)"),
     }
 
 

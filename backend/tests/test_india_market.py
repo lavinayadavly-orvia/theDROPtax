@@ -125,3 +125,58 @@ def test_the_us_signal_is_labelled_as_pipeline_only_when_used_alone():
     joined = " ".join(c.reasons).lower()
     assert "pipeline signal" in joined
     assert "does not describe this market" in joined
+
+
+# ── CDSCO permissions ─────────────────────────────────────────────────────
+
+def _perm(firm, kind="manufacture", date=None):
+    return {"firm": firm, "permission_type": kind, "permission_date": date}
+
+
+def test_manufacture_permissions_are_the_competition_signal():
+    """A molecule several Indian firms may manufacture is contested here,
+    whatever its patent status is anywhere else."""
+    perms = [_perm(f"M/s Firm {i}", date="2023-01-01") for i in range(6)]
+    m = india_market({"key_brands": None, "manufacturers": None}, perms)
+    assert m["competition"] == "many_brands"
+    assert m["evidence"] == "CDSCO permissions"
+    assert m["cdsco"]["manufacture_count"] == 6
+
+
+def test_import_permissions_describe_entry_not_competition():
+    """An importer is how the molecule arrived, not who competes with it."""
+    perms = [_perm("M/s Novartis", kind="import", date="2023-07-06")]
+    m = india_market({"key_brands": None, "manufacturers": None}, perms)
+    assert m["cdsco"]["import_count"] == 1
+    assert m["cdsco"]["manufacture_count"] == 0
+    assert m["evidence"] == "catalogue key brands"   # imports do not set the state
+
+
+def test_cdsco_is_better_evidence_but_not_more_complete():
+    """The consolidated r-DNA file lists one manufacturer for tenecteplase; a
+    monthly file names another and the catalogue a third. Letting CDSCO
+    override turned a contested molecule into a single-brand one."""
+    perms = [_perm("M/s Gennova Biopharmaceuticals", date="2023-10-27")]
+    drug = {"key_brands": "Elaxim, Tenectase", "manufacturers": "Emcure, generics"}
+    m = india_market(drug, perms)
+    assert m["competition"] == "many_brands", "the 'generics' signal must survive"
+    assert m["more_makers_implied"] is True
+
+
+def test_the_higher_floor_wins_across_sources():
+    perms = [_perm("M/s One", date="2023-01-01")]
+    drug = {"key_brands": "A, B, C", "manufacturers": "X, Y, Z"}
+    assert india_market(drug, perms)["competition"] == "few_brands"
+
+
+def test_no_permissions_leaves_the_catalogue_in_charge():
+    m = india_market({"key_brands": "Cardace", "manufacturers": "Sanofi"}, [])
+    assert m["cdsco"] is None and m["evidence"] == "catalogue key brands"
+
+
+def test_the_unknown_note_names_both_registers_gaps():
+    """Absence must not read as uncontested: the r-DNA register covers
+    biologicals only, and the new-drug lists miss import permissions."""
+    m = india_market({"key_brands": None, "manufacturers": None}, [])
+    assert m["competition"] is None
+    assert "biologicals only" in m["note"] and "import permission" in m["note"]
