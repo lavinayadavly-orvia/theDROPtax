@@ -22,6 +22,23 @@ Ramipril carries three here and far more in reality. Every count from this
 module is therefore a LOWER BOUND, and says so, because reporting "3 brands"
 for a molecule with forty would understate competition exactly where it
 matters.
+
+Brands are not owners
+---------------------
+Two brands can be one company. Vymada and Azmarda are the same Novartis asset:
+Novartis markets one, Cipla markets the other under licence. That is
+distribution reach — two field forces, two sets of prescriber relationships —
+and NOT price competition, because a single owner has no reason to undercut
+itself.
+
+The catalogue records marketers, not owners ("Novartis, Cipla"), and in 106 of
+218 rows the brand and marketer lists are different lengths, so a brand cannot
+even be paired to a company positionally. Ownership is therefore not derivable
+from what we hold.
+
+So this module reports how many brands and marketers are on the market, which
+is a fact, and refuses to convert that into a claim about price competition,
+which would require ownership. The caveat travels on every result.
 """
 from __future__ import annotations
 

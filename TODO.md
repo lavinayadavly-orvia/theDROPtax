@@ -183,6 +183,13 @@ Per claim and per purpose: *supports · supports with caveat · does not support
 
 **2026-08-05 (later)**
 
+- `[x]` **Read how the Indian market actually works** — [documents/INDIA_PHARMA_MECHANICS.md](documents/INDIA_PHARMA_MECHANICS.md). DPCO 2013 paras 4/5/6/19/20 from the consolidated order, NPPA FAQs, the 2019 TMR order, PM-JAY HBP 2.2, retailer margin evidence. Eight things the build had wrong are listed there against what the instruments actually say.
+- `[ ]` **Threat model is wrong and must be rebuilt.** For an expensive Indian drug the risk is not generic entry or patent expiry — it is NPPA capping trade margin under para 19, which applies to ANY drug regardless of scheduling. The trigger is a large visible gap between price-to-stockist and MRP, not a high MRP.
+- `[ ]` **`price_controlled: False` is being misread** across 177 of 218 molecules. It means no ceiling has been fixed yet, not that pricing is free.
+- `[ ]` **Competition threshold has a legal definition** — DPCO para 6: fewer than five manufacturers with ≥1% market share. Replace the invented `MANY_BRANDS = 5` constant with the real basis.
+- `[ ]` **PM-JAY is not coverage.** Packages are all-inclusive of drugs, so an expensive molecule is a cost the hospital absorbs inside a fixed rate — a disincentive to use it, not reimbursement.
+- `[ ]` **Price is four numbers, not one** — PTS, PTR, retail price, MRP, with 16% and local taxes as the known bridges. The platform currently conflates them.
+
 - `[x]` **Data artefacts exported.** `artefacts/` — 3 MB, portable, for the other project. Registry, catalogue, 438 indications, NPPA, NLEM, both CDSCO registers, verified label facts. `MANIFEST.md` carries every caveat, and each JSON repeats its own.
 - `[x]` **Oncology scope filter** (`core/scope.py`). The r-DNA register is ~24% oncology and loading it whole put breast-cancer biologics back into a codebase that had none. 82 rows marked out of scope, not deleted.
 - `[ ]` **Trade press as a source.** CDSCO publication lags: Inclisiran was cleared July 2023 and is in no register we hold. Medical Dialogues, Pharmabiz, ET Pharma, RAPS report SEC outcomes within days. Treat as "reported by X", never restated as a CDSCO fact.
