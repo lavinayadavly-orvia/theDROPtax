@@ -1,0 +1,104 @@
+{
+  "generated_utc": "2026-08-05T12:35:13+00:00",
+  "caveats": [
+    "Every field carries source_name, source_url, retrieved date and a verbatim quote. Facts without a quote were not verified and are absent."
+  ],
+  "molecules": {
+    "inclisiran": {
+      "molecule": "Inclisiran",
+      "facts": {
+        "us_initial_approval_year": {
+          "value": 2021,
+          "source_name": "FDA prescribing information (LEQVIO), via DailyMed",
+          "source_url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=6fc0afca-4513-4c35-b594-6544aee29a44",
+          "retrieved": "2026-08-03",
+          "quote": "Initial U.S. Approval: 2021"
+        },
+        "dosing_schedule": {
+          "value": "284 mg subcutaneously initially, again at 3 months, then every 6 months",
+          "doses_year_1": 3,
+          "doses_maintenance": 2,
+          "source_name": "FDA prescribing information (LEQVIO), via DailyMed",
+          "source_url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=6fc0afca-4513-4c35-b594-6544aee29a44",
+          "retrieved": "2026-08-03",
+          "quote": "284 mg administered as a single subcutaneous injection initially, again at 3 months, and then every 6 months."
+        },
+        "strength": {
+          "value": "284 mg/1.5 mL (189 mg/mL)",
+          "source_name": "FDA prescribing information (LEQVIO), via DailyMed",
+          "source_url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=6fc0afca-4513-4c35-b594-6544aee29a44",
+          "retrieved": "2026-08-03"
+        },
+        "manufacturer": {
+          "value": "Novartis Pharmaceuticals Corporation",
+          "source_name": "FDA prescribing information (LEQVIO), via DailyMed",
+          "source_url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=6fc0afca-4513-4c35-b594-6544aee29a44",
+          "retrieved": "2026-08-03"
+        },
+        "indication": {
+          "value": "Reduce LDL-C in adults with hypercholesterolemia; adults and patients aged 12+ with HeFH; patients aged 12+ with HoFH",
+          "source_name": "FDA prescribing information (LEQVIO), via DailyMed",
+          "source_url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=6fc0afca-4513-4c35-b594-6544aee29a44",
+          "retrieved": "2026-08-03"
+        },
+        "ldl_c_reduction_percent": {
+          "value": 52.0,
+          "trials": {
+            "ORION-10": {
+              "value": 52.0,
+              "ci": "-56%, -49%",
+              "population": "ASCVD"
+            },
+            "ORION-11": {
+              "value": 50.0,
+              "ci": "-53%, -47%",
+              "population": "ASCVD / ASCVD-risk equivalent"
+            },
+            "ORION-9": {
+              "value": 48.0,
+              "ci": "-54%, -42%",
+              "population": "HeFH"
+            }
+          },
+          "headline_trial": "ORION-10",
+          "range": "48-52% across ORION-9/10/11",
+          "source_name": "FDA prescribing information (LEQVIO), Clinical Studies, via DailyMed",
+          "source_url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=6fc0afca-4513-4c35-b594-6544aee29a44",
+          "retrieved": "2026-08-03",
+          "quote": "The difference between the LEQVIO and placebo groups in mean percentage change in LDL-C from baseline to Day 510 was -52% (95% CI: -56%, -49%; p < 0.0001)."
+        },
+        "adverse_reactions": {
+          "value": [
+            {
+              "reaction": "Injection site reaction",
+              "drug_pct": 8.0,
+              "placebo_pct": 2.0
+            },
+            {
+              "reaction": "Arthralgia",
+              "drug_pct": 5.0,
+              "placebo_pct": 4.0
+            },
+            {
+              "reaction": "Bronchitis",
+              "drug_pct": 4.0,
+              "placebo_pct": 3.0
+            }
+          ],
+          "discontinuation_due_to_ae_pct": 2.5,
+          "placebo_discontinuation_pct": 1.9,
+          "serious_ae_rate_published": false,
+          "source_name": "FDA prescribing information (LEQVIO), Adverse Reactions, via DailyMed",
+          "source_url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=6fc0afca-4513-4c35-b594-6544aee29a44",
+          "retrieved": "2026-08-03",
+          "quote": "adverse reactions led to discontinuation of treatment in 2.5% of patients treated with LEQVIO and 1.9% of patients treated with placebo"
+        }
+      },
+      "not_yet_verified": [
+        "india_price_per_dose",
+        "india_brands",
+        "india_approval_date"
+      ]
+    }
+  }
+}

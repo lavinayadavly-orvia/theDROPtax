@@ -1,0 +1,439 @@
+drug,category,indication,registry_indication,indication_category,mapped,off_label,qualifier,is_primary
+Enalapril,CVD,Hypertension,Hypertension,CVD,True,False,,True
+Enalapril,CVD,Heart failure,Heart Failure,CVD,True,False,,False
+Enalapril,CVD,Asymptomatic LV dysfunction,,,False,False,,False
+Enalapril,CVD,Diabetic nephropathy,,,False,False,,False
+Ramipril,CVD,Hypertension,Hypertension,CVD,True,False,,True
+Ramipril,CVD,Heart failure,Heart Failure,CVD,True,False,,False
+Ramipril,CVD,Post-MI,,,False,False,,False
+Ramipril,CVD,High CV-risk,,,False,False,HOPE,False
+Ramipril,CVD,Nephropathy,,,False,False,,False
+Lisinopril,CVD,Hypertension,Hypertension,CVD,True,False,,True
+Lisinopril,CVD,Heart failure,Heart Failure,CVD,True,False,,False
+Lisinopril,CVD,Post-MI,,,False,False,,False
+Perindopril,CVD,Hypertension,Hypertension,CVD,True,False,,True
+Perindopril,CVD,Stable CAD,,,False,False,,False
+Perindopril,CVD,Heart failure,Heart Failure,CVD,True,False,,False
+Captopril,CVD,Hypertension,Hypertension,CVD,True,False,,True
+Captopril,CVD,Heart failure,Heart Failure,CVD,True,False,"short-acting, now less used",False
+Fosinopril,CVD,Hypertension,Hypertension,CVD,True,False,,True
+Fosinopril,CVD,Heart failure,Heart Failure,CVD,True,False,,False
+Losartan,CVD,Hypertension,Hypertension,CVD,True,False,,True
+Losartan,CVD,Diabetic nephropathy,,,False,False,,False
+Losartan,CVD,Stroke prevention in LVH,,,False,False,,False
+Telmisartan,CVD,Hypertension,Hypertension,CVD,True,False,,True
+Telmisartan,CVD,CV-risk reduction,,,False,False,,False
+Olmesartan,CVD,Hypertension,Hypertension,CVD,True,False,,True
+Valsartan,CVD,Hypertension,Hypertension,CVD,True,False,,True
+Valsartan,CVD,Heart failure,Heart Failure,CVD,True,False,,False
+Valsartan,CVD,Post-MI,,,False,False,,False
+Candesartan,CVD,Hypertension,Hypertension,CVD,True,False,,True
+Candesartan,CVD,Heart failure,Heart Failure,CVD,True,False,,False
+Irbesartan,CVD,Hypertension,Hypertension,CVD,True,False,,True
+Irbesartan,CVD,Diabetic nephropathy,,,False,False,,False
+Azilsartan medoxomil,CVD,Hypertension,Hypertension,CVD,True,False,"potent, long-acting",True
+Sacubitril + Valsartan,CVD,HFrEF,Heart Failure,CVD,True,False,,True
+Sacubitril + Valsartan,CVD,HFpEF,Heart Failure,CVD,True,False,,False
+Sacubitril + Valsartan,CVD,Hypertension,Hypertension,CVD,True,False,,False
+Amlodipine,CVD,Hypertension,Hypertension,CVD,True,False,,True
+Amlodipine,CVD,Chronic stable & vasospastic angina,Chronic Stable Angina,CVD,True,False,,False
+S-/Levamlodipine,CVD,Hypertension,Hypertension,CVD,True,False,less pedal edema than racemate,True
+Cilnidipine,CVD,Hypertension (L/N-type,Hypertension,CVD,True,False,,True
+Cilnidipine,CVD,"Less edema, reno-protective)",,,False,False,,False
+Nifedipine,CVD,Hypertension,Hypertension,CVD,True,False,,True
+Nifedipine,CVD,Angina,Chronic Stable Angina,CVD,True,False,,False
+Nifedipine,CVD,Raynaud,,,False,False,,False
+Nifedipine,CVD,Tocolysis,Preterm Labour (Tocolysis),Women's Health,True,True,,False
+Felodipine,CVD,Hypertension,Hypertension,CVD,True,False,,True
+Benidipine,CVD,Hypertension,Hypertension,CVD,True,False,,True
+Lercanidipine,CVD,Hypertension,Hypertension,CVD,True,False,,True
+Nimodipine,CVD,Prevention of vasospasm after subarachnoid hemorrhage,Cerebral Vasospasm (post-Subarachnoid Haemorrhage),CVS,True,False,,True
+Clevidipine,CVD,Acute severe hypertension,Hypertension,CVD,True,False,peri-operative,True
+Diltiazem,CVD,Hypertension,Hypertension,CVD,True,False,,True
+Diltiazem,CVD,Angina,Chronic Stable Angina,CVD,True,False,,False
+Diltiazem,CVD,SVT,Cardiac Arrhythmia (Rhythm Control),CVD,True,False,,False
+Diltiazem,CVD,AF/atrial flutter rate control,Cardiac Arrhythmia (Rhythm Control),CVD,True,False,,False
+Verapamil,CVD,Angina,Chronic Stable Angina,CVD,True,False,,True
+Verapamil,CVD,SVT,Cardiac Arrhythmia (Rhythm Control),CVD,True,False,,False
+Verapamil,CVD,AF rate control,,,False,False,,False
+Verapamil,CVD,Hypertension,Hypertension,CVD,True,False,,False
+Metoprolol,CVD,Hypertension,Hypertension,CVD,True,False,,True
+Metoprolol,CVD,Angina,Chronic Stable Angina,CVD,True,False,,False
+Metoprolol,CVD,Post-MI,,,False,False,,False
+Metoprolol,CVD,HFrEF,Heart Failure,CVD,True,False,,False
+Metoprolol,CVD,Arrhythmias,Cardiac Arrhythmia (Rhythm Control),CVD,True,False,,False
+Atenolol,CVD,Hypertension,Hypertension,CVD,True,False,,True
+Atenolol,CVD,Angina,Chronic Stable Angina,CVD,True,False,,False
+Atenolol,CVD,Arrhythmias,Cardiac Arrhythmia (Rhythm Control),CVD,True,False,,False
+Bisoprolol,CVD,Hypertension,Hypertension,CVD,True,False,,True
+Bisoprolol,CVD,Angina,Chronic Stable Angina,CVD,True,False,,False
+Bisoprolol,CVD,HFrEF,Heart Failure,CVD,True,False,,False
+Carvedilol,CVD,HFrEF,Heart Failure,CVD,True,False,,True
+Carvedilol,CVD,Hypertension,Hypertension,CVD,True,False,,False
+Carvedilol,CVD,Post-MI,,,False,False,alpha+beta block,False
+Nebivolol,CVD,Hypertension,Hypertension,CVD,True,False,NO-mediated vasodilation,True
+Propranolol,CVD,Hypertension,Hypertension,CVD,True,False,,True
+Propranolol,CVD,Angina,Chronic Stable Angina,CVD,True,False,,False
+Propranolol,CVD,Arrhythmia,Cardiac Arrhythmia (Rhythm Control),CVD,True,False,,False
+Propranolol,CVD,Migraine prophylaxis,,,False,False,,False
+Propranolol,CVD,Essential tremor,,,False,False,,False
+Propranolol,CVD,Thyrotoxicosis,Hyperthyroidism,Metabolic,True,False,,False
+Propranolol,CVD,Portal HTN,,,False,False,variceal bleed prophylaxis,False
+Labetalol,CVD,Hypertensive emergency,Hypertension,CVD,True,False,,True
+Labetalol,CVD,Hypertension in pregnancy,Hypertension,CVD,True,False,,False
+Nebivolol / others – Esmolol,CVD,Intra-operative & acute arrhythmia/tachycardia,Cardiac Arrhythmia (Rhythm Control),CVD,True,False,ultra-short acting,True
+Hydrochlorothiazide,CVD,Hypertension,Hypertension,CVD,True,False,,True
+Hydrochlorothiazide,CVD,Edema,,,False,False,usually in combinations,False
+Chlorthalidone,CVD,Hypertension,Hypertension,CVD,True,False,"long-acting, preferred thiazide-like",True
+Indapamide,CVD,Hypertension,Hypertension,CVD,True,False,,True
+Furosemide,CVD,Edema,,,False,False,"HF, renal, hepatic",False
+Furosemide,CVD,Acute pulmonary edema,,,False,False,,False
+Furosemide,CVD,Hypertensive crisis,Hypertension,CVD,True,False,,True
+Torsemide,CVD,Edema in HF,,,False,False,,False
+Torsemide,CVD,Resistant edema,,,False,False,,False
+Torsemide,CVD,Hypertension,Hypertension,CVD,True,False,,True
+Spironolactone,CVD,HFrEF,Heart Failure,CVD,True,False,,True
+Spironolactone,CVD,Resistant hypertension,Hypertension,CVD,True,False,,False
+Spironolactone,CVD,Primary hyperaldosteronism,,,False,False,,False
+Spironolactone,CVD,Ascites,,,False,False,,False
+Spironolactone,CVD,Hirsutism/PCOS,Polycystic Ovary Syndrome (PCOS),Women's Health,True,False,,False
+Eplerenone,CVD,HF post-MI,,,False,False,,False
+Eplerenone,CVD,Resistant hypertension,Hypertension,CVD,True,False,selective MRA,True
+Metolazone,CVD,Refractory edema,Heart Failure,CVD,True,False,synergy with loop diuretic,True
+Mannitol,CVD,Raised intracranial pressure,,,False,False,,True
+Mannitol,CVD,Cerebral edema,,,False,False,,False
+Mannitol,CVD,Forced diuresis,,,False,False,,False
+Prazosin,CVD,Hypertension,Hypertension,CVD,True,False,,True
+Prazosin,CVD,BPH,,,False,False,,False
+Prazosin,CVD,Scorpion sting,,,False,False,,False
+Prazosin,CVD,PTSD nightmares,,,False,False,,False
+Doxazosin,CVD,Hypertension,Hypertension,CVD,True,False,,True
+Doxazosin,CVD,BPH,,,False,False,,False
+Clonidine,CVD,Hypertension,Hypertension,CVD,True,False,,True
+Clonidine,CVD,Hypertensive urgency,Hypertension,CVD,True,False,,False
+Clonidine,CVD,ADHD,,,False,False,,False
+Clonidine,CVD,Opioid withdrawal,,,False,False,,False
+Methyldopa,CVD,Hypertension in pregnancy,Hypertension,CVD,True,False,drug of choice,True
+Moxonidine,CVD,Hypertension,Hypertension,CVD,True,False,imidazoline agonist,True
+Hydralazine,CVD,Resistant hypertension,Hypertension,CVD,True,False,,True
+Hydralazine,CVD,Pregnancy hypertension,Hypertension,CVD,True,False,,False
+Sodium nitroprusside,CVD,Hypertensive emergency,Hypertension,CVD,True,False,,True
+Sodium nitroprusside,CVD,Controlled hypotension,Hypertension,CVD,True,False,,False
+Atorvastatin,CVD,Dyslipidemia,Hypercholesterolemia / Dyslipidemia,CVD,True,False,,True
+Atorvastatin,CVD,Primary & secondary CV prevention,,,False,False,,False
+Rosuvastatin,CVD,Dyslipidemia,Hypercholesterolemia / Dyslipidemia,CVD,True,False,,True
+Rosuvastatin,CVD,CV prevention,,,False,False,high-intensity,False
+Simvastatin,CVD,Hypercholesterolemia,Hypercholesterolemia / Dyslipidemia,CVD,True,False,,True
+Pitavastatin,CVD,Dyslipidemia,Hypercholesterolemia / Dyslipidemia,CVD,True,False,minimal drug interactions,True
+Fenofibrate,CVD,Hypertriglyceridemia,Hypercholesterolemia / Dyslipidemia,CVD,True,False,,True
+Fenofibrate,CVD,Mixed dyslipidemia,Hypercholesterolemia / Dyslipidemia,CVD,True,False,,False
+Gemfibrozil,CVD,Severe hypertriglyceridemia,Hypercholesterolemia / Dyslipidemia,CVD,True,False,,True
+Ezetimibe,CVD,Hypercholesterolemia,Hypercholesterolemia / Dyslipidemia,CVD,True,False,add-on to statin,True
+Bempedoic acid,CVD,Hypercholesterolemia,Hypercholesterolemia / Dyslipidemia,CVD,True,False,,True
+Bempedoic acid,CVD,Statin-intolerant,Hypercholesterolemia / Dyslipidemia,CVD,True,False,,False
+Bempedoic acid,CVD,Add-on,,,False,False,,False
+Evolocumab,CVD,Familial hypercholesterolemia,Hypercholesterolemia / Dyslipidemia,CVD,True,False,,True
+Evolocumab,CVD,Statin-intolerant,Hypercholesterolemia / Dyslipidemia,CVD,True,False,,False
+Evolocumab,CVD,Very-high-risk ASCVD,Hypercholesterolemia / Dyslipidemia,CVD,True,False,,False
+Alirocumab,CVD,Familial hypercholesterolemia,Hypercholesterolemia / Dyslipidemia,CVD,True,False,,True
+Alirocumab,CVD,High-risk ASCVD,Hypercholesterolemia / Dyslipidemia,CVD,True,False,,False
+Inclisiran,CVD,ASCVD & FH with high LDL despite statin,Hypercholesterolemia / Dyslipidemia,CVD,True,False,,True
+Omega-3 (EPA/DHA),CVD,Severe hypertriglyceridemia,Hypercholesterolemia / Dyslipidemia,CVD,True,False,adjunct,True
+Aspirin (low dose),CVD,Secondary prevention of MI/stroke,Cardiovascular Risk Reduction,CVD,True,False,,True
+Aspirin (low dose),CVD,ACS,Cardiovascular Risk Reduction,CVD,True,False,,False
+Aspirin (low dose),CVD,Post-PCI,Cardiovascular Risk Reduction,CVD,True,False,,False
+Aspirin (low dose),CVD,Pre-eclampsia prevention,Pre-eclampsia / Eclampsia,Women's Health,True,False,low-dose,False
+Clopidogrel,CVD,ACS,Cardiovascular Risk Reduction,CVD,True,False,,True
+Clopidogrel,CVD,Post-PCI/stent,Cardiovascular Risk Reduction,CVD,True,False,,False
+Clopidogrel,CVD,Ischemic stroke,Acute Ischemic Stroke,CVS,True,False,,False
+Clopidogrel,CVD,PAD,Peripheral Arterial Disease,CVD,True,False,,False
+Prasugrel,CVD,ACS managed with PCI,Cardiovascular Risk Reduction,CVD,True,False,,True
+Ticagrelor,CVD,ACS,Cardiovascular Risk Reduction,CVD,True,False,,True
+Ticagrelor,CVD,High-risk post-MI,,,False,False,,False
+Cilostazol,CVD,Intermittent claudication,Peripheral Arterial Disease,CVD,True,False,PAD,True
+Dipyridamole,CVD,Secondary stroke prevention,Cardiovascular Risk Reduction,CVD,True,False,with aspirin,True
+Warfarin,CVD,VTE treatment/prevention,Thromboembolism Prevention (AF / VTE),CVD,True,False,,True
+Warfarin,CVD,Mechanical heart valves,,,False,False,,False
+Acenocoumarol,CVD,VTE,Thromboembolism Prevention (AF / VTE),CVD,True,False,,True
+Acenocoumarol,CVD,Valve prosthesis,Thromboembolism Prevention (AF / VTE),CVD,True,False,,False
+Enoxaparin,CVD,VTE prophylaxis/treatment,Thromboembolism Prevention (AF / VTE),CVD,True,False,,True
+Enoxaparin,CVD,ACS,Cardiovascular Risk Reduction,CVD,True,False,,False
+Enoxaparin,CVD,Bridging,,,False,False,,False
+Heparin (UFH),CVD,VTE,Thromboembolism Prevention (AF / VTE),CVD,True,False,,True
+Heparin (UFH),CVD,ACS,Cardiovascular Risk Reduction,CVD,True,False,,False
+Heparin (UFH),CVD,Extracorporeal circuits,,,False,False,,False
+Dabigatran,CVD,Non-valvular AF stroke prevention,Thromboembolism Prevention (AF / VTE),CVD,True,False,,True
+Dabigatran,CVD,VTE,Thromboembolism Prevention (AF / VTE),CVD,True,False,,False
+Rivaroxaban,CVD,Non-valvular AF,Thromboembolism Prevention (AF / VTE),CVD,True,False,,True
+Rivaroxaban,CVD,VTE,Thromboembolism Prevention (AF / VTE),CVD,True,False,,False
+Rivaroxaban,CVD,Post-ACS,Cardiovascular Risk Reduction,CVD,True,False,2.5 mg,False
+Apixaban,CVD,Non-valvular AF,Thromboembolism Prevention (AF / VTE),CVD,True,False,,True
+Apixaban,CVD,VTE treatment/prevention,Thromboembolism Prevention (AF / VTE),CVD,True,False,,False
+Edoxaban,CVD,Non-valvular AF,Thromboembolism Prevention (AF / VTE),CVD,True,False,,True
+Edoxaban,CVD,VTE,Thromboembolism Prevention (AF / VTE),CVD,True,False,,False
+Fondaparinux,CVD,VTE prophylaxis/treatment,Thromboembolism Prevention (AF / VTE),CVD,True,False,,True
+Fondaparinux,CVD,ACS,Cardiovascular Risk Reduction,CVD,True,False,,False
+Fondaparinux,CVD,HIT,,,False,False,,False
+Glyceryl trinitrate (NTG),CVD,Acute angina,Chronic Stable Angina,CVD,True,False,,True
+Glyceryl trinitrate (NTG),CVD,ACS,Cardiovascular Risk Reduction,CVD,True,False,,False
+Glyceryl trinitrate (NTG),CVD,Acute LV failure,,,False,False,,False
+Glyceryl trinitrate (NTG),CVD,Controlled hypotension,Hypertension,CVD,True,False,,False
+Isosorbide mononitrate,CVD,Chronic angina prophylaxis,Chronic Stable Angina,CVD,True,False,,True
+Isosorbide dinitrate,CVD,Angina,Chronic Stable Angina,CVD,True,False,,True
+Isosorbide dinitrate,CVD,Acute LV failure,,,False,False,,False
+Trimetazidine,CVD,Chronic stable angina,Chronic Stable Angina,CVD,True,False,add-on,True
+Ranolazine,CVD,Chronic stable angina,Chronic Stable Angina,CVD,True,False,,True
+Nicorandil,CVD,Chronic stable angina,Chronic Stable Angina,CVD,True,False,,True
+Ivabradine,CVD,Chronic stable angina,Chronic Stable Angina,CVD,True,False,,True
+Ivabradine,CVD,HFrEF,Heart Failure,CVD,True,False,elevated HR in sinus rhythm,False
+Digoxin,CVD,Heart failure,Heart Failure,CVD,True,False,,True
+Digoxin,CVD,AF/atrial flutter rate control,Cardiac Arrhythmia (Rhythm Control),CVD,True,False,,False
+Vericiguat,CVD,Symptomatic chronic HFrEF after worsening event,Heart Failure,CVD,True,False,,True
+Dobutamine,CVD,Acute decompensated HF,,,False,False,,True
+Dobutamine,CVD,Cardiogenic shock,,,False,False,,False
+Levosimendan,CVD,Acute decompensated heart failure,Heart Failure,CVD,True,False,,True
+Milrinone,CVD,Acute HF,,,False,False,,True
+Milrinone,CVD,Low cardiac output,,,False,False,,False
+Amiodarone,CVD,VT/VF,Cardiac Arrhythmia (Rhythm Control),CVD,True,False,,True
+Amiodarone,CVD,AF/atrial flutter,Cardiac Arrhythmia (Rhythm Control),CVD,True,False,,False
+Amiodarone,CVD,Life-threatening arrhythmias,Cardiac Arrhythmia (Rhythm Control),CVD,True,False,,False
+Dronedarone,CVD,Paroxysmal/persistent AF,,,False,False,maintain sinus rhythm,True
+Sotalol,CVD,Ventricular arrhythmias,Cardiac Arrhythmia (Rhythm Control),CVD,True,False,,True
+Mexiletine,CVD,Ventricular arrhythmias,Cardiac Arrhythmia (Rhythm Control),CVD,True,False,,True
+Adenosine,CVD,Termination of paroxysmal SVT,Cardiac Arrhythmia (Rhythm Control),CVD,True,False,,True
+Adenosine,CVD,Diagnostic,,,False,False,,False
+Sildenafil,CVD,Pulmonary arterial hypertension,Pulmonary Arterial Hypertension,CVD,True,False,,True
+Sildenafil,CVD,Erectile dysfunction,,,False,False,,False
+Tadalafil,CVD,Pulmonary arterial hypertension,Pulmonary Arterial Hypertension,CVD,True,False,,True
+Bosentan,CVD,Pulmonary arterial hypertension,Pulmonary Arterial Hypertension,CVD,True,False,endothelin antagonist,True
+Ambrisentan,CVD,Pulmonary arterial hypertension,Pulmonary Arterial Hypertension,CVD,True,False,,True
+Macitentan,CVD,Pulmonary arterial hypertension,Pulmonary Arterial Hypertension,CVD,True,False,,True
+Riociguat,CVD,PAH,Pulmonary Arterial Hypertension,CVD,True,False,,True
+Riociguat,CVD,Inoperable chronic thromboembolic PH,Pulmonary Arterial Hypertension,CVD,True,False,CTEPH,False
+Streptokinase,CVD,STEMI,Acute Myocardial Infarction,CVS,True,False,,True
+Streptokinase,CVD,Massive PE,,,False,False,"older, low-cost",False
+Tenecteplase,CVD,STEMI,Acute Myocardial Infarction,CVS,True,False,"fibrin-specific, single bolus",True
+Alteplase (rtPA),CVD,Acute ischemic stroke,Acute Ischemic Stroke,CVS,True,False,,True
+Alteplase (rtPA),CVD,STEMI,Acute Myocardial Infarction,CVS,True,False,,False
+Alteplase (rtPA),CVD,Massive PE,,,False,False,,False
+Noradrenaline (Norepinephrine),CVD,Septic/distributive shock,,,False,False,,True
+Noradrenaline (Norepinephrine),CVD,Hypotension,,,False,False,,False
+Adrenaline (Epinephrine),CVD,Cardiac arrest,,,False,False,,True
+Adrenaline (Epinephrine),CVD,Anaphylaxis,,,False,False,,False
+Adrenaline (Epinephrine),CVD,Shock,,,False,False,,False
+Colchicine (low-dose CV use),CVD,Pericarditis,,,False,False,,False
+Colchicine (low-dose CV use),CVD,Investigational CV risk reduction,Cardiovascular Risk Reduction,CVD,True,False,,True
+Colchicine (low-dose CV use),CVD,Gout,Gout / Hyperuricaemia,Metabolic,True,False,,False
+Metformin,Metabolic,Type 2 diabetes,Type 2 Diabetes,Metabolic,True,False,first-line,True
+Metformin,Metabolic,Prediabetes,,,False,False,,False
+Metformin,Metabolic,PCOS,Polycystic Ovary Syndrome (PCOS),Women's Health,True,False,insulin resistance,False
+Glimepiride,Metabolic,Type 2 diabetes,Type 2 Diabetes,Metabolic,True,False,,True
+Gliclazide,Metabolic,Type 2 diabetes,Type 2 Diabetes,Metabolic,True,False,,True
+Glipizide,Metabolic,Type 2 diabetes,Type 2 Diabetes,Metabolic,True,False,,True
+Glibenclamide (Glyburide),Metabolic,Type 2 diabetes,Type 2 Diabetes,Metabolic,True,False,"older, long-acting",True
+Repaglinide,Metabolic,Type 2 diabetes,Type 2 Diabetes,Metabolic,True,False,postprandial control,True
+Nateglinide,Metabolic,Type 2 diabetes,Type 2 Diabetes,Metabolic,True,False,postprandial,True
+Sitagliptin,Metabolic,Type 2 diabetes,Type 2 Diabetes,Metabolic,True,False,,True
+Vildagliptin,Metabolic,Type 2 diabetes,Type 2 Diabetes,Metabolic,True,False,,True
+Linagliptin,Metabolic,Type 2 diabetes,Type 2 Diabetes,Metabolic,True,False,no renal dose adjustment,True
+Teneligliptin,Metabolic,Type 2 diabetes,Type 2 Diabetes,Metabolic,True,False,"very widely used, low-cost in India",True
+Saxagliptin,Metabolic,Type 2 diabetes,Type 2 Diabetes,Metabolic,True,False,,True
+Gemigliptin,Metabolic,Type 2 diabetes,Type 2 Diabetes,Metabolic,True,False,,True
+Dapagliflozin,Metabolic,Type 2 diabetes,Type 2 Diabetes,Metabolic,True,False,,True
+Dapagliflozin,Metabolic,HFrEF/HFpEF,Heart Failure,CVD,True,False,,False
+Dapagliflozin,Metabolic,Chronic kidney disease,,,False,False,,False
+Empagliflozin,Metabolic,Type 2 diabetes,Type 2 Diabetes,Metabolic,True,False,,True
+Empagliflozin,Metabolic,Heart failure,Heart Failure,CVD,True,False,,False
+Empagliflozin,Metabolic,CKD,,,False,False,,False
+Empagliflozin,Metabolic,CV-risk reduction,,,False,False,,False
+Canagliflozin,Metabolic,Type 2 diabetes,Type 2 Diabetes,Metabolic,True,False,,True
+Canagliflozin,Metabolic,Diabetic kidney disease,,,False,False,,False
+Ertugliflozin,Metabolic,Type 2 diabetes,Type 2 Diabetes,Metabolic,True,False,,True
+Remogliflozin,Metabolic,Type 2 diabetes,Type 2 Diabetes,Metabolic,True,False,,True
+Liraglutide,Metabolic,Type 2 diabetes,Type 2 Diabetes,Metabolic,True,False,Victoza,True
+Liraglutide,Metabolic,Chronic weight management,Chronic Weight Management,Metabolic,True,False,Saxenda,False
+Dulaglutide,Metabolic,Type 2 diabetes,Type 2 Diabetes,Metabolic,True,False,,True
+Semaglutide (injectable),Metabolic,Type 2 diabetes,Type 2 Diabetes,Metabolic,True,False,Ozempic,True
+Semaglutide (injectable),Metabolic,Obesity,Chronic Weight Management,Metabolic,True,False,Wegovy,False
+Semaglutide (injectable),Metabolic,CV-risk reduction,,,False,False,,False
+Semaglutide (oral),Metabolic,Type 2 diabetes,Type 2 Diabetes,Metabolic,True,False,,True
+Tirzepatide,Metabolic,Type 2 diabetes,Type 2 Diabetes,Metabolic,True,False,,True
+Tirzepatide,Metabolic,Obesity,Chronic Weight Management,Metabolic,True,False,dual incretin,False
+Pioglitazone,Metabolic,Type 2 diabetes,Type 2 Diabetes,Metabolic,True,False,insulin resistance,True
+Voglibose,Metabolic,Type 2 diabetes,Type 2 Diabetes,Metabolic,True,False,postprandial glucose,True
+Acarbose,Metabolic,Type 2 diabetes,Type 2 Diabetes,Metabolic,True,False,postprandial,True
+Regular (soluble) insulin,Metabolic,Type 1 & 2 diabetes,Type 2 Diabetes,Metabolic,True,False,,True
+Regular (soluble) insulin,Metabolic,DKA,,,False,False,,False
+Regular (soluble) insulin,Metabolic,Hyperkalemia,,,False,False,,False
+NPH / Isophane,Metabolic,Basal insulin cover,Type 2 Diabetes,Metabolic,True,False,,True
+Biphasic 30/70,Metabolic,Type 1 & 2 diabetes,Type 2 Diabetes,Metabolic,True,False,,True
+Insulin glargine,Metabolic,Basal insulin,Type 2 Diabetes,Metabolic,True,False,once daily,True
+Insulin degludec,Metabolic,Basal insulin,Type 2 Diabetes,Metabolic,True,False,"ultra-long, flat profile",True
+Insulin aspart,Metabolic,Prandial insulin,Type 2 Diabetes,Metabolic,True,False,,True
+Insulin lispro,Metabolic,Prandial insulin,Type 2 Diabetes,Metabolic,True,False,,True
+Insulin glulisine,Metabolic,Prandial insulin,Type 2 Diabetes,Metabolic,True,False,,True
+Levothyroxine (T4),Metabolic,Hypothyroidism,Hypothyroidism,Metabolic,True,False,,True
+Levothyroxine (T4),Metabolic,Goiter,Hypothyroidism,Metabolic,True,False,,False
+Levothyroxine (T4),Metabolic,TSH suppression,Hypothyroidism,Metabolic,True,False,,False
+Liothyronine (T3),Metabolic,Severe hypothyroidism/myxedema coma,Hypothyroidism,Metabolic,True,False,,True
+Liothyronine (T3),Metabolic,Combination therapy,,,False,False,,False
+Carbimazole,Metabolic,Hyperthyroidism,Hyperthyroidism,Metabolic,True,False,"Graves', toxic goiter",True
+Propylthiouracil (PTU),Metabolic,Hyperthyroidism (preferred in 1st-trimester pregnancy,Hyperthyroidism,Metabolic,True,False,,True
+Propylthiouracil (PTU),Metabolic,Thyroid storm),,,False,False,,False
+Orlistat,Metabolic,Obesity,Chronic Weight Management,Metabolic,True,False,,True
+Orlistat,Metabolic,Weight management,Chronic Weight Management,Metabolic,True,False,with diet,False
+Liraglutide (Saxenda),Metabolic,Chronic weight management,Chronic Weight Management,Metabolic,True,False,,True
+Semaglutide (Wegovy),Metabolic,Chronic weight management,Chronic Weight Management,Metabolic,True,False,,True
+Tirzepatide (Mounjaro),Metabolic,Chronic weight management,Chronic Weight Management,Metabolic,True,False,,True
+Allopurinol,Metabolic,Chronic gout,Gout / Hyperuricaemia,Metabolic,True,False,,True
+Allopurinol,Metabolic,Hyperuricemia,Gout / Hyperuricaemia,Metabolic,True,False,,False
+Allopurinol,Metabolic,Recurrent urate stones,Gout / Hyperuricaemia,Metabolic,True,False,,False
+Febuxostat,Metabolic,Chronic gout,Gout / Hyperuricaemia,Metabolic,True,False,,True
+Febuxostat,Metabolic,Hyperuricemia,Gout / Hyperuricaemia,Metabolic,True,False,,False
+Colchicine,Metabolic,Acute gout flare,Gout / Hyperuricaemia,Metabolic,True,False,,True
+Colchicine,Metabolic,Flare prophylaxis,,,False,False,,False
+Colchicine,Metabolic,FMF,,,False,False,,False
+Colchicine,Metabolic,Pericarditis,,,False,False,,False
+Alendronate,Metabolic,Osteoporosis,Osteoporosis,Women's Health,True,False,"postmenopausal, male, glucocorticoid",True
+Risedronate,Metabolic,Osteoporosis,Osteoporosis,Women's Health,True,False,,True
+Risedronate,Metabolic,Paget's disease,,,False,False,,False
+Ibandronate,Metabolic,Postmenopausal osteoporosis,Osteoporosis,Women's Health,True,False,,True
+Zoledronic acid,Metabolic,Osteoporosis,Osteoporosis,Women's Health,True,False,5 mg yearly,True
+Zoledronic acid,Metabolic,Paget's,,,False,False,,False
+Zoledronic acid,Metabolic,Hypercalcemia of,,,False,False,,False
+Zoledronic acid,Metabolic,Bone metastases,,,False,False,,False
+Denosumab,Metabolic,Osteoporosis,Osteoporosis,Women's Health,True,False,"Prolia, 6-monthly",True
+Denosumab,Metabolic,Prevention of skeletal events in bone metastases,,,False,False,Xgeva,False
+Teriparatide,Metabolic,Severe osteoporosis at high fracture risk,Osteoporosis,Women's Health,True,False,,True
+Raloxifene,Metabolic,Postmenopausal osteoporosis,Osteoporosis,Women's Health,True,False,,True
+Calcium carbonate/citrate (± Vit D3),Metabolic,Calcium deficiency,,,False,False,,False
+Calcium carbonate/citrate (± Vit D3),Metabolic,Osteoporosis adjunct,Osteoporosis,Women's Health,True,False,,True
+Calcium carbonate/citrate (± Vit D3),Metabolic,Pregnancy/lactation,,,False,False,,False
+Cholecalciferol (D3),Metabolic,Vitamin D deficiency,Osteoporosis,Women's Health,True,False,,True
+Cholecalciferol (D3),Metabolic,Osteomalacia/rickets,Mineral & Bone Disorder (CKD-MBD / Hypoparathyroidism),Metabolic,True,False,,False
+Cholecalciferol (D3),Metabolic,Osteoporosis adjunct,Osteoporosis,Women's Health,True,False,,False
+Calcitriol,Metabolic,Renal osteodystrophy,Mineral & Bone Disorder (CKD-MBD / Hypoparathyroidism),Metabolic,True,False,,True
+Calcitriol,Metabolic,Hypoparathyroidism,Mineral & Bone Disorder (CKD-MBD / Hypoparathyroidism),Metabolic,True,False,,False
+Calcitriol,Metabolic,Refractory rickets,Mineral & Bone Disorder (CKD-MBD / Hypoparathyroidism),Metabolic,True,False,,False
+Ethinylestradiol + Levonorgestrel,Women's Health,Contraception,Contraception,Women's Health,True,False,,True
+Ethinylestradiol + Levonorgestrel,Women's Health,Menstrual cycle regulation,Contraception,Women's Health,True,False,,False
+Ethinylestradiol + Desogestrel,Women's Health,Contraception,Contraception,Women's Health,True,False,,True
+Ethinylestradiol + Desogestrel,Women's Health,Cycle regulation,Contraception,Women's Health,True,False,,False
+Ethinylestradiol + Desogestrel,Women's Health,Acne,,,False,False,,False
+Ethinylestradiol + Drospirenone,Women's Health,Contraception,Contraception,Women's Health,True,False,,True
+Ethinylestradiol + Drospirenone,Women's Health,PCOS,Polycystic Ovary Syndrome (PCOS),Women's Health,True,False,,False
+Ethinylestradiol + Drospirenone,Women's Health,Acne,,,False,False,,False
+Ethinylestradiol + Drospirenone,Women's Health,PMDD,Polycystic Ovary Syndrome (PCOS),Women's Health,True,False,,False
+Ethinylestradiol + Cyproterone acetate,Women's Health,Acne/hirsutism/PCOS with contraception,Polycystic Ovary Syndrome (PCOS),Women's Health,True,False,,True
+Ethinylestradiol + Gestodene,Women's Health,Contraception,Contraception,Women's Health,True,False,,True
+Desogestrel,Women's Health,Contraception,Contraception,Women's Health,True,False,"lactation, estrogen-contraindicated",True
+Levonorgestrel,Women's Health,Emergency contraception,Contraception,Women's Health,True,False,within 72 h,True
+Ulipristal acetate,Women's Health,Emergency contraception,Contraception,Women's Health,True,False,within 120 h,True
+Medroxyprogesterone acetate (DMPA),Women's Health,Contraception,Contraception,Women's Health,True,False,3-monthly,True
+Levonorgestrel IUS,Women's Health,Contraception,Contraception,Women's Health,True,False,5 yr,True
+Levonorgestrel IUS,Women's Health,Heavy menstrual bleeding,Heavy Menstrual Bleeding (Menorrhagia),Women's Health,True,False,,False
+Levonorgestrel IUS,Women's Health,Endometrial protection in HRT,,,False,False,,False
+Copper IUCD,Women's Health,Long-acting contraception,Contraception,Women's Health,True,False,,True
+Copper IUCD,Women's Health,Emergency contraception,Contraception,Women's Health,True,False,,False
+Clomiphene citrate,Women's Health,Anovulatory infertility,Infertility / Assisted Reproduction,Women's Health,True,False,,True
+Clomiphene citrate,Women's Health,PCOS,Polycystic Ovary Syndrome (PCOS),Women's Health,True,False,,False
+Follitropin alfa (recombinant FSH),Women's Health,Controlled ovarian stimulation,Infertility / Assisted Reproduction,Women's Health,True,False,,True
+Follitropin alfa (recombinant FSH),Women's Health,IVF,Infertility / Assisted Reproduction,Women's Health,True,False,,False
+Follitropin alfa (recombinant FSH),Women's Health,Anovulation,Infertility / Assisted Reproduction,Women's Health,True,False,,False
+Menotropin (HMG),Women's Health,Ovarian stimulation,Infertility / Assisted Reproduction,Women's Health,True,False,,True
+Menotropin (HMG),Women's Health,IVF,Infertility / Assisted Reproduction,Women's Health,True,False,,False
+Human chorionic gonadotropin,Women's Health,Ovulation trigger,Infertility / Assisted Reproduction,Women's Health,True,False,,True
+Human chorionic gonadotropin,Women's Health,Luteal support,Infertility / Assisted Reproduction,Women's Health,True,False,,False
+Leuprolide acetate,Women's Health,IVF down-regulation,Infertility / Assisted Reproduction,Women's Health,True,False,,True
+Leuprolide acetate,Women's Health,Endometriosis,Endometriosis,Women's Health,True,False,,False
+Leuprolide acetate,Women's Health,Fibroids,Uterine Fibroids,Women's Health,True,False,,False
+Leuprolide acetate,Women's Health,Precocious puberty,,,False,False,,False
+Goserelin,Women's Health,Endometriosis,Endometriosis,Women's Health,True,False,,True
+Goserelin,Women's Health,Fibroids,Uterine Fibroids,Women's Health,True,False,,False
+Cetrorelix,Women's Health,Prevention of premature LH surge in IVF,Infertility / Assisted Reproduction,Women's Health,True,False,,True
+Cabergoline,Women's Health,Hyperprolactinemia,Hyperprolactinaemia,Women's Health,True,False,,True
+Cabergoline,Women's Health,Infertility,Infertility / Assisted Reproduction,Women's Health,True,False,,False
+Cabergoline,Women's Health,Lactation suppression,Hyperprolactinaemia,Women's Health,True,False,,False
+Bromocriptine,Women's Health,Hyperprolactinemia,Hyperprolactinaemia,Women's Health,True,False,,True
+Bromocriptine,Women's Health,Infertility,Infertility / Assisted Reproduction,Women's Health,True,False,,False
+Bromocriptine,Women's Health,Lactation suppression,Hyperprolactinaemia,Women's Health,True,False,,False
+Progesterone (micronized),Women's Health,Luteal support,Infertility / Assisted Reproduction,Women's Health,True,False,ART,True
+Progesterone (micronized),Women's Health,Threatened/recurrent miscarriage,Recurrent Pregnancy Loss / Preterm Birth Prevention,Women's Health,True,False,,False
+Progesterone (micronized),Women's Health,Preterm prevention,,,False,False,,False
+Progesterone (micronized),Women's Health,HRT,,,False,False,,False
+Dydrogesterone,Women's Health,Threatened/habitual abortion,Medical Termination of Pregnancy,Women's Health,True,False,,True
+Dydrogesterone,Women's Health,Luteal support,Infertility / Assisted Reproduction,Women's Health,True,False,,False
+Dydrogesterone,Women's Health,DUB,,,False,False,,False
+Dydrogesterone,Women's Health,Endometriosis,Endometriosis,Women's Health,True,False,,False
+Dydrogesterone,Women's Health,Secondary amenorrhea,,,False,False,,False
+Dydrogesterone,Women's Health,HRT,,,False,False,,False
+Norethisterone,Women's Health,Heavy/dysfunctional uterine bleeding,Heavy Menstrual Bleeding (Menorrhagia),Women's Health,True,False,,True
+Norethisterone,Women's Health,Delay of menstruation,,,False,False,,False
+Norethisterone,Women's Health,Amenorrhea,,,False,False,,False
+Norethisterone,Women's Health,Endometriosis,Endometriosis,Women's Health,True,False,,False
+Medroxyprogesterone acetate (oral),Women's Health,DUB,,,False,False,,False
+Medroxyprogesterone acetate (oral),Women's Health,Secondary amenorrhea,,,False,False,,False
+Medroxyprogesterone acetate (oral),Women's Health,Endometriosis,Endometriosis,Women's Health,True,False,,True
+Medroxyprogesterone acetate (oral),Women's Health,HRT,,,False,False,,False
+Hydroxyprogesterone caproate,Women's Health,Prevention of recurrent miscarriage & preterm birth,Recurrent Pregnancy Loss / Preterm Birth Prevention,Women's Health,True,False,,True
+Dienogest,Women's Health,Endometriosis,Endometriosis,Women's Health,True,False,,True
+Dienogest,Women's Health,Chronic pelvic pain,,,False,False,,False
+Estradiol valerate,Women's Health,Menopausal HRT,Vasomotor Symptoms,Women's Health,True,False,,True
+Estradiol valerate,Women's Health,Endometrial preparation,Infertility / Assisted Reproduction,Women's Health,True,False,ART,False
+Estradiol valerate,Women's Health,Hypoestrogenism,Vasomotor Symptoms,Women's Health,True,False,,False
+Conjugated equine estrogens,Women's Health,Menopausal symptoms,Vasomotor Symptoms,Women's Health,True,False,,True
+Conjugated equine estrogens,Women's Health,Atrophic vaginitis,Vasomotor Symptoms,Women's Health,True,False,,False
+Conjugated equine estrogens,Women's Health,Hypoestrogenism,Vasomotor Symptoms,Women's Health,True,False,,False
+Tibolone,Women's Health,Menopausal vasomotor symptoms,Vasomotor Symptoms,Women's Health,True,False,,True
+Tibolone,Women's Health,Osteoporosis prevention,Osteoporosis,Women's Health,True,False,,False
+Estradiol + Dydrogesterone,Women's Health,Menopausal HRT,Vasomotor Symptoms,Women's Health,True,False,with intact uterus,True
+Estriol (vaginal),Women's Health,Atrophic vaginitis,Vasomotor Symptoms,Women's Health,True,False,,True
+Estriol (vaginal),Women's Health,Genitourinary syndrome of menopause,Vasomotor Symptoms,Women's Health,True,False,,False
+Ormeloxifene (Centchroman),Women's Health,Weekly non-hormonal contraceptive,Contraception,Women's Health,True,False,Saheli,True
+Ormeloxifene (Centchroman),Women's Health,DUB & mastalgia,,,False,False,Sevista,False
+Tranexamic acid,Women's Health,Heavy menstrual bleeding,Heavy Menstrual Bleeding (Menorrhagia),Women's Health,True,False,menorrhagia,True
+Tranexamic acid,Women's Health,Hemorrhage,,,False,False,,False
+Tranexamic acid,Women's Health,Trauma,,,False,False,,False
+Tranexamic acid,Women's Health,PPH,Postpartum Haemorrhage (Prevention & Treatment),Women's Health,True,False,,False
+Mefenamic acid,Women's Health,Primary dysmenorrhea,,,False,False,,False
+Mefenamic acid,Women's Health,Menorrhagia,Heavy Menstrual Bleeding (Menorrhagia),Women's Health,True,False,,True
+Ethamsylate,Women's Health,Menorrhagia,Heavy Menstrual Bleeding (Menorrhagia),Women's Health,True,False,,True
+Ethamsylate,Women's Health,Capillary bleeding,,,False,False,,False
+Oxytocin,Women's Health,Induction/augmentation of labor,Labour Induction & Cervical Ripening,Women's Health,True,False,,True
+Oxytocin,Women's Health,Prevention & treatment of PPH,Postpartum Haemorrhage (Prevention & Treatment),Women's Health,True,False,,False
+Methylergometrine,Women's Health,PPH,Postpartum Haemorrhage (Prevention & Treatment),Women's Health,True,False,,True
+Methylergometrine,Women's Health,Uterine atony,Postpartum Haemorrhage (Prevention & Treatment),Women's Health,True,False,,False
+Methylergometrine,Women's Health,Promotion of uterine involution,Postpartum Haemorrhage (Prevention & Treatment),Women's Health,True,False,,False
+Carboprost (15-methyl PGF2α),Women's Health,Refractory PPH,Postpartum Haemorrhage (Prevention & Treatment),Women's Health,True,False,,True
+Carboprost (15-methyl PGF2α),Women's Health,Second-trimester abortion,Medical Termination of Pregnancy,Women's Health,True,False,,False
+Misoprostol,Women's Health,Medical abortion,Medical Termination of Pregnancy,Women's Health,True,False,with mifepristone,True
+Misoprostol,Women's Health,PPH,Postpartum Haemorrhage (Prevention & Treatment),Women's Health,True,False,,False
+Misoprostol,Women's Health,Cervical ripening,Labour Induction & Cervical Ripening,Women's Health,True,False,,False
+Misoprostol,Women's Health,Induction,,,False,False,,False
+Misoprostol,Women's Health,Incomplete abortion,Medical Termination of Pregnancy,Women's Health,True,False,,False
+Mifepristone,Women's Health,Medical termination of pregnancy,Medical Termination of Pregnancy,Women's Health,True,False,≤9 wk,True
+Mifepristone,Women's Health,Cervical priming,Labour Induction & Cervical Ripening,Women's Health,True,False,,False
+Dinoprostone,Women's Health,Cervical ripening & induction of labor,Labour Induction & Cervical Ripening,Women's Health,True,False,,True
+Isoxsuprine,Women's Health,Threatened preterm labor,Preterm Labour (Tocolysis),Women's Health,True,False,beta-agonist,True
+Atosiban,Women's Health,Suppression of preterm labor,Preterm Labour (Tocolysis),Women's Health,True,False,,True
+Magnesium sulfate,Women's Health,Eclampsia/severe pre-eclampsia seizure prophylaxis,Pre-eclampsia / Eclampsia,Women's Health,True,False,,True
+Magnesium sulfate,Women's Health,Fetal neuroprotection,,,False,False,,False
+Magnesium sulfate,Women's Health,Tocolysis,Preterm Labour (Tocolysis),Women's Health,True,False,,False
+Nifedipine,Women's Health,Tocolysis,Preterm Labour (Tocolysis),Women's Health,True,True,"off-label, commonly used",True
+Ferrous salts / Iron (oral),Women's Health,Iron-deficiency anemia in pregnancy,Iron-Deficiency Anaemia (Pregnancy & Postpartum),Women's Health,True,False,,True
+Ferric carboxymaltose (FCM),Women's Health,Moderate–severe iron-deficiency anemia,Iron-Deficiency Anaemia (Pregnancy & Postpartum),Women's Health,True,False,pregnancy/postpartum,True
+Iron sucrose,Women's Health,Iron-deficiency anemia when oral not tolerated,Iron-Deficiency Anaemia (Pregnancy & Postpartum),Women's Health,True,False,,True
+Folic acid,Women's Health,Neural-tube-defect prevention,Iron-Deficiency Anaemia (Pregnancy & Postpartum),Women's Health,True,False,,True
+Folic acid,Women's Health,Megaloblastic anemia,Iron-Deficiency Anaemia (Pregnancy & Postpartum),Women's Health,True,False,,False
+Anti-D (Rho) immunoglobulin,Women's Health,Prevention of Rh alloimmunization in Rh-negative mothers,Rh(D) Alloimmunisation Prophylaxis,Women's Health,True,False,D,True
+Betamethasone,Women's Health,Fetal lung maturation in threatened preterm birth,Fetal Lung Maturation (Antenatal Corticosteroid),Women's Health,True,False,,True
+Danazol,Women's Health,Endometriosis,Endometriosis,Women's Health,True,False,,True
+Danazol,Women's Health,Fibrocystic breast disease,,,False,False,,False
+Danazol,Women's Health,Hereditary angioedema,,,False,False,,False
+Ulipristal acetate (5 mg),Women's Health,Uterine fibroid symptoms,Uterine Fibroids,Women's Health,True,False,pre-operative,True
+Spironolactone,Women's Health,Hirsutism/acne in PCOS,Polycystic Ovary Syndrome (PCOS),Women's Health,True,True,off-label,True
+Myo-inositol (± D-chiro),Women's Health,PCOS – insulin sensitivity & ovulation support,Type 2 Diabetes,Metabolic,True,False,nutraceutical,True
+Domperidone,Women's Health,Stimulation of lactation,Hyperprolactinaemia,Women's Health,True,True,off-label,True
+Domperidone,Women's Health,Also anti-emetic,,,False,False,,False
+Clotrimazole (vaginal),Women's Health,Vulvovaginal candidiasis,Vulvovaginal Candidiasis,Women's Health,True,False,,True
+Fluconazole,Women's Health,Vulvovaginal candidiasis,Vulvovaginal Candidiasis,Women's Health,True,False,,True

@@ -46,6 +46,8 @@ from datetime import datetime, timezone
 
 from motor.motor_asyncio import AsyncIOMotorClient
 
+from core.scope import is_oncology
+
 MONGO_URL = os.environ.get("MONGO_URL")
 DB_NAME = os.environ.get("DB_NAME", "droptax")
 
@@ -173,6 +175,16 @@ def parse_pdf(path, permission_type, source_name):
     # A row with no firm and no drug carries nothing usable.
     usable = [r for r in records if r.get("drug_name") or r.get("firm")]
     skipped += len(records) - len(usable)
+
+    # The r-DNA register is roughly a quarter oncology by volume. This platform
+    # covers CardioMetabolic and Women's Health, and loading the register whole
+    # put breast-cancer biologics back into a codebase that had none. Rows are
+    # marked rather than dropped: a user can type any drug, and "outside what
+    # the platform covers" beats an empty answer.
+    for r in usable:
+        excluded, why = is_oncology(r.get("drug_name"), r.get("indication"))
+        r["out_of_scope"] = excluded
+        r["out_of_scope_reason"] = why
     return usable, skipped
 
 
@@ -205,8 +217,11 @@ async def main():
         all_records.extend(recs)
         total_skipped += skipped
 
-    firms = {r["firm"] for r in all_records if r.get("firm")}
-    print(f"\n  {len(all_records)} permissions · {len(firms)} distinct firms")
+    in_scope = [r for r in all_records if not r.get("out_of_scope")]
+    firms = {r["firm"] for r in in_scope if r.get("firm")}
+    print(f"\n  {len(all_records)} permissions · "
+          f"{len(all_records) - len(in_scope)} marked out of scope (oncology) · "
+          f"{len(in_scope)} in scope · {len(firms)} distinct firms in scope")
     print(f"  {sum(1 for r in all_records if r['permission_type'] == 'manufacture')} "
           f"manufacture, "
           f"{sum(1 for r in all_records if r['permission_type'] == 'import')} import")

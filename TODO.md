@@ -177,6 +177,12 @@ Per claim and per purpose: *supports · supports with caveat · does not support
 
 **2026-08-05 (later)**
 
+- `[x]` **Data artefacts exported.** `artefacts/` — 3 MB, portable, for the other project. Registry, catalogue, 438 indications, NPPA, NLEM, both CDSCO registers, verified label facts. `MANIFEST.md` carries every caveat, and each JSON repeats its own.
+- `[x]` **Oncology scope filter** (`core/scope.py`). The r-DNA register is ~24% oncology and loading it whole put breast-cancer biologics back into a codebase that had none. 82 rows marked out of scope, not deleted.
+- `[ ]` **Trade press as a source.** CDSCO publication lags: Inclisiran was cleared July 2023 and is in no register we hold. Medical Dialogues, Pharmabiz, ET Pharma, RAPS report SEC outcomes within days. Treat as "reported by X", never restated as a CDSCO fact.
+- `[?]` **General business press in scope?** Moneycontrol, Business Standard, CNBC-TV18, The Hindu, ToI, ThePrint — more noise per useful item than the regulatory trade titles. Awaiting Rajan.
+- `[ ]` **A third CDSCO stream exists** — SEC minutes and import permissions outside the r-DNA register. That is where Inclisiran sits. Not built.
+
 - `[x]` **CDSCO India approval register.** 733 approvals from 40 year-wise lists, 2000–2026, with the India-approved indication and date. 105 of 218 catalogue molecules found. Replaces openFDA as the answer to "is this approved here"; openFDA is demoted to a pipeline signal only.
 - `[ ]` **Matching is crude.** Substring on the molecule token pulls in fixed-dose combinations — ramipril's earliest hit is a metoprolol/atorvastatin product. Needs a proper molecule matcher.
 - `[ ]` **Date text bleeds into the indication field.** Captopril reads "Indicated in the treatment of October-1985 h…".
