@@ -229,7 +229,94 @@ scheduled means no ceiling has been fixed, not that price is free.
 
 ---
 
-## 9. What this corrects in the build
+## 9. Brand counts are two orders of magnitude off
+
+The Competition Commission of India's market study on the pharmaceutical sector
+settles the competition question with numbers, and they demolish the approach I
+was taking. Two of its examples are in our therapy areas:
+
+| Formulation | Brands | Companies |
+|---|---|---|
+| Rosuvastatin 10 mg | **127** | 105 |
+| Glimepiride + metformin 500 mg | **137** | 120 |
+| Amoxicillin + clavulanic acid 125/500 mg | 292 | 217 |
+
+That last one sells **₹40 to ₹336 for a pack of six — an 8.4x spread on an
+identical formulation**. Our catalogue lists three "key brands" for
+rosuvastatin. Counting them was never going to measure anything.
+
+CCI also documents **brand proliferation within a single company** — 15
+companies market two different brands of the same glimepiride + metformin
+formulation. So even company count overstates independence, exactly as
+Vymada/Azmarda showed.
+
+Generics are about **97% of Indian drug consumption by value**.
+
+### The trade controls the shelf
+
+CCI's finding, from its own enforcement cases: *"the entire supply chain of
+drugs is 'self-regulated' by the trade associations, resulting in market
+distortions"* — the apex association and its local affiliates *"play a
+gatekeeper role at various levels of the distribution chain, making
+pharmaceutical markets impervious to the incentives of competition."*
+Appointment of a stockist has required a **No-Objection Certificate** from the
+association.
+
+Which answers the question I could not: **the chemist decides**, and margin
+decides the chemist. Where a prescribed brand is absent, substitution goes to
+the higher-margin brand, and companies raise that margin with schemes — "buy
+10 get 2 free" — rather than by changing MRP. AIOCD has sought 10% for
+wholesalers and 20% for retailers as a formal position.
+
+India runs **over 600,000 medical representatives**, and roughly **60% of
+promotional budget** goes to field force. Demand is created by feet, not by
+price.
+
+---
+
+## 10. Indian clinical guidance is its own body of work
+
+Not adaptations of Western guidelines — separate documents by Indian societies,
+with Indian thresholds:
+
+- **Lipid Association of India** — Consensus Statement IV, Feb 2024
+- **Indian Society of Hypertension** — Consensus Guideline 2025, 63 experts
+- **API / CSI / ICP / HSI** — joint Indian hypertension guidelines since 2001
+- **RSSDI** — Clinical Practice Recommendations 2022, 150+ experts
+- **NHM Standard Treatment Guidelines** — the public-system reference
+
+So "what does the guideline say" has an Indian answer that can differ from the
+ESC or ADA one, and a medical affairs user here will be asked about the Indian
+one.
+
+---
+
+## 11. Prescription control and labelling
+
+**Schedule H1** covers antibiotics and other restricted molecules: the Rx
+symbol in **red** in the upper left, a **red-bordered box warning**, and the
+pharmacist must **retain the prescription** and maintain a sales register.
+Package inserts are governed by Schedule D(II) Section 6 of the Drugs and
+Cosmetics Rules — a different structure from an FDA label, so Indian
+prescribing information is its own document and not a translation.
+
+---
+
+## 12. Private insurance mechanics
+
+IRDAI Master Circular 2024: cashless **pre-authorisation within one hour**,
+discharge approval **within three hours**, reimbursement claims settled within
+**30 days**. Floors of a **36-month** pre-existing disease waiting period and a
+**5-year moratorium** after which claims cannot be rejected. Group cover is
+administered through a **TPA** or the insurer directly.
+
+Exclusions are per-policy rather than standardised, so whether a specific drug
+is covered cannot be answered generally — only against a named policy. That is
+a real limit on what the platform can claim about private coverage.
+
+---
+
+## 13. What this corrects in the build
 
 | Was | Actually |
 |---|---|
@@ -241,6 +328,9 @@ scheduled means no ceiling has been fixed, not that price is free.
 | Share data "not obtainable" | Not purchasable by us, but NPPA legislates on it and the ceiling prices we hold encode it |
 | IPD "covered, bundled in the claim" | Under PM-JAY it is a fixed all-inclusive package the hospital must fit the drug inside |
 | Threat model = generic entry | Threat model = **NPPA margin capping under para 19** |
+| Brand count as the competition signal | Rosuvastatin has **127 brands from 105 companies**; our list holds 3. Spread, not count |
+| Demand assumed to follow the prescription | The chemist substitutes to the higher-margin brand; 600,000 MRs create the demand |
+| "The guideline" meaning ESC or ADA | India has its own — LAI, InSH, RSSDI, CSI/API — with different thresholds |
 
 ---
 
@@ -253,7 +343,9 @@ scheduled means no ceiling has been fixed, not that price is free.
   Novartis and Cipla respectively; the catalogue records marketers, not owners,
   and in 106 of 218 rows the brand and marketer lists are different lengths, so
   they cannot be paired positionally.
-- How a hospital formulary is actually set, and by whom.
+- How a hospital formulary is actually set, and by whom. (Partially answered
+  for retail — the chemist decides and margin decides the chemist — but
+  institutional formularies remain unread.)
 - How Jan Aushadhi interacts with branded generics at the counter. The PMBI site
   serves an app shell for every path including its own API, so it remains
   unread.
