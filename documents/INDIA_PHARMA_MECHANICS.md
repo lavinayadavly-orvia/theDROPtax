@@ -316,7 +316,43 @@ a real limit on what the platform can claim about private coverage.
 
 ---
 
-## 13. What this corrects in the build
+## 13. Public procurement is a third price, and it is the floor
+
+Central government buys through the **Medical Stores Organisation** (DGHS,
+MoHFW): seven Government Medical Store Depots — Mumbai, Kolkata, Chennai,
+Hyderabad, Guwahati, Karnal, New Delhi — with quality-control laboratories
+attached at three, testing **before acceptance**. Purchasing runs on an annual
+**indent cycle** against **rate contracts**, tendered through the Central Public
+Procurement portal, with a **debarment register** for firms, laboratories and
+products.
+
+Only **8 rate contracts were active** when read, so MSO's own coverage is
+narrow. Its site navigation is broken — every menu item resolves to
+`/portal/undefined` — so the rate contract and debarred lists could not be
+opened.
+
+The states are the better window. **TNMSC** publishes a drug list with prices:
+
+| TNMSC | per tablet |
+|---|---|
+| Amlodipine 10 mg | ₹0.90 |
+| Atorvastatin 80 mg | ₹3.15 |
+| Amiodarone 200 mg | ₹5.31 |
+| Aceclofenac 100 mg | ₹0.72 |
+
+Against our catalogue's retail figures — ramipril ₹7.00 a tablet, enalapril
+₹3.50 — public procurement sits far below branded retail for the same
+molecules. **So there are at least three prices for one drug: the public
+procurement price, the branded retail price, and the MRP printed on the pack.**
+The platform models one.
+
+TNMSC also publishes a **blacklist**, as MSO does. Supplier debarment is public
+in both, which makes it a checkable quality and continuity signal — a molecule
+whose only Indian maker is debarred is a supply risk, and that is knowable.
+
+---
+
+## 14. What this corrects in the build
 
 | Was | Actually |
 |---|---|
