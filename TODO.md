@@ -12,6 +12,9 @@ still open, what got added.
 - Nothing is deleted when it is done — it moves to *Done*, so the record stays.
 - New items get added under *Added this session* with the date, then filed.
 
+**The standing rule** — no assumptions, no leap of faith, no US-to-India copy
+paste, unfamiliar terms researched rather than confidently assumed.
+
 Last reviewed: **2026-08-05**
 
 ---
@@ -20,9 +23,27 @@ Last reviewed: **2026-08-05**
 
 | | Item | Note |
 |---|---|---|
-| `[ ]` | **Wire the brain into `/analyze`** | Everything below exists, is tested, and is invisible. A user typing a drug still gets the old behaviour. This is the single blocker on seeing any of it. |
-| `[ ]` | **Literature agent writes endpoints back** | Clinical endpoints in the DB are still **1 of 218**. The agent retrieves and reads; nothing persists. |
+| `[ ]` | **Rebuild the engines against what the instruments actually say** | A day of reading found eight things the code has wrong. See [documents/INDIA_PHARMA_MECHANICS.md](documents/INDIA_PHARMA_MECHANICS.md) §14. This is now ahead of wiring, because wiring the current logic would ship the errors. |
+| `[ ]` | **Wire the brain into `/analyze`** | Everything below exists, is tested, and is invisible. A user typing a drug still gets the old behaviour. |
+| `[ ]` | **Literature agent writes endpoints back** | Clinical endpoints in the DB are still **1 of 218**. |
 | `[ ]` | **UI** | Deferred. One page per drug, sections appearing only where the fetch plan says they apply. |
+
+---
+
+## What the reading changed — rebuild list
+
+Each of these is live in the code today and wrong.
+
+| | Item | Correction |
+|---|---|---|
+| `[ ]` | Threat model | Risk is **NPPA margin capping under DPCO para 19**, which reaches *any* drug. Trigger is the gap between price-to-stockist and MRP, not a high MRP |
+| `[ ]` | `price_controlled: False` on 177 of 218 | Means *no ceiling fixed yet*, not pricing freedom |
+| `[ ]` | `MANY_BRANDS = 5` | DPCO para 6: fewer than five manufacturers holding **≥1% market share**. Right number, invented basis |
+| `[ ]` | Brand count as competition | Rosuvastatin carries **127 brands from 105 companies**; our list holds 3. Spread, not count |
+| `[ ]` | One price per molecule | At least three — MSO contracted, public counter, branded retail — plus MRP on the pack |
+| `[ ]` | IPD "covered, bundled in the claim" | Under PM-JAY the package is **inclusive of drugs**, so the hospital absorbs it. A disincentive, not coverage |
+| `[ ]` | Efficacy read against the trial's own target | India sets its own — LAI 2024 LDL-C <50 very-high-risk, ≤30 extreme |
+| `[ ]` | Coverage shares 85/20/0 | NHA 2022-23: OOP **43.4%**, social security **9.9%**, private insurance **9.2%** (shares of total health spend, so a floor for medicines) |
 
 ---
 
@@ -30,19 +51,23 @@ Last reviewed: **2026-08-05**
 
 | | Item | State |
 |---|---|---|
-| `[~]` | Prices | **213 of 218 are estimates.** 156 rest on an assumed once-daily dose — a drug taken three times a day costs 3×. Bands are wide enough that the cost gate survives this; individual figures are not trustworthy. |
-| `[~]` | Clinical endpoints | 1 of 218. |
-| `[x]` | NPPA ceiling prices | 1,012 formulations, 292 molecules, each with gazette number and date. |
-| `[x]` | NLEM 2022 | 239 medicines, care levels P/S/T. 218/218 catalogue rows carry a verdict. 41 price-controlled. |
-| `[x]` | Verified label facts | DailyMed, 50 innovators. Source, date and verbatim quote on every field. |
-| `[ ]` | Coverage shares | IPD/OPD/HOME 85/20/0 is **invented**. Needs real payer policy sources. |
-| `[ ]` | Event costs | `major_event_cost` ₹18L is **a placeholder**. PMJAY package rates are the source. |
-| `[x]` | India regulatory (CDSCO) | 472 approvals, 452 dated, 2000–2026, with the India-approved indication. 58/218 catalogue molecules link, 39 only as combinations. Absence reads "not found", never "not approved". |
-| `[x]` | Indian brands and makers | On all 218 rows. Counts are **lower bounds** — key_brands is a curated subset. Replaces US exclusivity as the competition signal. |
-| `[!]` | 9 CDSCO lists unreadable | Image tables with no text layer; neither pypdf nor pdfplumber reads them. Needs OCR. 2019 is among them. |
-| `[ ]` | Multi-brand pricing | Inclisiran has 4 Indian brands; the workbook holds 1. |
-| `[!]` | Jan Aushadhi | Blocked — the site is an SPA serving an app shell for every path, including its own API. Needs another route. |
-| `[?]` | 93-row price review worksheet | Generated and waiting on Rajan. Confirmed rows never resurface. |
+| `[~]` | Prices | **213 of 218 are estimates.** 156 rest on an assumed once-daily dose. Bands survive it; individual figures do not |
+| `[~]` | Clinical endpoints | 1 of 218 |
+| `[x]` | NPPA ceiling prices | 1,012 formulations, gazette-cited |
+| `[x]` | NLEM 2022 | 239 medicines. **Schedule I of DPCO *is* NLEM**, so this is the right test for "scheduled" |
+| `[x]` | CDSCO new drug approvals | 472, 452 dated, 2000–2026, with India-approved indication. 58/218 link, 39 only as combinations |
+| `[x]` | CDSCO biologics permissions | 486 (125 manufacture, 361 import), 82 marked out of scope |
+| `[x]` | CGHS restricted medicines | 407, of which **81 need Standing Technical Committee clearance**. Inclisiran and evolocumab both STC |
+| `[x]` | MSO rate contracts | 525 rates, each with its contract window. **Supplied copy** — mso-gmsd.in nav is broken |
+| `[x]` | Indian brands and makers | On all 218 rows. Counts are **lower bounds** |
+| `[x]` | Verified label facts | DailyMed, 50 innovators, verbatim quotes |
+| `[ ]` | Event costs | ₹18L `major_event_cost` is **a placeholder**. PM-JAY rate tables unreachable |
+| `[ ]` | Multi-brand pricing | Inclisiran has 4 Indian brands; the workbook holds 1 |
+| `[!]` | 9 CDSCO lists unreadable | Image tables, no text layer. Neither pypdf nor pdfplumber. Needs OCR |
+| `[!]` | CGHS site | Times out on every path including its home page |
+| `[!]` | PM-JAY rate tables | HTML shells at every URL. The HBP manual downloads fine |
+| `[!]` | Jan Aushadhi | SPA serving an app shell for every path including its own API |
+| `[?]` | 93-row price review worksheet | Generated and waiting on Rajan |
 
 ---
 
@@ -50,18 +75,24 @@ Last reviewed: **2026-08-05**
 
 | | Item | Note |
 |---|---|---|
-| `[x]` | Therapy area registry | 37 indications across CVD / CVS / Metabolic / Women's Health. Endpoints, direction, normalisation per indication. |
-| `[x]` | Indications structured | 438 across 218 rows. 123 multi-indication. 331 mapped, **107 unmapped and marked** — not forced. |
-| `[x]` | Orienting facts | openFDA, live, any drug. **Demoted to a pipeline signal** — approved there means it will probably arrive here. It does not describe competition in India. |
-| `[x]` | India market signal | Brands and makers from the catalogue; classifier now leads with India and flags where the US reading would contradict it. |
-| `[x]` | Cost gate + classifier | Money sections gated on burden as a share of income, and on whether payment recurs. |
-| `[x]` | Applicability engine | Route → feasible settings → coverage by setting. |
-| `[x]` | Value engine | Registry-normalised event probability. No oncology maths. |
-| `[x]` | Literature agent | Europe PMC. Design, journal, authors, population, funding — each with the sentence it came from. |
-| `[~]` | Appraisal engine | Built, 34 tests, **partly obsolete**. Exposure and follow-up machinery is no longer fed and should be stripped. |
-| `[ ]` | Registry gaps | 107 unmapped indications. Most frequent: Post-MI ×5, diabetic nephropathy ×3, CV-risk reduction ×3, HRT ×3, BPH ×2, DUB ×2. |
-| `[ ]` | Evidence criteria → code | Criteria are defined (below). Not implemented. |
-| `[ ]` | Competitive & threat agent | Not started. |
+| `[x]` | Therapy area registry | 37 indications, endpoints, direction, normalisation |
+| `[x]` | Indications structured | 438 across 218 rows. 331 mapped, 107 unmapped and marked |
+| `[x]` | Brand resolver | 474 brands indexed. "Vymada" → Sacubitril + Valsartan. Ambiguity returned, never guessed |
+| `[x]` | Orienting facts | openFDA, live, any drug. **Demoted to a pipeline signal** |
+| `[x]` | India market signal | Brands, makers and CDSCO permissions. Flags where the US reading would contradict it |
+| `[x]` | India approval matching | Drug-name field only, salts and units normalised, combinations counted separately |
+| `[x]` | Cost gate + classifier | Gated on burden as a share of income, and on whether payment recurs |
+| `[x]` | Oncology scope filter | Molecule-first, so leuprolide and denosumab survive |
+| `[x]` | Applicability engine | Route → feasible settings → coverage by setting |
+| `[x]` | Value engine | Registry-normalised event probability |
+| `[x]` | Literature agent | Europe PMC. Design, journal, authors, population, funding — each with its sentence |
+| `[x]` | Author standing | Papers-on-topic, institution kind, industry employment, ORCID coverage |
+| `[~]` | Appraisal engine | 34 tests, **partly obsolete**. Exposure/follow-up machinery no longer fed |
+| `[ ]` | Registry gaps | 107 unmapped indications: Post-MI ×5, diabetic nephropathy ×3, CV-risk reduction ×3, HRT ×3 |
+| `[ ]` | Evidence criteria → code | Criteria defined, not implemented |
+| `[ ]` | Competitive & threat agent | Not started — and the threat is NPPA, not a competitor |
+| `[ ]` | CGHS price resolution | MSO rate contract, else NPPA ceiling. Both legs now held; not wired |
+| `[ ]` | Trade press ingestion | Tiered (below). No ingestion for any tier |
 
 ---
 
@@ -132,14 +163,17 @@ Per claim and per purpose: *supports · supports with caveat · does not support
 
 ---
 
+---
+
 ## Housekeeping
 
 | | Item |
 |---|---|
-| `[?]` | **Rotate the leaked MongoDB credential.** It was committed in 5 files before being moved to a gitignored `.env`. Removal from the working tree does not un-leak it. |
+| `[?]` | **Rotate the leaked MongoDB credential.** Committed in 5 files before being moved to a gitignored `.env`. Removal from the working tree does not un-leak it. |
 | `[ ]` | Strip the exposure/follow-up machinery from `appraisal.py`. |
 | `[ ]` | `server.py` is ~3,000 lines — routing, business logic, LLM and PDF in one file. |
 | `[ ]` | Docs still describe the pre-brain platform: `ARCHITECTURE.md`, `DEMO_GUIDE.md`, `ONBOARDING_GUIDE.md`. |
+| `[ ]` | Expand `core/scope.py` — the CGHS STC list is heavily oncology and several molecules slipped the filter (apalutamide, avelumab, capmatinib, asciminib). |
 
 ---
 
@@ -152,55 +186,40 @@ Per claim and per purpose: *supports · supports with caveat · does not support
 - Price workbook, cross-retailer outlier detection, human review worksheet + ingest
 - Verified facts from DailyMed
 - Appraisal engine (calibration cases pass)
-- Literature & RWE agent
+- Literature & RWE agent, then author standing on top of it
 - Indications structured; `(drug × indication)` established as the unit
-- Orienting facts from openFDA
+- Orienting facts from openFDA, then demoted to a pipeline signal
 - Cost gate and classifier
+- Brand resolver
+- CDSCO new-drug and biologics registers
+- CGHS restricted medicines, MSO rate contracts
+- Data artefacts exported with their caveats — `artefacts/`, 3 MB
+- **Read the domain from primary instruments** — [documents/INDIA_PHARMA_MECHANICS.md](documents/INDIA_PHARMA_MECHANICS.md), 14 sections
 
 ### Bugs found and fixed
 - Assumed once-daily dosing served as an exact price (156 of 161 priced drugs)
 - NLEM status skipped duplicate-named rows — `update_one` where `update_many` was needed
-- `portal HTN` resolved to systemic hypertension — substring alias match, would have applied blood-pressure endpoints to variceal bleed prophylaxis
+- `portal HTN` resolved to systemic hypertension — would have applied blood-pressure endpoints to variceal bleed prophylaxis
 - Inclisiran warned it might be "taken three times daily" — it is dosed twice a year
-- Tenecteplase offered assistance and cash-flow — a single dose in an admission is bundled into the claim
+- Tenecteplase offered assistance and cash-flow — a single dose in an admission is bundled
+- 513 of 733 CDSCO rows undated because only `dd.mm.yyyy` was matched; the older lists write "October-1985"
+- Numbered indication bullets read as approval rows — 261 phantom rows
+- Substring molecule matching gave ramipril a metoprolol/atorvastatin combination
+- `\bpharmaceutical\b` failing against "Pharmaceuticals" — Novartis and Apollo classified as nothing
+- Units surviving normalisation — "brexpiprazole mg"
 - Auto-applied generic PAP halved every out-of-pocket drug
-- Fabricated adverse-event rates, competitor prices, and ₹1,000,000 default prices
+- Fabricated adverse-event rates, competitor prices, ₹1,000,000 default prices
 - Five scraping defects, each producing confident output rather than an error
+
+### Claims I made and then corrected
+- "Retail platforms discount 15–25% off MRP" — our own 443 paired observations give a **median of 1%**
+- "The scraper doesn't capture the marketer" — it does, on 209 of 650 listings
+- "STC = Specialist Treatment Centre" — it is the **Standing Technical Committee**, and the mechanism is cost-triggered
+- "Share data is not obtainable" — not purchasable by us, but NPPA legislates on it and the ceilings we hold encode it
+- "Orphan status is unsourceable" — defined in law as a condition affecting **not more than five lakh persons in India**
 
 ---
 
 ## Added this session
 
-**2026-08-05**
-
-- `[x]` **Author standing.** Papers-on-topic and total output for first and senior author, institution kind read from the affiliation, industry employment flagged, ORCID where present with its coverage stated. Live: a case-report author reads 1 paper on inclisiran; Banach reads 58 of 1,470. Only the two end authors are queried — a fifteen-author paper would otherwise cost fifteen calls.
-- `[ ]` **Show author standing in the profile.** Built and not surfaced. It belongs beside impact factor as a *position* signal — a KOL-led study is more likely to be cited and quoted back at you, not more likely to be sound.
-- ~~Guideline authorship as a standing signal~~ — **dropped 2026-08-05.** Publication count already identifies the same people; guideline committees are largely drawn from those publishing most in the field. It would have cost PDF ingestion per society per version for a marginal refinement on a signal that already fires correctly. Whether a *drug* carries a guideline recommendation is a separate and more useful question, and is not author standing.
-- `[ ]` **Divergence needs like-for-like matching.** Comparing an independent study against a sponsor one only means something if population, endpoint and design are comparable. Otherwise the difference is explained by the population and attributing it to funding is a confound. A 5,000-patient Korean study and a 500-patient Indian one are not a comparison.
-- `[ ]` **Secondary publications off a registrational dataset.** The regulator audits the pivotal trial and not the subgroup, pooled and post-hoc papers carved out of it afterwards — no locked SAP, no inspection. This is the one place funding has a lever that neither obligation nor resource scarcity explains.
-- `[ ]` **Comparator choice in sponsor-funded head-to-heads.** Which drug, at which dose, against which endpoint are decisions the funder made, and they are checkable. Small set, real lever.
-- `[ ]` **US state codes stay unmatched for country.** Deliberate: "IN" is Indiana, and matching it would route an Indianapolis affiliation to a South Asian cohort. Revisit only with a proper geocoder, never with a two-letter map.
-
-**2026-08-05 (later)**
-
-- `[x]` **Read how the Indian market actually works** — [documents/INDIA_PHARMA_MECHANICS.md](documents/INDIA_PHARMA_MECHANICS.md). DPCO 2013 paras 4/5/6/19/20 from the consolidated order, NPPA FAQs, the 2019 TMR order, PM-JAY HBP 2.2, retailer margin evidence. Eight things the build had wrong are listed there against what the instruments actually say.
-- `[ ]` **Threat model is wrong and must be rebuilt.** For an expensive Indian drug the risk is not generic entry or patent expiry — it is NPPA capping trade margin under para 19, which applies to ANY drug regardless of scheduling. The trigger is a large visible gap between price-to-stockist and MRP, not a high MRP.
-- `[ ]` **`price_controlled: False` is being misread** across 177 of 218 molecules. It means no ceiling has been fixed yet, not that pricing is free.
-- `[ ]` **Competition threshold has a legal definition** — DPCO para 6: fewer than five manufacturers with ≥1% market share. Replace the invented `MANY_BRANDS = 5` constant with the real basis.
-- `[ ]` **PM-JAY is not coverage.** Packages are all-inclusive of drugs, so an expensive molecule is a cost the hospital absorbs inside a fixed rate — a disincentive to use it, not reimbursement.
-- `[ ]` **Price is four numbers, not one** — PTS, PTR, retail price, MRP, with 16% and local taxes as the known bridges. The platform currently conflates them.
-
-- `[x]` **Data artefacts exported.** `artefacts/` — 3 MB, portable, for the other project. Registry, catalogue, 438 indications, NPPA, NLEM, both CDSCO registers, verified label facts. `MANIFEST.md` carries every caveat, and each JSON repeats its own.
-- `[x]` **Oncology scope filter** (`core/scope.py`). The r-DNA register is ~24% oncology and loading it whole put breast-cancer biologics back into a codebase that had none. 82 rows marked out of scope, not deleted.
-- `[ ]` **Trade press as a source.** CDSCO publication lags: Inclisiran was cleared July 2023 and is in no register we hold. Medical Dialogues, Pharmabiz, ET Pharma, RAPS report SEC outcomes within days. Treat as "reported by X", never restated as a CDSCO fact.
-- `[x]` **General business press — decided: in, as Tier 3 only.** See the decision below.
-- `[ ]` **A third CDSCO stream exists** — SEC minutes and import permissions outside the r-DNA register. That is where Inclisiran sits. Not built.
-
-- `[x]` **CDSCO India approval register.** 733 approvals from 40 year-wise lists, 2000–2026, with the India-approved indication and date. 105 of 218 catalogue molecules found. Replaces openFDA as the answer to "is this approved here"; openFDA is demoted to a pipeline signal only.
-- `[ ]` **Matching is crude.** Substring on the molecule token pulls in fixed-dose combinations — ramipril's earliest hit is a metoprolol/atorvastatin product. Needs a proper molecule matcher.
-- `[ ]` **Date text bleeds into the indication field.** Captopril reads "Indicated in the treatment of October-1985 h…".
-- `[ ]` **Coverage skews recent** — strong from ~2009, thin before. Old generics will read "not found in CDSCO", which must never render as "not approved in India".
-- `[ ]` **Tenecteplase is absent** from the register despite being sold here as Elaxim. Pre-dates usable coverage.
-- `[!]` **The 2006 list is a scanned image** — no extractable text, needs OCR. Reported as unread rather than counted as empty.
-- `[ ]` **Parser tests are owed.** The segmentation logic (sequential serials, numbered vs unnumbered fallback) has no test behind it, and it took three attempts to get right.
-- `[ ]` **Indian brands and manufacturers** — the count and price spread that replace "exclusivity" for India. Not in this register; a separate source.
+*(2026-08-06 — new items land here before being filed above)*
