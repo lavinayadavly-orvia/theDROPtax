@@ -291,3 +291,85 @@ def test_stray_small_numerals_are_still_rejected():
 def test_week_scale_followup_is_read():
     v = extract_followup_years("After 24 weeks of follow-up, LDL-C fell.").value
     assert v == pytest.approx(24 / 52, abs=0.01)
+
+
+# ── Authors, journal, population, funding: the four that matter ───────────
+
+AUTHORED = {
+    "id": "40884558", "pmid": "40884558", "source": "MED", "pubYear": "2026",
+    "title": "Inclisiran-based treatment strategy in hypercholesterolaemia",
+    "journalInfo": {"journal": {"title": "European heart journal"}},
+    "pubTypeList": {"pubType": ["Journal Article"]},
+    "authorList": {"author": [
+        {"fullName": "Landmesser U", "authorAffiliationDetailsList": {
+            "authorAffiliation": [{"affiliation": "Deutsches Herzzentrum, Berlin, Germany"}]}},
+        {"fullName": "Laufs U"}, {"fullName": "Schatz U"}]},
+    "grantsList": {"grant": [{"agency": "Novartis Pharma"}]},
+    "abstractText": ("In this double-blind, placebo-controlled study we randomized "
+                     "898 patients. LDL cholesterol fell at 12 months."),
+}
+
+INDIAN_TEXT = dict(AUTHORED, id="1", pmid="1",
+                   title="Inclisiran in Indian patients with ASCVD",
+                   authorList={"author": [{"fullName": "A B", "authorAffiliationDetailsList": {
+                       "authorAffiliation": [{"affiliation": "Dept of Cardiology, Boston, USA"}]}}]})
+
+
+def test_authors_are_extracted():
+    """They were not extracted at all before — a straight omission."""
+    p = parse_record(AUTHORED)
+    assert p.authors["count"] == 3
+    assert p.authors["first"] == "Landmesser U"
+    assert p.authors["senior"] == "Schatz U"
+
+
+def test_journal_is_captured():
+    assert parse_record(AUTHORED).journal == "European heart journal"
+
+
+def test_design_falls_back_to_the_abstract_when_pubtype_is_uninformative():
+    """'Journal Article' says nothing about internal validity, but the abstract
+    describes the design plainly. Reading both lifted coverage from ~5/25 to 14/25."""
+    p = parse_record(AUTHORED)
+    assert p.shape.value == 9.5
+    assert "from text" in p.design_label
+
+
+def test_a_recognised_pubtype_still_wins_over_the_text():
+    rec = dict(AUTHORED, pubTypeList={"pubType": ["Observational Study"]})
+    p = parse_record(rec)
+    assert "Publication type" in p.design_label
+
+
+def test_population_falls_back_to_affiliation_and_is_marked_a_proxy():
+    """Affiliation says where the authors work, not who was enrolled."""
+    rec = dict(AUTHORED, title="Inclisiran outcomes")
+    rec["abstractText"] = "We randomized 898 patients and measured LDL cholesterol."
+    p = parse_record(rec)
+    assert p.cohort.value == "western"
+    assert p.cohort_is_proxy is True
+    assert "not stated enrolment" in p.cohort.quote
+
+
+def test_a_stated_population_beats_the_affiliation_proxy():
+    """Indian patients studied by a Boston department are an Indian cohort."""
+    p = parse_record(INDIAN_TEXT)
+    assert p.cohort.value == "south_asian"
+    assert p.cohort_is_proxy is False
+
+
+def test_funding_is_captured_where_declared():
+    p = parse_record(AUTHORED)
+    assert p.funding.value == ["Novartis Pharma"]
+
+
+def test_no_funding_declared_is_not_an_empty_claim():
+    p = parse_record(THIN_RECORD)
+    assert p.funding.value is None
+    assert "funding" not in provenance(p)["evidence"]
+
+
+def test_a_record_with_no_authors_or_journal_still_parses():
+    p = parse_record(THIN_RECORD)
+    assert p.authors["count"] is None and p.journal is None
+    assert p.source_url

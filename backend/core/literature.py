@@ -130,6 +130,43 @@ COHORT_PATTERNS: List[Tuple[str, str]] = [
 ]
 
 
+# ── Design read from the text (S), when the record's type field is silent ──
+# pubType is empty or just "Journal Article" for about two thirds of records,
+# but abstracts state the design plainly. Reading both takes design coverage
+# from roughly a third to most of them.
+DESIGN_FROM_TEXT: List[Tuple[str, float, str]] = [
+    (r"\bdouble[- ]blind\b.*\bplacebo[- ]controlled\b|\bplacebo[- ]controlled\b.*\brandomi[sz]ed\b",
+     9.5, "Randomised, placebo-controlled (from text)"),
+    (r"\brandomi[sz]ed (?:controlled )?trial\b|\bwe randomi[sz]ed\b", 9.5,
+     "Randomised controlled trial (from text)"),
+    (r"\bpropensity[- ](?:score[- ])?match", 7.5, "Propensity-score matched (from text)"),
+    (r"\bmeta[- ]analys", 8.5, "Meta-analysis (from text)"),
+    (r"\bsystematic review\b", 8.0, "Systematic review (from text)"),
+    (r"\bprospective\b.*\bcohort\b|\bprospective cohort\b", 6.5,
+     "Prospective cohort (from text)"),
+    (r"\bretrospective(?:ly)?\b", 5.0, "Retrospective analysis (from text)"),
+    (r"\bregistry\b|\breal[- ]world\b", 6.0, "Registry / real-world (from text)"),
+    (r"\bcase (?:report|series)\b", 3.0, "Case report or series (from text)"),
+]
+
+# Affiliation country is a cleaner population signal than scanning abstract
+# prose for "Indian" — the abstract often never names its population, while the
+# authors' institutions almost always do. It is a proxy, not a statement about
+# who was enrolled, and is labelled as such wherever it is used.
+COUNTRY_COHORT: List[Tuple[str, str, str]] = [
+    (r"\bindia\b|\bpakistan\b|\bbangladesh\b|\bsri lanka\b|\bnepal\b", "south_asian", "South Asia"),
+    (r"\bsingapore\b", "singaporean", "Singapore"),
+    (r"\bchina\b|\bjapan\b|\bkorea\b|\btaiwan\b|\bhong kong\b", "east_asian", "East Asia"),
+    (r"\bthailand\b|\bindonesia\b|\bmalaysia\b|\bphilippines\b|\bvietnam\b", "se_asian", "Southeast Asia"),
+    (r"\bunited arab emirates\b|\buae\b|\bsaudi\b|\bqatar\b|\bkuwait\b|\bbahrain\b|\boman\b", "gcc_arab", "GCC"),
+    (r"\begypt\b|\bjordan\b|\blebanon\b|\bmorocco\b|\btunisia\b|\biran\b|\bturkey\b", "mena", "MENA"),
+    (r"\busa\b|\bunited states\b|\bcanada\b|\buk\b|\bunited kingdom\b|\bgermany\b|\bfrance\b|"
+     r"\bitaly\b|\bspain\b|\bnetherlands\b|\bsweden\b|\bdenmark\b|\bnorway\b|\baustralia\b|"
+     r"\bswitzerland\b|\baustria\b|\bbelgium\b|\bpoland\b|\bbrazil\b", "western", "Western"),
+    (r"\bnigeria\b|\bkenya\b|\bghana\b|\bsouth africa\b|\bethiopia\b", "african", "Africa"),
+]
+
+
 @dataclass
 class Extracted:
     """A value plus the sentence it was read from. No quote, no value."""
@@ -163,6 +200,9 @@ class Paper:
     rigor: Extracted = field(default_factory=Extracted)
     shape: Extracted = field(default_factory=Extracted)
     cohort: Extracted = field(default_factory=Extracted)
+    funding: Extracted = field(default_factory=Extracted)
+    authors: Dict[str, Any] = field(default_factory=dict)
+    cohort_is_proxy: bool = False       # inferred from affiliation, not stated
     extraction_gaps: List[str] = field(default_factory=list)
 
 
@@ -205,6 +245,80 @@ def classify_design(pub_types: List[str]) -> Extracted:
     if best is None:
         return Extracted()
     return Extracted(best[0], f"Publication type: {best[1]}")
+
+
+def classify_design_from_text(text: Optional[str]) -> Extracted:
+    """Design as the abstract describes it. Highest-validity description wins."""
+    if not text:
+        return Extracted()
+    best: Optional[Tuple[float, str]] = None
+    quote = None
+    for pattern, score, label in DESIGN_FROM_TEXT:
+        m = re.search(pattern, text, re.IGNORECASE)
+        if m and (best is None or score > best[0]):
+            best = (score, label)
+            quote = _sentence_containing(text, m.start())
+    if best is None:
+        return Extracted()
+    return Extracted(best[0], f"{best[1]} — {quote}"[:400])
+
+
+def extract_authors(rec: Dict[str, Any]) -> Dict[str, Any]:
+    """Authors and their institutions.
+
+    The senior (last) author usually leads the group, so both ends of the list
+    are carried. Author concentration across a molecule's literature — the same
+    group producing all of it — is an evidence-base finding, and it needs names.
+    """
+    author_list = (rec.get("authorList") or {}).get("author") or []
+    names = [a.get("fullName") for a in author_list if a.get("fullName")]
+    if not names and rec.get("authorString"):
+        names = [n.strip() for n in str(rec["authorString"]).split(",") if n.strip()]
+
+    affiliations: List[str] = []
+    for a in author_list:
+        details = (a.get("authorAffiliationDetailsList") or {}).get("authorAffiliation") or []
+        for d in details:
+            aff = d.get("affiliation") if isinstance(d, dict) else str(d)
+            if aff:
+                affiliations.append(aff)
+        if a.get("affiliation"):
+            affiliations.append(a["affiliation"])
+
+    return {
+        "count": len(names) or None,
+        "first": names[0] if names else None,
+        "senior": names[-1] if len(names) > 1 else None,
+        "all": names or None,
+        "affiliations": affiliations or None,
+    }
+
+
+def detect_country(affiliations: Optional[List[str]]) -> Extracted:
+    """Cohort key from author institutions.
+
+    This is where the authors work, not necessarily where the patients were —
+    a proxy, and reported as one. Where the abstract names its population
+    directly that is the better signal and takes precedence in parse_record.
+    """
+    if not affiliations:
+        return Extracted()
+    blob = " ; ".join(affiliations).lower()
+    for pattern, key, label in COUNTRY_COHORT:
+        m = re.search(pattern, blob)
+        if m:
+            return Extracted(key, f"Author affiliations in {label} "
+                                  f"(institution location, not stated enrolment)")
+    return Extracted()
+
+
+def extract_funding(rec: Dict[str, Any]) -> Extracted:
+    """Declared grants, where the record carries them."""
+    grants = (rec.get("grantsList") or {}).get("grant") or []
+    agencies = sorted({g.get("agency") for g in grants if g.get("agency")})
+    if not agencies:
+        return Extracted()
+    return Extracted(agencies, "Declared funding: " + "; ".join(agencies[:4]))
 
 
 def extract_enrollment(text: Optional[str]) -> Extracted:
@@ -390,13 +504,25 @@ def parse_record(rec: Dict[str, Any]) -> Paper:
         open_access=str(rec.get("isOpenAccess", "N")).upper() == "Y",
         abstract=abstract,
     )
-    paper.shape = classify_design(pub_types)
+    # Design: the record's own type field first, since it is MEDLINE's
+    # controlled vocabulary. It is empty or uninformative for most records, so
+    # fall back to what the abstract says about itself.
+    paper.shape = classify_design(pub_types) or classify_design_from_text(abstract)
     paper.design_label = paper.shape.quote
     paper.n = extract_enrollment(abstract)
     paper.followup_years = extract_followup_years(abstract)
     paper.endpoint = score_endpoint(abstract)
     paper.rigor = score_rigor(abstract)
+    paper.authors = extract_authors(rec)
+    paper.funding = extract_funding(rec)
+
+    # Population: a stated one beats an inferred one. Affiliation only says
+    # where the authors work, so it is used when the text names nobody, and
+    # flagged as a proxy so it never reads as an enrolment fact.
     paper.cohort = detect_cohort(haystack)
+    if not paper.cohort:
+        paper.cohort = detect_country(paper.authors.get("affiliations"))
+        paper.cohort_is_proxy = bool(paper.cohort)
 
     # Record what could not be read, so the gap is visible rather than implied
     for name, ex in (("design", paper.shape), ("sample size", paper.n),
@@ -442,14 +568,18 @@ def provenance(paper: Paper) -> Dict[str, Any]:
         "retrieved": paper.retrieved,
         "pmid": paper.pmid,
         "doi": paper.doi,
+        "journal": paper.journal,
+        "year": paper.year,
+        "authors": paper.authors,
         "evidence": {
             k: {"value": ex.value, "quote": ex.quote}
             for k, ex in (("design", paper.shape), ("sample_size", paper.n),
                           ("followup_years", paper.followup_years),
                           ("endpoint", paper.endpoint), ("rigor", paper.rigor),
-                          ("population", paper.cohort))
+                          ("population", paper.cohort), ("funding", paper.funding))
             if ex
         },
+        "population_is_affiliation_proxy": paper.cohort_is_proxy,
         "not_extracted": paper.extraction_gaps,
         "cited_by": paper.cited_by,
         "open_access": paper.open_access,
