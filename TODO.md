@@ -171,3 +171,14 @@ Per claim and per purpose: *supports · supports with caveat · does not support
 - `[ ]` **Secondary publications off a registrational dataset.** The regulator audits the pivotal trial and not the subgroup, pooled and post-hoc papers carved out of it afterwards — no locked SAP, no inspection. This is the one place funding has a lever that neither obligation nor resource scarcity explains.
 - `[ ]` **Comparator choice in sponsor-funded head-to-heads.** Which drug, at which dose, against which endpoint are decisions the funder made, and they are checkable. Small set, real lever.
 - `[ ]` **US state codes stay unmatched for country.** Deliberate: "IN" is Indiana, and matching it would route an Indianapolis affiliation to a South Asian cohort. Revisit only with a proper geocoder, never with a two-letter map.
+
+**2026-08-05 (later)**
+
+- `[x]` **CDSCO India approval register.** 733 approvals from 40 year-wise lists, 2000–2026, with the India-approved indication and date. 105 of 218 catalogue molecules found. Replaces openFDA as the answer to "is this approved here"; openFDA is demoted to a pipeline signal only.
+- `[ ]` **Matching is crude.** Substring on the molecule token pulls in fixed-dose combinations — ramipril's earliest hit is a metoprolol/atorvastatin product. Needs a proper molecule matcher.
+- `[ ]` **Date text bleeds into the indication field.** Captopril reads "Indicated in the treatment of October-1985 h…".
+- `[ ]` **Coverage skews recent** — strong from ~2009, thin before. Old generics will read "not found in CDSCO", which must never render as "not approved in India".
+- `[ ]` **Tenecteplase is absent** from the register despite being sold here as Elaxim. Pre-dates usable coverage.
+- `[!]` **The 2006 list is a scanned image** — no extractable text, needs OCR. Reported as unread rather than counted as empty.
+- `[ ]` **Parser tests are owed.** The segmentation logic (sequential serials, numbered vs unnumbered fallback) has no test behind it, and it took three attempts to get right.
+- `[ ]` **Indian brands and manufacturers** — the count and price spread that replace "exclusivity" for India. Not in this register; a separate source.
