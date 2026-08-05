@@ -120,6 +120,12 @@ Per claim and per purpose: *supports · supports with caveat · does not support
 **Left for later** — full text and registry records. Limitations, conflicts of interest, study arms and analysis method cannot come from an abstract, and the criteria call for all four.
 **Revisit if** — full-text access becomes available. The criteria are already written for it.
 
+### News sources are tiered, and a tier can only be promoted upward
+**Why** — CDSCO's own publication lags badly. Inclisiran was cleared by a Subject Expert Committee in July 2023 and appears in none of the registers we hold: it is an siRNA so not in the r-DNA stream, and it entered by import permission so not in the new-drug lists. The trade press carried it within days. So news is not optional — it is the only thing covering the gap between a decision and its publication. But business press is noise at the level of regulatory detail, and Rajan's condition for admitting it was that the brain handles it responsibly rather than restating it.
+**The rule** — Tier 1 is the CDSCO registers and establishes the fact. Tier 2 is regulatory trade press (Medical Dialogues, Pharmabiz, ET Pharma, RAPS) and establishes *"reported by X on date D"*, checkable and specific. Tier 3 is general business press (Moneycontrol, Business Standard, CNBC-TV18, The Hindu, ToI, ThePrint) and establishes **a lead only** — a reason to go looking, never a fact however plausible. A claim is promoted when a higher tier carries it, and the original citation stays as the earlier sighting.
+**Left for later** — building any of it. No ingestion exists for any tier of news.
+**Revisit if** — CDSCO starts publishing promptly, which would demote all three tiers to corroboration. Watch also for Tier 3 quietly being read as Tier 2: the failure mode is a business-press paraphrase of an SEC minute being rendered as the minute.
+
 ### Verify from source, never from memory
 **Why** — recall was confidently wrong repeatedly on this project: an FDA approval year stated from memory and corrected by DailyMed, a ₹1 sentinel price, and a rabeprazole brand matched to zoledronic acid at ₹30 against a real ₹20,492. The failure mode is never a crash — it is clean, plausible output that happens to be false.
 **Left for later** — nothing. Structural.
@@ -180,7 +186,7 @@ Per claim and per purpose: *supports · supports with caveat · does not support
 - `[x]` **Data artefacts exported.** `artefacts/` — 3 MB, portable, for the other project. Registry, catalogue, 438 indications, NPPA, NLEM, both CDSCO registers, verified label facts. `MANIFEST.md` carries every caveat, and each JSON repeats its own.
 - `[x]` **Oncology scope filter** (`core/scope.py`). The r-DNA register is ~24% oncology and loading it whole put breast-cancer biologics back into a codebase that had none. 82 rows marked out of scope, not deleted.
 - `[ ]` **Trade press as a source.** CDSCO publication lags: Inclisiran was cleared July 2023 and is in no register we hold. Medical Dialogues, Pharmabiz, ET Pharma, RAPS report SEC outcomes within days. Treat as "reported by X", never restated as a CDSCO fact.
-- `[?]` **General business press in scope?** Moneycontrol, Business Standard, CNBC-TV18, The Hindu, ToI, ThePrint — more noise per useful item than the regulatory trade titles. Awaiting Rajan.
+- `[x]` **General business press — decided: in, as Tier 3 only.** See the decision below.
 - `[ ]` **A third CDSCO stream exists** — SEC minutes and import permissions outside the r-DNA register. That is where Inclisiran sits. Not built.
 
 - `[x]` **CDSCO India approval register.** 733 approvals from 40 year-wise lists, 2000–2026, with the India-approved indication and date. 105 of 218 catalogue molecules found. Replaces openFDA as the answer to "is this approved here"; openFDA is demoted to a pipeline signal only.
