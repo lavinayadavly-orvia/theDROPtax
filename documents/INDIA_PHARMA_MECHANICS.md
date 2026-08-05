@@ -135,7 +135,14 @@ some rates 20–400%; ICU-with-ventilator by 100%.
 
 **CGHS** runs a separate formulary and rate list, with medicines issued through
 **empanelled local chemists** — a distinct channel again, for central government
-employees.
+employees. The formulary and rate documents could not be retrieved: cghs.gov.in
+timed out on every path tried, including its own home page.
+
+The PM-JAY **rate table** is likewise unretrieved. The HBP 2.2 *manual* above
+downloads fine; the package-and-rate files on nha.gov.in and pmjay.gov.in return
+HTML shells or time out. The structural rule — packages are inclusive of drugs —
+is the part that governs the model, and that is sourced. The per-package
+dispute is that ₹18L `major_event_cost` still has nothing behind it.
 
 ---
 
@@ -207,7 +214,22 @@ This replaces the invented IPD/OPD/HOME coverage shares of 85/20/0.
 
 ---
 
-## 8. What this corrects in the build
+## 8. Schedule I is NLEM, by reference
+
+DPCO 2013's First Schedule *is* the National List of Essential Medicines,
+incorporated by reference (the 2016 consolidation carries NLEM 2015; NLEM 2022
+was notified in by amendment). Symbols P, S and T in the Schedule denote
+essentiality at primary, secondary and tertiary levels — the same care levels
+we already hold.
+
+So testing "is this scheduled" by NLEM membership is structurally the right
+test, and our 239-medicine NLEM 2022 load is the right instrument for it. What
+was wrong was not the test but the conclusion drawn from failing it: not
+scheduled means no ceiling has been fixed, not that price is free.
+
+---
+
+## 9. What this corrects in the build
 
 | Was | Actually |
 |---|---|
