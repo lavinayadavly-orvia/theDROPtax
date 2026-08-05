@@ -56,12 +56,65 @@ LISTING_URL = "https://cdsco.gov.in/opencms/opencms/en/Approval_new/Approved-New
 JSP = ("https://cdsco.gov.in/opencms/opencms/system/modules/"
        "CDSCO.WEB/elements/download_file_division.jsp?num_id=")
 HOST = "https://cdsco.gov.in"
+MIN_ROW_CHARS = 40      # see scan(): shorter gaps are numbered indications
 UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/120 Safari/537.36")
 
 # "  12. Letermovir Bulk Drug ... 17.01.2025"
 ROW_START = re.compile(r"^\s*(\d{1,4})\s*\.\s*(.*)$")
-DATE = re.compile(r"(\d{2})[.\-/](\d{2})[.\-/](\d{4})")
+MONTHS = {m: i for i, m in enumerate(
+    ["jan", "feb", "mar", "apr", "may", "jun",
+     "jul", "aug", "sep", "oct", "nov", "dec"], start=1)}
+# Four date forms appear across 25 years of lists. Matching only dd.mm.yyyy
+# left 513 of 733 rows undated, including every row in the older lists, which
+# write "October-1985".
+DATE_FORMS = [
+    re.compile(r"\b(\d{1,2})[.\-/](\d{1,2})[.\-/](\d{4})\b"),                    # 16.01.2025
+    re.compile(r"\b(\d{1,2})[.\-/](\d{1,2})[.\-/](\d{2})\b"),                    # 16.01.25
+    re.compile(r"\b(\d{1,2})[ \-]([A-Za-z]{3,9})[ \-](\d{2,4})\b"),              # 16-Jan-2025
+    re.compile(r"\b([A-Za-z]{3,9})[ \-](\d{4})\b"),                              # October-1985
+]
+ANY_DATE = re.compile(
+    r"\b\d{1,2}[.\-/]\d{1,2}[.\-/]\d{2,4}\b"
+    r"|\b\d{1,2}[ \-][A-Za-z]{3,9}[ \-]\d{2,4}\b"
+    r"|\b(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*[ \-]\d{4}\b",
+    re.IGNORECASE)
+
+
+def parse_date(text):
+    """First readable date in a row, or None. Never a guess.
+
+    A month-and-year with no day is real information and is kept, dated to the
+    first of that month with day_known False, rather than discarded.
+    """
+    for i, pat in enumerate(DATE_FORMS):
+        m = pat.search(text)
+        if not m:
+            continue
+        try:
+            if i == 0:
+                d, mo, y = int(m.group(1)), int(m.group(2)), int(m.group(3))
+            elif i == 1:
+                d, mo, y = int(m.group(1)), int(m.group(2)), 2000 + int(m.group(3))
+                if y > datetime.now().year:
+                    y -= 100
+            elif i == 2:
+                mo = MONTHS.get(m.group(2)[:3].lower())
+                if not mo:
+                    continue
+                d, y = int(m.group(1)), int(m.group(3))
+                y = y + 1900 if y < 100 and y > 50 else (y + 2000 if y < 100 else y)
+            else:
+                mo = MONTHS.get(m.group(1)[:3].lower())
+                if not mo:
+                    continue
+                d, y = 1, int(m.group(2))
+            if not (1900 <= y <= datetime.now().year + 1):
+                continue
+            return datetime(y, mo, d).date().isoformat(), (i != 3)
+        except (ValueError, TypeError):
+            continue
+    return None, False
 # Where the drug name stops and the indication begins. No delimiter exists, so
 # these are the phrases that actually open an indication in this register.
 INDICATION_START = re.compile(
@@ -156,9 +209,17 @@ def parse_approvals(pdf_path, source_title, source_url):
                    else r"(?<![\d.])(\d{1,4})\s*\.?\s+(?=[A-Z][a-z])")
         expected, found = 1, []
         for m in re.finditer(pattern, text):
-            if int(m.group(1)) == expected:
-                found.append((m.start(), expected, m.end()))
-                expected += 1
+            if int(m.group(1)) != expected:
+                continue
+            # An indication can itself be numbered ("1. Acute bronchitis 2. ..."),
+            # and early in a document those bullets collide with the serial the
+            # scan is expecting. A real approval row is never a few characters
+            # long, so a candidate sitting on top of the previous one is a
+            # bullet, not a row.
+            if found and m.start() - found[-1][0] < MIN_ROW_CHARS:
+                continue
+            found.append((m.start(), expected, m.end()))
+            expected += 1
         return found
 
     marks = scan(True)
@@ -178,15 +239,8 @@ def parse_approvals(pdf_path, source_title, source_url):
         body = re.sub(r"\s+", " ", " ".join(b["parts"])).strip()
         if len(body) < 4:
             continue
-        d = DATE.search(body)
-        approval_date = None
-        if d:
-            dd, mm, yyyy = d.groups()
-            try:
-                approval_date = datetime(int(yyyy), int(mm), int(dd)).date().isoformat()
-            except ValueError:
-                approval_date = None
-        without_date = DATE.sub(" ", body).strip(" .")
+        approval_date, day_known = parse_date(body)
+        without_date = re.sub(r"\s+", " ", ANY_DATE.sub(" ", body)).strip(" .,-")
 
         # Split name from indication at the phrase that opens an indication.
         # Where no such phrase appears the split is not guessed: the whole row
@@ -207,6 +261,7 @@ def parse_approvals(pdf_path, source_title, source_url):
             "drug_name": name[:300] or None,
             "indication": indication[:600] if indication else None,
             "approval_date": approval_date,
+            "approval_day_known": day_known,
             "name_split_confident": confident,
             "raw": body[:900],
             "source_list": source_title,
@@ -294,6 +349,23 @@ async def main():
     if all_records:
         await db.cdsco_approvals.insert_many(all_records)
     print(f"\n✅ loaded {len(all_records)} CDSCO approvals into '{DB_NAME}'.cdsco_approvals")
+
+    # Link every catalogue row to its Indian approval. Updated by _id, never by
+    # name: nifedipine and spironolactone each occupy two rows.
+    from core.india_approval import find_approvals
+    found = combo_only = 0
+    async for d in db.drugs.find({}, {"_id": 1, "name": 1}):
+        a = find_approvals(d["name"], all_records)
+        a["retrieved_utc"] = stamp
+        if a["found"]:
+            found += 1
+            combo_only += 1 if a.get("only_as_combination") else 0
+        await db.drugs.update_one({"_id": d["_id"]}, {"$set": {"india_approval": a}})
+    total = await db.drugs.count_documents({})
+    print(f"   linked: {found}/{total} molecules found in the register "
+          f"({combo_only} only as a combination)")
+    print(f"   the remaining {total - found} read 'not found in CDSCO', which is "
+          f"NOT 'not approved in India'")
 
 
 if __name__ == "__main__":
