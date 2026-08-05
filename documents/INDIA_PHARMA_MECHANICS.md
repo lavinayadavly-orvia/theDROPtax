@@ -28,8 +28,13 @@ Order treats them as legally distinct:
 
 **MRP is a ceiling, not a price.** NPPA: *"The printed MRP plus local taxes is
 the maximum payable amount. However, a medicine can be sold below this price."*
-That is why 1mg and PharmEasy can discount 15–25% lawfully — and why a scraped
-retail price and an MRP are different numbers that must not be compared.
+So a scraped retail price and an MRP are different numbers and must not be
+compared.
+
+How much discounting actually happens is a separate question, and our own data
+answers it: across **443 listings where both were captured, the median discount
+off MRP is 1%** (range 0–100%). An earlier draft of this document said 15–25%
+— that figure was unsourced and is wrong for our sample.
 
 A retailer breaking a pack may charge **pro-rata plus 5%** on loose quantity.
 
@@ -134,7 +139,75 @@ employees.
 
 ---
 
-## 5. What this corrects in the build
+## 5. Clinical practice does not follow Western guidelines
+
+**Lipid Association of India, Consensus Statement IV (Feb 2024)** sets targets
+below ESC/EAS and ACC/AHA, explicitly because ASCVD in Indians is earlier and
+more aggressive: **<50 mg/dL** LDL-C for very high risk, **≤30 mg/dL** for
+extreme risk, and **10–15 mg/dL** where events occur despite <30.
+
+The phenotype behind it: South Asians carry more visceral and hepatic fat at
+lower BMI — the "thin-fat" pattern — with earlier onset of both type 2 diabetes
+and ASCVD, at BMI thresholds where Western risk models do not flag them.
+ICMR-INDIAB found significant metabolic risk well below standard BMI cut-offs.
+
+So an efficacy claim for a lipid or metabolic drug has to be read against the
+Indian target, not the trial's own. A drug that reaches an ESC goal may not
+reach the LAI one.
+
+---
+
+## 6. Regulatory, beyond price
+
+**NDCT Rules 2019** — *"orphan drug means a drug intended to treat a condition
+which affects not more than five lakh persons in India."* A prevalence
+threshold in law, not a designation registry, so orphan status here is
+determinable from epidemiology.
+
+Phase IV is a standing condition of approval — the applicant undertakes in
+writing to conduct one — relaxable for life-threatening disease, unmet need, or
+rare disease. Local trial waiver runs under Chapter X for drugs approved in
+specified countries.
+
+**UCPMP 2024**, notified 12 March 2024 and mandatory: no gifts, monetary
+benefits or hospitality to healthcare professionals or their families;
+self-declared adherence; disclosure of CME and conference spend; random and
+risk-based audits. Enforcement is public — the Apex Committee order against
+AbbVie Healthcare India, 23 December 2024, is on the DoP site. Conduct is
+therefore a checkable competitive signal, not a rumour.
+
+**PvPI**, run by the Indian Pharmacopoeia Commission since 2011, with **567 ADR
+monitoring centres**. India is the 9th largest contributor of individual case
+safety reports to the WHO database. So Indian safety signal exists and has a
+national collection route.
+
+**CTRI** — registration mandatory since 2009, prospective-only since April
+2018. Cardiology and endocrinology are among the most registered areas. One
+documented caveat: CDSCO and CTRI records **do not always match** (Frontiers in
+Medicine, 2024), so neither is a complete account of what was studied.
+
+---
+
+## 7. The system patients actually pay in
+
+National Health Accounts 2022-23:
+
+| Share of total health expenditure | 2013-14 | 2022-23 |
+|---|---|---|
+| Out of pocket | 64.2% | **43.4%** |
+| Social security (PM-JAY, CGHS, etc.) | 6.0% | **9.9%** |
+| Private health insurance | 3.4% | **9.2%** |
+
+Government health expenditure is **1.43% of GDP**. These are shares of *total
+health* expenditure, not of medicines specifically — drugs typically sit at a
+higher out-of-pocket share than the total, so 43.4% is a floor for our purposes,
+not the medicine figure.
+
+This replaces the invented IPD/OPD/HOME coverage shares of 85/20/0.
+
+---
+
+## 8. What this corrects in the build
 
 | Was | Actually |
 |---|---|
@@ -151,9 +224,9 @@ employees.
 
 ## 6. Still not established
 
-- Whether retail listings reliably carry the marketing company, and whether one
-  brand prices consistently across the four retail sites we scrape. Until that
-  is checked, price spread is contaminated by site rather than by competition.
+- Whether one brand prices consistently across retail sites. The marketer
+  question is **answered**: our scraper does capture it, on 209 of 650 listings
+  (32%), so brand-to-marketer is partially derivable already.
 - Brand → owner mapping. Vymada and Azmarda are one Novartis asset marketed by
   Novartis and Cipla respectively; the catalogue records marketers, not owners,
   and in 106 of 218 rows the brand and marketer lists are different lengths, so
