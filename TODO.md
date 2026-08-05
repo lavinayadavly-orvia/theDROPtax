@@ -37,7 +37,9 @@ Last reviewed: **2026-08-05**
 | `[x]` | Verified label facts | DailyMed, 50 innovators. Source, date and verbatim quote on every field. |
 | `[ ]` | Coverage shares | IPD/OPD/HOME 85/20/0 is **invented**. Needs real payer policy sources. |
 | `[ ]` | Event costs | `major_event_cost` ₹18L is **a placeholder**. PMJAY package rates are the source. |
-| `[ ]` | India regulatory | No CDSCO approval dates, no Indian manufacturer counts. openFDA covers US only and must not be read as India. |
+| `[x]` | India regulatory (CDSCO) | 472 approvals, 452 dated, 2000–2026, with the India-approved indication. 58/218 catalogue molecules link, 39 only as combinations. Absence reads "not found", never "not approved". |
+| `[x]` | Indian brands and makers | On all 218 rows. Counts are **lower bounds** — key_brands is a curated subset. Replaces US exclusivity as the competition signal. |
+| `[!]` | 9 CDSCO lists unreadable | Image tables with no text layer; neither pypdf nor pdfplumber reads them. Needs OCR. 2019 is among them. |
 | `[ ]` | Multi-brand pricing | Inclisiran has 4 Indian brands; the workbook holds 1. |
 | `[!]` | Jan Aushadhi | Blocked — the site is an SPA serving an app shell for every path, including its own API. Needs another route. |
 | `[?]` | 93-row price review worksheet | Generated and waiting on Rajan. Confirmed rows never resurface. |
@@ -50,7 +52,8 @@ Last reviewed: **2026-08-05**
 |---|---|---|
 | `[x]` | Therapy area registry | 37 indications across CVD / CVS / Metabolic / Women's Health. Endpoints, direction, normalisation per indication. |
 | `[x]` | Indications structured | 438 across 218 rows. 123 multi-indication. 331 mapped, **107 unmapped and marked** — not forced. |
-| `[x]` | Orienting facts | openFDA, live, any drug: first approval, exclusivity, distinct sponsors. All fields `us_*`. |
+| `[x]` | Orienting facts | openFDA, live, any drug. **Demoted to a pipeline signal** — approved there means it will probably arrive here. It does not describe competition in India. |
+| `[x]` | India market signal | Brands and makers from the catalogue; classifier now leads with India and flags where the US reading would contradict it. |
 | `[x]` | Cost gate + classifier | Money sections gated on burden as a share of income, and on whether payment recurs. |
 | `[x]` | Applicability engine | Route → feasible settings → coverage by setting. |
 | `[x]` | Value engine | Registry-normalised event probability. No oncology maths. |

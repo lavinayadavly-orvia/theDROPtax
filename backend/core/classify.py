@@ -132,7 +132,9 @@ def classify(molecule: str, indication: Optional[str],
              price_is_estimated: Optional[bool] = None,
              indication_mapped: Optional[bool] = None,
              treatment_model: Optional[str] = None,
-             assumes_once_daily: bool = False) -> Classification:
+             assumes_once_daily: bool = False,
+             india_competition: Optional[str] = None,
+             india_us_conflict: Optional[str] = None) -> Classification:
     """Classify a (drug x indication) pair and return what to fetch for it."""
     gate = cost_gate(monthly_cost, region, assumes_once_daily, price_is_estimated)
     c = Classification(molecule=molecule, indication=indication, cost=gate,
@@ -154,27 +156,48 @@ def classify(molecule: str, indication: Optional[str],
     if gate.band_if_dosed_three_times_daily:
         c.reasons.append(gate.note)
 
-    if exclusivity == "exclusive":
-        c.reasons.append("No generic competition — the originator sets the price.")
-    elif exclusivity == "generic_few_makers":
-        c.reasons.append("Genericised, but few makers — price can stay high without "
-                         "exclusivity to expire.")
-    elif exclusivity == "generic_many_makers":
-        c.reasons.append("Many generic makers — price is competed down and settled.")
-    elif exclusivity is None:
-        c.issues.append({"field": "exclusivity", "severity": "info",
-                         "message": "Exclusivity not established — depth not reduced on "
-                                    "the strength of an unknown."})
+    # India leads. US exclusivity is a pipeline signal — approved there means it
+    # will probably arrive here — and it does NOT describe competition in this
+    # market. Drugs@FDA calls tenecteplase exclusive to Genentech; Emcure sells
+    # it here as Elaxim, and reporting the US position produced a false claim.
+    if india_competition:
+        c.reasons.append({
+            "single_brand": "One Indian brand recorded — but the catalogue lists key "
+                            "brands, not every brand, so treat that as a floor.",
+            "few_brands": "Marketed in India by a small number of branded generics — "
+                          "price competition without any exclusivity having to expire.",
+            "many_brands": "Widely branded in India — price is competed down by "
+                           "branded generics, not by patent expiry.",
+        }[india_competition])
+        if india_us_conflict:
+            c.issues.append({"field": "competition", "severity": "warning",
+                             "message": india_us_conflict})
+    elif exclusivity is not None:
+        c.reasons.append(
+            "No Indian brand data. US records show "
+            + {"exclusive": "no generic competition",
+               "generic_few_makers": "few generic makers",
+               "generic_many_makers": "many generic makers"}[exclusivity]
+            + " — a pipeline signal only, which does not describe this market.")
+    else:
+        c.issues.append({"field": "competition", "severity": "info",
+                         "message": "Competition not established in either market — "
+                                    "depth not reduced on the strength of an unknown."})
 
     # Profile is a name for the combination, used for display, not for logic.
-    if money and exclusivity == "exclusive":
-        c.profile = "exclusive_high_cost"
-    elif money and exclusivity == "generic_few_makers":
+    # Profile names the combination for display. It reads the Indian picture
+    # where we have one and falls back to the US signal only when we do not.
+    contested = india_competition or {
+        "exclusive": "single_brand", "generic_few_makers": "few_brands",
+        "generic_many_makers": "many_brands"}.get(exclusivity)
+    if money and contested == "single_brand":
+        c.profile = "single_brand_high_cost"
+    elif money and contested == "few_brands":
         c.profile = "concentrated_supply"
     elif money:
         c.profile = "costly_but_competed"
-    elif exclusivity == "exclusive":
-        c.profile = "exclusive_low_cost"
+    elif contested == "single_brand":
+        c.profile = "single_brand_low_cost"
     else:
         c.profile = "settled_generic"
 
@@ -205,7 +228,7 @@ def classify(molecule: str, indication: Optional[str],
         "cash_flow": bool(money) and ongoing_payment,
         "price_negotiation": bool(money),
         # Competitive depth is only interesting where a contest exists.
-        "competition": exclusivity in ("exclusive", "generic_few_makers") or bool(money),
+        "competition": contested in ("single_brand", "few_brands") or bool(money),
     }
     if not money:
         c.reasons.append("Money sections omitted — at this price there is nothing "

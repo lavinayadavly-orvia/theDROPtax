@@ -73,7 +73,7 @@ def test_no_shift_note_when_the_price_is_verified():
 
 def test_cheap_generic_omits_every_money_section():
     c = classify("Ramipril", "Hypertension", 210, "IN",
-                 exclusivity="generic_many_makers")
+                 india_competition="many_brands")
     assert c.profile == "settled_generic"
     assert c.fetch["coverage"] is False
     assert c.fetch["assistance"] is False
@@ -84,15 +84,16 @@ def test_cheap_generic_omits_every_money_section():
 def test_cheap_generic_still_fetches_what_the_user_came_for():
     """Thin is not empty — efficacy, safety and availability always apply."""
     c = classify("Ramipril", "Hypertension", 210, "IN",
-                 exclusivity="generic_many_makers")
+                 india_competition="many_brands")
     assert c.fetch["label_facts"] and c.fetch["clinical_evidence"]
     assert c.fetch["brands_and_availability"]
 
 
-def test_exclusive_high_cost_gets_the_full_treatment():
+def test_single_brand_high_cost_gets_the_full_treatment():
+    """Profiles are named after the Indian picture, not US exclusivity."""
     c = classify("Inclisiran", "Hypercholesterolemia", 20000, "IN",
-                 exclusivity="exclusive")
-    assert c.profile == "exclusive_high_cost"
+                 india_competition="single_brand")
+    assert c.profile == "single_brand_high_cost"
     assert all(c.fetch[k] for k in
                ("coverage", "assistance", "cash_flow", "competition"))
 
@@ -102,7 +103,7 @@ def test_the_concentrated_supply_case_is_detectable():
     to erode the price. Nothing in the catalogue sits here, but a user can type
     any drug."""
     c = classify("SomeDrug", "SomeIndication", 9000, "IN",
-                 exclusivity="generic_few_makers")
+                 india_competition="few_brands")
     assert c.profile == "concentrated_supply"
     assert c.fetch["coverage"] is True
 
@@ -113,27 +114,27 @@ def test_unknown_price_shows_money_sections_rather_than_hiding_them():
     assert any(i["field"] == "price" for i in c.issues)
 
 
-def test_unknown_exclusivity_does_not_reduce_depth():
+def test_unknown_competition_does_not_reduce_depth():
     c = classify("NewDrug", "Hypertension", 20000, "IN", exclusivity=None)
     assert c.fetch["coverage"] is True
-    assert any(i["field"] == "exclusivity" for i in c.issues)
+    assert any(i["field"] == "competition" for i in c.issues)
 
 
 # ── Reasons, in words ─────────────────────────────────────────────────────
 
 def test_the_classification_explains_itself():
     c = classify("Ramipril", "Hypertension", 210, "IN",
-                 exclusivity="generic_many_makers")
+                 india_competition="many_brands")
     joined = " ".join(c.reasons).lower()
     assert "monthly income" in joined
-    assert "many generic makers" in joined
+    assert "branded generics" in joined
     assert "omitted" in joined
 
 
 def test_an_unmapped_indication_is_noted_without_disabling_anything():
     """No registry entry means no endpoints — it does not mean no drug."""
     c = classify("Propranolol", "Essential tremor", 150, "IN",
-                 exclusivity="generic_many_makers", indication_mapped=False)
+                 india_competition="many_brands", indication_mapped=False)
     assert any(i["field"] == "indication" for i in c.issues)
     assert c.fetch["label_facts"] and c.fetch["clinical_evidence"]
 
@@ -160,7 +161,8 @@ def test_the_dosing_warning_keys_on_the_assumption_not_on_estimation():
 def test_a_single_inpatient_dose_needs_no_assistance_or_cash_flow():
     """Tenecteplase is expensive and needs neither — it is bundled into the
     admission claim. The cost gate alone cannot see this."""
-    c = classify("Tenecteplase", "STEMI", 45000, "IN", exclusivity="exclusive",
+    c = classify("Tenecteplase", "STEMI", 45000, "IN",
+                 india_competition="many_brands",
                  treatment_model="acute_single_dose")
     assert c.fetch["coverage"] is True          # someone still claims it
     assert c.fetch["assistance"] is False
@@ -170,5 +172,5 @@ def test_a_single_inpatient_dose_needs_no_assistance_or_cash_flow():
 
 def test_a_chronic_drug_at_the_same_price_keeps_them():
     c = classify("Inclisiran", "Hypercholesterolemia", 45000, "IN",
-                 exclusivity="exclusive", treatment_model="chronic_ongoing")
+                 india_competition="single_brand", treatment_model="chronic_ongoing")
     assert c.fetch["assistance"] is True and c.fetch["cash_flow"] is True
