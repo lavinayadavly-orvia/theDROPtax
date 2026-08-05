@@ -162,4 +162,12 @@ Per claim and per purpose: *supports · supports with caveat · does not support
 
 ## Added this session
 
-*(2026-08-05 — nothing yet; new items land here before being filed above)*
+**2026-08-05**
+
+- `[x]` **Author standing.** Papers-on-topic and total output for first and senior author, institution kind read from the affiliation, industry employment flagged, ORCID where present with its coverage stated. Live: a case-report author reads 1 paper on inclisiran; Banach reads 58 of 1,470. Only the two end authors are queried — a fifteen-author paper would otherwise cost fifteen calls.
+- `[ ]` **Show author standing in the profile.** Built and not surfaced. It belongs beside impact factor as a *position* signal — a KOL-led study is more likely to be cited and quoted back at you, not more likely to be sound.
+- `[ ]` **Guideline authorship.** The strongest standing signal and the one not covered by publication counts. Guideline documents list their authors; not yet sourced.
+- `[ ]` **Divergence needs like-for-like matching.** Comparing an independent study against a sponsor one only means something if population, endpoint and design are comparable. Otherwise the difference is explained by the population and attributing it to funding is a confound. A 5,000-patient Korean study and a 500-patient Indian one are not a comparison.
+- `[ ]` **Secondary publications off a registrational dataset.** The regulator audits the pivotal trial and not the subgroup, pooled and post-hoc papers carved out of it afterwards — no locked SAP, no inspection. This is the one place funding has a lever that neither obligation nor resource scarcity explains.
+- `[ ]` **Comparator choice in sponsor-funded head-to-heads.** Which drug, at which dose, against which endpoint are decisions the funder made, and they are checkable. Small set, real lever.
+- `[ ]` **US state codes stay unmatched for country.** Deliberate: "IN" is Indiana, and matching it would route an Indianapolis affiliation to a South Asian cohort. Revisit only with a proper geocoder, never with a two-letter map.

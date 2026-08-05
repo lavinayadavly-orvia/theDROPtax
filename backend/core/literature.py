@@ -165,6 +165,10 @@ COUNTRY_COHORT: List[Tuple[str, str, str]] = [
      r"\bswitzerland\b|\baustria\b|\bbelgium\b|\bpoland\b|\bbrazil\b", "western", "Western"),
     (r"\bnigeria\b|\bkenya\b|\bghana\b|\bsouth africa\b|\bethiopia\b", "african", "Africa"),
 ]
+# US state abbreviations are deliberately NOT matched. "IN" is Indiana, and a
+# two-letter code would route an Indianapolis affiliation to a South Asian
+# cohort — the same class of false match as "htn" inside "portal HTN". An
+# unrecognised country stays None.
 
 
 @dataclass
@@ -204,6 +208,15 @@ class Paper:
     authors: Dict[str, Any] = field(default_factory=dict)
     cohort_is_proxy: bool = False       # inferred from affiliation, not stated
     extraction_gaps: List[str] = field(default_factory=list)
+
+
+def _http_get_json(url: str, timeout: int = 30) -> Dict[str, Any]:
+    """Defined before its first use as a default argument — Python binds
+    defaults at definition time, not at call time."""
+    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+    with urllib.request.urlopen(req, timeout=timeout,
+                                context=ssl.create_default_context()) as r:
+        return json.loads(r.read())
 
 
 def strip_markup(text: Optional[str]) -> Optional[str]:
@@ -263,6 +276,75 @@ def classify_design_from_text(text: Optional[str]) -> Extracted:
     return Extracted(best[0], f"{best[1]} — {quote}"[:400])
 
 
+def classify_affiliation(affiliation: Optional[str]) -> Dict[str, Any]:
+    """What an institution says it is — read, not ranked.
+
+    Deliberately NOT a prestige list. Curating "reputed institutes" would be
+    impact-factor-as-validity all over again: a judgement of our own, dressed
+    as a property of the paper. What is factual is the KIND of institution the
+    affiliation names, and industry employment in particular, which the
+    appraisal criteria call for under interest.
+    """
+    if not affiliation:
+        return {"kind": None, "text": None}
+    low = affiliation.lower()
+    kind = None
+    # Order matters: an author at "Novartis" who lists a university too is
+    # still industry-employed, and that is the fact worth surfacing.
+    # Prefixes, not whole words: "Pharmaceuticals" and "Hospitals" are the
+    # common forms, and a trailing \b fails against the plural s.
+    if re.search(r"\b(inc\.?|ltd\.?|llc|gmbh|s\.a\.|pharmaceutical|pharma\b|"
+                 r"biotech|therapeutic|laborator|corporation|\bcompany\b)", low):
+        kind = "industry"
+    elif re.search(r"\b(universit|college|school of medicine|faculty of medicine|"
+                   r"institut|akadem)", low):
+        kind = "academic"
+    elif re.search(r"\b(hospital|hôpital|klinik|clinic|medical cent|health system|"
+                   r"infirmary|nhs\b|herzzentrum|heart cent)", low):
+        kind = "hospital"
+    elif re.search(r"\b(ministry|national health|public health|government|"
+                   r"centers for disease|nih\b|icmr\b)", low):
+        kind = "government"
+    country = detect_country([affiliation])
+    return {"kind": kind, "country": country.value, "text": affiliation[:200]}
+
+
+def author_topic_output(name: str, topic: str,
+                        fetch_json=_http_get_json) -> Dict[str, Any]:
+    """How much this author has published on this molecule, and overall.
+
+    A standing signal, not a quality one — it belongs on the same shelf as
+    impact factor. Someone with fifty papers on a molecule is who the field
+    cites and who a medical affairs team will be asked about; it says nothing
+    about whether any one of those papers was well conducted.
+
+    Name matching is imprecise. "Ray KK" is a string, not a person, and two
+    researchers can share it. ORCID resolves this where the record carries one
+    and is absent from roughly half, so the ambiguity is reported rather than
+    hidden.
+    """
+    def _count(query: str) -> Optional[int]:
+        try:
+            url = (f"{ENDPOINT}?query={urllib.parse.quote(query)}"
+                   f"&format=json&pageSize=1")
+            return fetch_json(url).get("hitCount")
+        except Exception:
+            return None
+
+    on_topic = _count(f'AUTH:"{name}" AND "{topic}"')
+    overall = _count(f'AUTH:"{name}"')
+    return {
+        "author": name,
+        "papers_on_topic": on_topic,
+        "papers_total": overall,
+        "source_name": "Europe PMC author search",
+        "source_url": f"https://europepmc.org/search?query=AUTH%3A%22{urllib.parse.quote(name)}%22",
+        "retrieved": date.today().isoformat(),
+        "identifier_caveat": ("Matched on name, not on a persistent identifier — "
+                              "two researchers can share one. Treat as indicative."),
+    }
+
+
 def extract_authors(rec: Dict[str, Any]) -> Dict[str, Any]:
     """Authors and their institutions.
 
@@ -285,13 +367,46 @@ def extract_authors(rec: Dict[str, Any]) -> Dict[str, Any]:
         if a.get("affiliation"):
             affiliations.append(a["affiliation"])
 
+    orcids = {}
+    for a in author_list:
+        ident = a.get("authorId") or {}
+        if isinstance(ident, dict) and ident.get("type") == "ORCID" and ident.get("value"):
+            orcids[a.get("fullName")] = ident["value"]
+
+    institutions = [classify_affiliation(a) for a in affiliations]
+    kinds = {i["kind"] for i in institutions if i["kind"]}
     return {
         "count": len(names) or None,
         "first": names[0] if names else None,
         "senior": names[-1] if len(names) > 1 else None,
         "all": names or None,
         "affiliations": affiliations or None,
+        "institutions": institutions or None,
+        "institution_kinds": sorted(kinds) or None,
+        # An author employed by a company is a fact the criteria ask for under
+        # interest. It is not a verdict on the paper.
+        "has_industry_affiliation": ("industry" in kinds) if kinds else None,
+        "orcids": orcids or None,
+        "orcid_coverage": (f"{len(orcids)}/{len(names)}" if names else None),
     }
+
+
+def author_standing(paper: "Paper", topic: str,
+                    fetch_json=_http_get_json) -> Dict[str, Any]:
+    """Standing of the first and senior author on this topic.
+
+    Only two authors are queried, not the whole list: a fifteen-author paper
+    would otherwise cost fifteen API calls, and the two ends are where the
+    signal is — the first author usually did the work and the senior author
+    usually leads the group.
+    """
+    out = {}
+    for role in ("first", "senior"):
+        name = (paper.authors or {}).get(role)
+        if name:
+            out[role] = author_topic_output(name, topic, fetch_json=fetch_json)
+            out[role]["orcid"] = (paper.authors.get("orcids") or {}).get(name)
+    return out
 
 
 def detect_country(affiliations: Optional[List[str]]) -> Extracted:
@@ -451,13 +566,6 @@ def build_query(molecule: str, indication: Optional[str] = None,
     if since_year:
         parts.append(f"AND (FIRST_PDATE:[{since_year}-01-01 TO 3000-12-31])")
     return " ".join(parts)
-
-
-def _http_get_json(url: str, timeout: int = 30) -> Dict[str, Any]:
-    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-    with urllib.request.urlopen(req, timeout=timeout,
-                                context=ssl.create_default_context()) as r:
-        return json.loads(r.read())
 
 
 def search(molecule: str, indication: Optional[str] = None,

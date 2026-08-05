@@ -373,3 +373,80 @@ def test_a_record_with_no_authors_or_journal_still_parses():
     p = parse_record(THIN_RECORD)
     assert p.authors["count"] is None and p.journal is None
     assert p.source_url
+
+
+# ── Author standing: position, never validity ─────────────────────────────
+
+def test_affiliation_kind_is_read_not_ranked():
+    """Deliberately not a prestige list. Curating 'reputed institutes' would be
+    impact-factor-as-validity again — our judgement dressed as the paper's."""
+    from core.literature import classify_affiliation as ca
+    assert ca("All India Institute of Medical Sciences, New Delhi, India")["kind"] == "academic"
+    assert ca("Apollo Hospitals, Chennai, India")["kind"] == "hospital"
+    assert ca("Imperial College London, United Kingdom")["kind"] == "academic"
+
+
+def test_industry_employment_is_detected():
+    """An author employed by a company is a fact the criteria ask for under
+    interest. Plurals matter: a trailing \\b fails against 'Pharmaceuticals'."""
+    from core.literature import classify_affiliation as ca
+    for text in ("Novartis Pharmaceuticals Corporation, East Hanover, NJ",
+                 "Eli Lilly and Company, Indianapolis, IN",
+                 "Amgen Inc., Thousand Oaks"):
+        assert ca(text)["kind"] == "industry", text
+
+
+def test_us_state_codes_never_resolve_to_a_country():
+    """'IN' is Indiana. A two-letter code would route an Indianapolis
+    affiliation to a South Asian cohort — the 'htn' in 'portal HTN' again."""
+    from core.literature import classify_affiliation as ca
+    assert ca("Eli Lilly and Company, Indianapolis, IN")["country"] is None
+
+
+def test_paper_reports_industry_affiliation_across_its_authors():
+    rec = dict(AUTHORED)
+    rec["authorList"] = {"author": [
+        {"fullName": "A B", "authorAffiliationDetailsList": {
+            "authorAffiliation": [{"affiliation": "Novartis Pharmaceuticals, Basel"}]}},
+        {"fullName": "C D", "authorAffiliationDetailsList": {
+            "authorAffiliation": [{"affiliation": "Christian Medical College, Vellore, India"}]}}]}
+    p = parse_record(rec)
+    assert p.authors["has_industry_affiliation"] is True
+    assert set(p.authors["institution_kinds"]) == {"industry", "academic"}
+
+
+def test_orcid_is_captured_where_present_and_coverage_reported():
+    """ORCID disambiguates a name, and is absent from roughly half the records,
+    so the coverage is stated rather than the gap hidden."""
+    rec = dict(AUTHORED)
+    rec["authorList"] = {"author": [
+        {"fullName": "Landmesser U", "authorId": {"type": "ORCID", "value": "0000-0002-0214-3203"}},
+        {"fullName": "Nameless N"}]}
+    p = parse_record(rec)
+    assert p.authors["orcids"] == {"Landmesser U": "0000-0002-0214-3203"}
+    assert p.authors["orcid_coverage"] == "1/2"
+
+
+def test_author_output_carries_its_ambiguity_caveat():
+    """'Ray KK' is a string, not a person."""
+    from core.literature import author_topic_output
+    out = author_topic_output("Ray KK", "inclisiran",
+                              fetch_json=lambda url, timeout=30: {"hitCount": 54})
+    assert out["papers_on_topic"] == 54
+    assert "not on a persistent identifier" in out["identifier_caveat"]
+    assert out["source_url"]
+
+
+def test_only_first_and_senior_authors_are_queried():
+    """A fifteen-author paper would otherwise cost fifteen API calls."""
+    from core.literature import author_standing
+    calls = []
+
+    def counting(url, timeout=30):
+        calls.append(url)
+        return {"hitCount": 3}
+
+    p = parse_record(AUTHORED)          # 3 authors
+    out = author_standing(p, "inclisiran", fetch_json=counting)
+    assert set(out) == {"first", "senior"}
+    assert len(calls) == 4              # two authors x (on-topic + total)
