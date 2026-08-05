@@ -102,8 +102,10 @@ Per claim and per purpose: *supports · supports with caveat · does not support
 
 ### Sponsor funding is not a caveat on registrational trials
 **Why** — a Phase III registrational programme costs hundreds of millions and exists to support an approval; nobody else runs one. The rule as first written downgraded any manufacturer-funded study, which would have fired on **every pivotal trial ever published** — a caveat that triggers on everything discriminates nothing. ALLHAT (NHLBI, 42,000 patients) marks the boundary: public money funds comparative effectiveness, not registration. Sponsor funding also *raises* durability — the dataset is audited by a regulator, the SAP is locked before unblinding, and overstating carries legal exposure.
-**Left for later** — the base-level signal, which does survive: a molecule years past approval whose entire literature is still sponsor-funded means independent groups have not taken it up. Not built.
-**Revisit if** — nothing invalidates it. Watch that the base-level case does not get dropped along with the per-paper one.
+**Nor at base level.** A literature that is entirely sponsor-funded does not mean independent groups declined to look. It usually means they could not afford to. Academic groups have the design expertise and lack the resources, and a tricky indication needs the expensive design — adjudicated endpoints, long follow-up, hard-to-recruit populations. The sponsor is frequently the only party able to fund it. Treating sponsor-dominance as a warning would penalise exactly the indications where sound evidence is hardest and costliest to produce.
+**What survives** — one plain statement of fact, not a caveat and not a score: *this claim has not been checked by a party with a different incentive.* True, worth showing, and carrying no implication about anyone's motives or the molecule's worth.
+**Left for later** — showing that statement where it applies. Not built.
+**Revisit if** — nothing. Two attempts at making funding a quality signal both failed the same way: they fired where nothing was wrong.
 
 ### Impact factor measures weight in the field, not validity
 **Why** — it is what everyone chases, and all three audiences act on journal tier: medical affairs on whether a KOL will respect the citation, commercial on whether it moves the narrative, market access on whether a committee will weigh it. Kept out of the validity judgement because NEJM publishes surrogate-endpoint trials — a paper can be top-tier and still not support a hard-outcome claim.
