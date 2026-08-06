@@ -450,3 +450,39 @@ def test_only_first_and_senior_authors_are_queried():
     out = author_standing(p, "inclisiran", fetch_json=counting)
     assert set(out) == {"first", "senior"}
     assert len(calls) == 4              # two authors x (on-topic + total)
+
+
+# ── Extraction defects found by putting the output on a page ──────────────
+
+def test_sample_size_reads_were_included():
+    """746 were included after matching (373 ... and 373 ...)"""
+    assert extract_enrollment(
+        "After exclusions, 746 were included after matching.").value == 746
+    assert extract_enrollment("A total of 1,113 patients were treated.").value == 1113
+    assert extract_enrollment("We included 226 consecutive patients.").value == 226
+
+
+def test_endpoint_quote_prefers_the_declaring_sentence():
+    """A basilar-artery trial was quoted as "There is a scarcity of evidence...",
+    which is its introduction, while the abstract went on to name the endpoint."""
+    text = ("There is a scarcity of evidence of tenecteplase for stroke in the "
+            "24-hour window. Modified Rankin Scale (mRS) of 0-1 at 90 days is "
+            "the primary outcome.")
+    q = score_endpoint(text).quote
+    assert "primary outcome" in q
+    assert "scarcity" not in q
+
+
+def test_cerebrovascular_endpoints_are_recognised():
+    """The therapy registry uses mRS 0-2 for stroke; this list did not, so a
+    trial naming mRS matched nothing at all."""
+    for text in ("The primary outcome was modified Rankin Scale 0-2 at 90 days.",
+                 "Safety outcome was symptomatic intracranial haemorrhage."):
+        assert score_endpoint(text).value == 10.0
+
+
+def test_a_first_sentence_quote_keeps_its_first_character():
+    """rfind returns -1 in the first sentence and -1 + 2 = 1 dropped the
+    opening letter — "Acute ischaemic stroke" became "cute ischaemic stroke"."""
+    q = score_endpoint("Acute ischaemic stroke causes mortality worldwide.").quote
+    assert q.startswith("Acute")

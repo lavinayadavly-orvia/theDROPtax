@@ -84,6 +84,14 @@ HARD_ENDPOINT_TERMS = [
     "stroke", "hospitalisation", "hospitalization", "revascularisation",
     "revascularization", "fracture", "amputation", "dialysis",
     "end-stage renal", "survival", "cardiovascular events",
+    # Cerebrovascular outcomes. The therapy registry already uses mRS 0-2 as
+    # the primary endpoint for acute ischaemic stroke, but this list did not,
+    # so a trial stating "mRS 0-1 at 90 days is the primary outcome" matched
+    # nothing and was quoted from its introduction instead.
+    "modified rankin", "mrs 0", "nihss", "functional independence",
+    "symptomatic intracranial", "symptomatic intracerebral", "sich",
+    "intracranial haemorrhage", "intracranial hemorrhage", "recanalisation",
+    "recanalization", "reperfusion", "timi", "major bleeding",
 ]
 SURROGATE_TERMS = [
     "ldl-c", "ldl cholesterol", "apob", "apolipoprotein", "lp(a)",
@@ -93,6 +101,15 @@ SURROGATE_TERMS = [
 ]
 HARD_ENDPOINT_SCORE = 10.0
 SURROGATE_ENDPOINT_SCORE = 6.0
+# A sentence that merely mentions an outcome is usually background. These
+# phrases mark the sentence where the paper states what it actually measured,
+# and are preferred for the provenance quote — a basilar-artery trial was being
+# quoted as "There is a scarcity of evidence…", which is its introduction,
+# while the abstract went on to name mRS 0-1 at 90 days as the primary outcome.
+ENDPOINT_DECLARED = re.compile(
+    r"\b(primary (?:outcome|end ?point|efficacy)|co-primary|secondary (?:outcome|end ?point)"
+    r"|the outcome was|end ?point was|outcomes? (?:were|include[sd]?)|assessed by"
+    r"|measured by|was defined as|primary analysis)\b", re.IGNORECASE)
 
 # ── Methodological rigour (R) ─────────────────────────────────────────────
 # Each marker must be stated in the text. Rigour is built up from what the
@@ -233,7 +250,11 @@ def strip_markup(text: Optional[str]) -> Optional[str]:
 
 def _sentence_containing(text: str, match_start: int) -> str:
     """The sentence a match sits in — this becomes the provenance quote."""
-    start = max(text.rfind(". ", 0, match_start) + 2, 0)
+    # rfind returns -1 when the match is in the first sentence, and -1 + 2 = 1
+    # silently dropped the opening character — "Acute ischaemic stroke" was
+    # being quoted as "cute ischaemic stroke".
+    prev = text.rfind(". ", 0, match_start)
+    start = prev + 2 if prev != -1 else 0
     end = text.find(". ", match_start)
     end = len(text) if end == -1 else end + 1
     return re.sub(r"\s+", " ", text[start:end]).strip()[:400]
@@ -446,10 +467,15 @@ def extract_enrollment(text: Optional[str]) -> Extracted:
     # stray numerals.
     patterns = [
         r"\b[Nn]\s*=\s*([\d,]{2,12})\b",
-        r"\b([\d,]{2,12})\s+(?:patients|participants|subjects|adults|women|individuals)\b",
+        r"\ba total of\s+([\d,]{2,12})\b",
+        r"\b([\d,]{2,12})\s+(?:consecutive\s+)?(?:patients|participants|subjects|adults|women|individuals)\b",
         r"\benroll(?:ed|ing)\s+([\d,]{2,12})\b",
         r"\brandomi[sz]ed\s+([\d,]{2,12})\b",
         r"\banaly[sz]ed\s+([\d,]{2,12})\b",
+        # "746 were included after matching", "we included 1,113"
+        r"\b([\d,]{2,12})\s+were\s+(?:included|analy[sz]ed|assessed|matched)\b",
+        r"\bwe\s+included\s+([\d,]{2,12})\b",
+        r"\bcomprising\s+([\d,]{2,12})\b",
     ]
     for pat in patterns:
         m = re.search(pat, text)
@@ -503,16 +529,41 @@ def score_endpoint(text: Optional[str]) -> Extracted:
     if not text:
         return Extracted()
     low = text.lower()
-    for term in HARD_ENDPOINT_TERMS:
-        i = low.find(term)
-        if i != -1:
-            return Extracted(HARD_ENDPOINT_SCORE,
-                             _sentence_containing(text, i))
-    for term in SURROGATE_TERMS:
-        i = low.find(term)
-        if i != -1:
-            return Extracted(SURROGATE_ENDPOINT_SCORE,
-                             _sentence_containing(text, i))
+
+    def best_quote(terms):
+        """Prefer a sentence that declares the endpoint over one that mentions it."""
+        fallback = None
+        for term in terms:
+            start = 0
+            while True:
+                i = low.find(term, start)
+                if i == -1:
+                    break
+                sentence = _sentence_containing(text, i)
+                if ENDPOINT_DECLARED.search(sentence):
+                    return sentence
+                if fallback is None:
+                    fallback = sentence
+                start = i + len(term)
+        return fallback
+
+    # A sentence can declare the endpoint without using any term on the lists —
+    # "mRS 0-1 at 90 days is the primary outcome" names no listed word. So look
+    # for a declaring sentence first, and only fall back to term matching.
+    for m in ENDPOINT_DECLARED.finditer(text):
+        sentence = _sentence_containing(text, m.start())
+        low_s = sentence.lower()
+        if any(t in low_s for t in HARD_ENDPOINT_TERMS):
+            return Extracted(HARD_ENDPOINT_SCORE, sentence)
+        if any(t in low_s for t in SURROGATE_TERMS):
+            return Extracted(SURROGATE_ENDPOINT_SCORE, sentence)
+
+    hard = best_quote(HARD_ENDPOINT_TERMS)
+    if hard is not None:
+        return Extracted(HARD_ENDPOINT_SCORE, hard)
+    surrogate = best_quote(SURROGATE_TERMS)
+    if surrogate is not None:
+        return Extracted(SURROGATE_ENDPOINT_SCORE, surrogate)
     return Extracted()
 
 
