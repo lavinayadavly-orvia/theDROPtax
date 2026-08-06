@@ -59,15 +59,16 @@ Each of these is live in the code today and wrong.
 | `[x]` | CDSCO new drug approvals | **813, 733 dated**, 1961–2026, with India-approved indication. **78/218 link**, 45 only as combinations. Scanned lists recovered by OCR |
 | `[x]` | CDSCO biologics permissions | 486 (125 manufacture, 361 import), 82 marked out of scope |
 | `[x]` | CGHS restricted medicines | 407, of which **81 need Standing Technical Committee clearance**. Inclisiran and evolocumab both STC |
-| `[x]` | MSO rate contracts | 525 rates, each with its contract window. **Supplied copy** — mso-gmsd.in nav is broken |
+| `[x]` | MSO rate contracts | 525 rates, each with its contract window. **Supplied copy** — mso-gmsd.in responds (302) but every menu item resolves to `/portal/undefined` |
+| `[x]` | Jan Aushadhi prices | 2,439 products, 1,797 with a per-unit price, 68 therapeutic groups. Zero-MRP rows kept — "under process", not free |
 | `[x]` | Indian brands and makers | On all 218 rows. Counts are **lower bounds** |
 | `[x]` | Verified label facts | DailyMed, 50 innovators, verbatim quotes |
 | `[ ]` | Event costs | ₹18L `major_event_cost` is **a placeholder**. PM-JAY rate tables unreachable |
 | `[ ]` | Multi-brand pricing | Inclisiran has 4 Indian brands; the workbook holds 1 |
 | `[x]` | 9 CDSCO lists — **unblocked by OCR** | macOS Vision via pyobjc, no brew needed. Register went 472 → **813 approvals**, 450 → **733 dated**, catalogue links 58 → **78**. OCR'd rows carry their confidence |
-| `[!]` | CGHS site | Times out on every path including its home page |
-| `[!]` | PM-JAY rate tables | HTML shells at every URL. The HBP manual downloads fine |
-| `[!]` | Jan Aushadhi | SPA serving an app shell for every path including its own API |
+| `[!]` | CGHS site | **Genuinely unreachable from here** — DNS resolves to 164.100.166.183, TCP connection times out. Not a client problem. The restricted lists came from Rajan |
+| `[!]` | PM-JAY rate tables | **pmjay.gov.in is unreachable from here** — resolves to 14.143.233.34, TCP times out. nha.gov.in works and links to `pmjay.gov.in/.../HBP_2.0-For_Website_V2.pdf`, which is on the unreachable host |
+| `[x]` | Jan Aushadhi — **unblocked** | **2,439 products, 2,052 priced.** The API is on **port 8443**, not 443; every earlier request hit the normal port and got the app shell, which looked like an SPA refusing to serve data |
 | `[?]` | 93-row price review worksheet | Generated and waiting on Rajan |
 
 ---
@@ -226,7 +227,8 @@ Per claim and per purpose: *supports · supports with caveat · does not support
 **2026-08-06**
 
 - `[x]` **OCR unblocked the scanned CDSCO lists.** I had logged 9 image-table PDFs as blocked after trying two libraries. macOS ships a text recogniser in the Vision framework, reachable through pyobjc with no system package. Two further mistakes were mine: Vision returns a table column-major, so rows had to be rebuilt from bounding boxes; and I then flattened those rows back to a string to re-hunt serial numbers, which lost 191 of 194 rows on the 2006 list. Reading the row structure directly fixed it.
-- `[ ]` **Retry the other four blockers the same way.** CGHS timeouts, PM-JAY HTML shells, MSO's broken nav, Jan Aushadhi's SPA — each was logged after one or two attempts. The browser rendered CDSCO's JS tables fine and was never tried on NHA.
+- `[x]` **Retried all four blockers.** Two were mine, two are real. **Jan Aushadhi**: unblocked — the API lives on port 8443, so every request I made hit 443 and got the app shell. Hooking `window.fetch` and clicking the site's own menu gave the exact payload (`pageIndex`, not `pageNo`). 2,439 products loaded. **MSO**: reachable, nav genuinely broken. **CGHS and PM-JAY**: DNS resolves, TCP times out — firewalled from here, not a client fault, and recorded as such rather than as something I failed to try.
+- `[ ]` **Four prices now visible for the same molecule.** Jan Aushadhi, MSO contract, TNMSC counter, branded retail. Telmisartan is ₹0.61 contracted and ₹1.13 at a Kendra; metformin is *cheaper* at a Kendra than on contract. The platform still models one.
 
 - `[x]` **Market share is not a blocker.** We are not forecasting and not assigning share. NPPA needs ≥1% share because it computes a statutory ceiling; we describe a competitive picture, which is triangulated from annual reports, press releases, filings, consulting and IQVIA summaries, and observed price spread. Removed from the gap list.
 - `[ ]` **Compute the chain-margin proxy.** MSO contracted rate ÷ retail price, per molecule, on data already loaded. Not the TMR figure NPPA would use, but it answers the question that matters: which molecules carry a fat distribution margin and are therefore exposed under para 19.
