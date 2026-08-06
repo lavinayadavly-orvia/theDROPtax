@@ -15,7 +15,7 @@ Curated for the DROP Tax platform and reusable on their own. Every file carries 
 | `nlem_2022.csv` | 239 | Essential medicines with care levels |
 | `cdsco_new_drug_approvals.csv` | 472 | India approvals, indication and date |
 | `cdsco_biologics_permissions.csv` | 486 | Who may make or import, by firm |
-| `verified_label_facts.json` | — | DailyMed facts with verbatim quotes |
+| `verified_label_facts.json` | **1** | DailyMed facts with verbatim quotes. Only inclisiran — 50 innovators were checked, one was persisted |
 
 ## How far to trust each file
 
