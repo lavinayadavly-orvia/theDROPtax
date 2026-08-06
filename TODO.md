@@ -38,8 +38,9 @@ Each of these is live in the code today and wrong.
 |---|---|---|
 | `[ ]` | Threat model | Risk is **NPPA margin capping under DPCO para 19**, which reaches *any* drug. Trigger is the gap between price-to-stockist and MRP, not a high MRP |
 | `[ ]` | `price_controlled: False` on 177 of 218 | Means *no ceiling fixed yet*, not pricing freedom |
-| `[ ]` | `MANY_BRANDS = 5` | DPCO para 6: fewer than five manufacturers holding **≥1% market share**. Right number, invented basis |
-| `[ ]` | Brand count as competition | Rosuvastatin carries **127 brands from 105 companies**; our list holds 3. Spread, not count |
+| `[ ]` | `MANY_BRANDS = 5` | An invented constant. DPCO para 6 uses ≥1% market share, but that is the **regulator's** test for setting a ceiling and needs data only NPPA holds. We are describing competition, not computing a ceiling — triangulate it instead (below) |
+| `[ ]` | Brand count as competition | Rosuvastatin carries **127 brands from 105 companies**; our list holds 3. Count measures nothing — triangulate from annual reports, launch press releases, consulting and IQVIA summaries, and price spread |
+| `[ ]` | Chain-margin exposure called uncomputable | PTS is not public, but **MSO contracted rate against retail price is a proxy we can compute today** — aceclofenac ₹0.53 contracted against its branded pack. Flags fat-margin molecules without needing PTS |
 | `[ ]` | One price per molecule | At least three — MSO contracted, public counter, branded retail — plus MRP on the pack |
 | `[ ]` | IPD "covered, bundled in the claim" | Under PM-JAY the package is **inclusive of drugs**, so the hospital absorbs it. A disincentive, not coverage |
 | `[ ]` | Efficacy read against the trial's own target | India sets its own — LAI 2024 LDL-C <50 very-high-risk, ≤30 extreme |
@@ -222,4 +223,7 @@ Per claim and per purpose: *supports · supports with caveat · does not support
 
 ## Added this session
 
-*(2026-08-06 — new items land here before being filed above)*
+**2026-08-06**
+
+- `[x]` **Market share is not a blocker.** We are not forecasting and not assigning share. NPPA needs ≥1% share because it computes a statutory ceiling; we describe a competitive picture, which is triangulated from annual reports, press releases, filings, consulting and IQVIA summaries, and observed price spread. Removed from the gap list.
+- `[ ]` **Compute the chain-margin proxy.** MSO contracted rate ÷ retail price, per molecule, on data already loaded. Not the TMR figure NPPA would use, but it answers the question that matters: which molecules carry a fat distribution margin and are therefore exposed under para 19.
