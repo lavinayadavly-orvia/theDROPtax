@@ -338,7 +338,20 @@ def test_design_falls_back_to_the_abstract_when_pubtype_is_uninformative():
 def test_a_recognised_pubtype_still_wins_over_the_text():
     rec = dict(AUTHORED, pubTypeList={"pubType": ["Observational Study"]})
     p = parse_record(rec)
-    assert "Publication type" in p.design_label
+    assert p.design_label == "Observational study"
+    assert "Publication type" in p.shape.quote
+
+
+def test_the_design_label_is_short_and_the_quote_carries_the_evidence():
+    """Joining them put "Meta-analysis (from text) — We performed an updated
+    systematic review..." into a field meant to render as a label."""
+    rec = dict(AUTHORED, pubTypeList={"pubType": ["Journal Article"]})
+    rec["abstractText"] = ("We performed an updated systematic review and "
+                           "meta-analysis using an EVT-stratified framework.")
+    p = parse_record(rec)
+    assert p.design_label == "Meta-analysis (from text)"
+    assert "EVT-stratified" in p.shape.quote          # evidence kept, elsewhere
+    assert len(p.design_label) < 40
 
 
 def test_population_falls_back_to_affiliation_and_is_marked_a_proxy():
@@ -486,3 +499,34 @@ def test_a_first_sentence_quote_keeps_its_first_character():
     opening letter — "Acute ischaemic stroke" became "cute ischaemic stroke"."""
     q = score_endpoint("Acute ischaemic stroke causes mortality worldwide.").quote
     assert q.startswith("Acute")
+
+
+def test_an_affiliation_derived_cohort_does_not_earn_a_direct_match():
+    """A global meta-analysis written by an Indian group is not an Indian study.
+    The display said so; the ranking still gave it Tier 1 weight."""
+    rec = {"id": "1", "pmid": "1", "source": "MED", "pubYear": "2026",
+           "title": "Global meta-analysis of tenecteplase",
+           "pubTypeList": {"pubType": ["Meta-Analysis"]},
+           "authorList": {"author": [{"fullName": "A B",
+               "authorAffiliationDetailsList": {"authorAffiliation": [
+                   {"affiliation": "AIIMS, New Delhi, India"}]}}]},
+           "abstractText": ("We pooled 4000 patients. The primary outcome was "
+                            "modified Rankin Scale 0-2 at 90 days.")}
+    p = parse_record(rec)
+    assert p.cohort.value == "south_asian" and p.cohort_is_proxy is True
+    a = appraise(to_study(p), Intent.ACCESS, Region.INDIA)
+    assert a.proximity < 1.0, "an affiliation proxy must not be a direct local match"
+    assert "Tier 2A" in a.proximity_tier
+
+
+def test_a_stated_indian_population_still_earns_the_direct_match():
+    rec = {"id": "2", "pmid": "2", "source": "MED", "pubYear": "2026",
+           "title": "Tenecteplase in Indian patients",
+           "pubTypeList": {"pubType": ["Observational Study"]},
+           "abstractText": ("This multicentre study included 313 Indian patients "
+                            "in West Bengal. The primary outcome was modified "
+                            "Rankin Scale 0-2.")}
+    p = parse_record(rec)
+    assert p.cohort_is_proxy is False
+    a = appraise(to_study(p), Intent.ACCESS, Region.INDIA)
+    assert a.proximity == 1.0

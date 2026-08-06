@@ -193,6 +193,8 @@ class Extracted:
     """A value plus the sentence it was read from. No quote, no value."""
     value: Optional[Any] = None
     quote: Optional[str] = None
+    # Short display form, where the quote is too long to render as a label.
+    label: Optional[str] = None
 
     def __bool__(self) -> bool:
         return self.value is not None
@@ -278,7 +280,7 @@ def classify_design(pub_types: List[str]) -> Extracted:
             best = hit
     if best is None:
         return Extracted()
-    return Extracted(best[0], f"Publication type: {best[1]}")
+    return Extracted(best[0], f"Publication type: {best[1]}", label=best[1])
 
 
 def classify_design_from_text(text: Optional[str]) -> Extracted:
@@ -294,7 +296,10 @@ def classify_design_from_text(text: Optional[str]) -> Extracted:
             quote = _sentence_containing(text, m.start())
     if best is None:
         return Extracted()
-    return Extracted(best[0], f"{best[1]} — {quote}"[:400])
+    # The label and the sentence it came from are different things. Joining
+    # them put "Meta-analysis (from text) — We performed an updated systematic
+    # review..." into a display field.
+    return Extracted(best[0], f"{best[1]} — {quote}"[:400], label=best[1])
 
 
 def classify_affiliation(affiliation: Optional[str]) -> Dict[str, Any]:
@@ -667,7 +672,7 @@ def parse_record(rec: Dict[str, Any]) -> Paper:
     # controlled vocabulary. It is empty or uninformative for most records, so
     # fall back to what the abstract says about itself.
     paper.shape = classify_design(pub_types) or classify_design_from_text(abstract)
-    paper.design_label = paper.shape.quote
+    paper.design_label = paper.shape.label or paper.shape.quote
     paper.n = extract_enrollment(abstract)
     paper.followup_years = extract_followup_years(abstract)
     paper.endpoint = score_endpoint(abstract)
@@ -693,6 +698,13 @@ def parse_record(rec: Dict[str, Any]) -> Paper:
     return paper
 
 
+# A cohort inferred from author affiliation is weaker evidence of population
+# than one the text states. A global meta-analysis written by an Indian group
+# is not an Indian study, so it must not earn a direct-local-match tier. It is
+# capped at the high-proxy level, which is literally what it is.
+PROXY_COHORT_CAP = "south_asian_diaspora"   # Tier 2A in core.appraisal.PROXIMITY
+
+
 def to_study(paper: Paper) -> Study:
     """Paper -> Study for the appraisal engine.
 
@@ -703,6 +715,13 @@ def to_study(paper: Paper) -> Study:
     exposure = None
     if paper.n.value is not None and paper.followup_years.value is not None:
         exposure = paper.n.value * paper.followup_years.value
+    # Where the population was inferred from affiliation rather than stated,
+    # the cohort is downgraded before it reaches the appraisal engine. The
+    # display was already honest about this; the ordering was not.
+    cohort = paper.cohort.value
+    if paper.cohort_is_proxy and cohort in ("south_asian", "singaporean", "gcc_arab"):
+        cohort = PROXY_COHORT_CAP
+
     return Study(
         study_id=paper.study_id,
         title=paper.title,
@@ -710,7 +729,7 @@ def to_study(paper: Paper) -> Study:
         exposure_years=exposure,
         endpoint=paper.endpoint.value,
         rigor=paper.rigor.value,
-        cohort=paper.cohort.value,
+        cohort=cohort,
         design=paper.design_label,
         n=paper.n.value,
         followup_years=paper.followup_years.value,
