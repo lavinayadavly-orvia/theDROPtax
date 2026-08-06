@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-08-05T12:35:13+00:00",
+  "generated_utc": "2026-08-06T10:03:55+00:00",
   "caveats": [
     "213 of 218 prices are ESTIMATES. 156 are a per-unit retail price scaled to a month on an ASSUMED once-daily dose — a drug taken three times a day costs three times the figure shown. price_is_estimated and price_note carry this per row; do not use the number without them.",
     "Clinical endpoints are present for 1 molecule of 218.",
@@ -171,7 +171,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -365,7 +365,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2009.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED 2009",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -522,7 +522,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -696,7 +696,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2009.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED 2009",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -842,7 +842,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -982,13 +982,18 @@
       "unmapped": [],
       "india_approval": {
         "molecule": "Fosinopril",
-        "found": false,
-        "approved_in_india": null,
-        "first_approval_date": null,
+        "found": true,
+        "approved_in_india": true,
+        "first_approval_date": "2002-01-10",
+        "approval_day_known": true,
+        "single_molecule_rows": 1,
+        "combination_rows": 0,
+        "only_as_combination": false,
         "india_indications": [],
-        "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2002.pdf",
+        "source_list": "LIST OF NEW DRUGS APPROVED 2002",
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -1151,7 +1156,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2009.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED 2009",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -1295,20 +1300,16 @@
         "molecule": "Telmisartan",
         "found": true,
         "approved_in_india": true,
-        "first_approval_date": "2009-03-31",
+        "first_approval_date": "2002-11-25",
         "approval_day_known": true,
-        "single_molecule_rows": 0,
-        "combination_rows": 4,
-        "only_as_combination": true,
-        "india_indications": [
-          "For the Treatment of Essential Hypertension",
-          "For the treatment of hypertension as second line therapy",
-          "For the treatment of essential hypertension 141 Etodolac 300/300mg +Thiocolchicoside 4/8mg For the treatment of patients with acute painful musculoskeletal conditions 142 Celecoxib 100/200mg +Diacerein 50/50mg For the treatment of adult patients with osteoarthritis of knee and/or hip joints 143 Metoprolol succinate ER 25mg+50mg + Olmesartan 20/20mg For the treatment of essential hypertension 144 1"
-        ],
+        "single_molecule_rows": 1,
+        "combination_rows": 5,
+        "only_as_combination": false,
+        "india_indications": [],
         "source_name": "CDSCO List of Approved New Drugs",
-        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2009.pdf",
-        "source_list": "LIST OF NEW DRUGS APPROVED 2009",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2002.pdf",
+        "source_list": "LIST OF NEW DRUGS APPROVED 2002",
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -1439,13 +1440,18 @@
       "unmapped": [],
       "india_approval": {
         "molecule": "Olmesartan",
-        "found": false,
-        "approved_in_india": null,
-        "first_approval_date": null,
+        "found": true,
+        "approved_in_india": true,
+        "first_approval_date": "2006-05-18",
+        "approval_day_known": true,
+        "single_molecule_rows": 0,
+        "combination_rows": 2,
+        "only_as_combination": true,
         "india_indications": [],
-        "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2006.pdf",
+        "source_list": "LIST OF NEW DRUGS APPROVED 2006",
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -1608,18 +1614,18 @@
         "molecule": "Valsartan",
         "found": true,
         "approved_in_india": true,
-        "first_approval_date": "2016-07-14",
+        "first_approval_date": "2006-01-17",
         "approval_day_known": true,
         "single_molecule_rows": 0,
-        "combination_rows": 1,
+        "combination_rows": 2,
         "only_as_combination": true,
         "india_indications": [
           "To reduce the risk of cardiovascular death and hospitalization for heart failure in patients with chronic heart failure (NYHA Class II-IV) and reduced ejection fraction\""
         ],
         "source_name": "CDSCO List of Approved New Drugs",
-        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/3_LIST%20OF%20NEW%20DRUG%20APPROVED%20FROM%2001-01-2016.pdf",
-        "source_list": "LIST OF NEW DRUG APPROVED FROM 01-01-2016 to TILL DATE BY NEW DRUGS DIVISION",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2006.pdf",
+        "source_list": "LIST OF NEW DRUGS APPROVED 2006",
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -1765,7 +1771,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -1913,7 +1919,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -2057,7 +2063,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/3_LIST%20OF%20NEW%20DRUG%20APPROVED%20FROM%2001-01-2016.pdf",
         "source_list": "LIST OF NEW DRUG APPROVED FROM 01-01-2016 to TILL DATE BY NEW DRUGS DIVISION",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -2229,7 +2235,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -2371,21 +2377,16 @@
         "molecule": "Amlodipine",
         "found": true,
         "approved_in_india": true,
-        "first_approval_date": "2009-03-31",
+        "first_approval_date": "2002-08-16",
         "approval_day_known": true,
-        "single_molecule_rows": 0,
-        "combination_rows": 5,
-        "only_as_combination": true,
-        "india_indications": [
-          "For the Treatment of Essential Hypertension",
-          "For the treatment of mild to moderate Hypertension",
-          "For the treatment of mild to moderate hypertension",
-          "To reduce of fatal coronary heart disease and non-fatal myocardial infarction, and to reduce the risk of stroke. 2. To reduce the risk of coronary revascularization procedures and the need for hospitalization due to angina in patients with coronary artery disease"
-        ],
+        "single_molecule_rows": 2,
+        "combination_rows": 10,
+        "only_as_combination": false,
+        "india_indications": [],
         "source_name": "CDSCO List of Approved New Drugs",
-        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2009.pdf",
-        "source_list": "LIST OF NEW DRUGS APPROVED 2009",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2002.pdf",
+        "source_list": "LIST OF NEW DRUGS APPROVED 2002",
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -2522,7 +2523,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -2670,7 +2671,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -2849,7 +2850,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2009.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED 2009",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -2986,7 +2987,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -3123,7 +3124,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -3260,7 +3261,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -3397,7 +3398,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -3534,7 +3535,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -3692,13 +3693,18 @@
       "unmapped": [],
       "india_approval": {
         "molecule": "Diltiazem",
-        "found": false,
-        "approved_in_india": null,
-        "first_approval_date": null,
+        "found": true,
+        "approved_in_india": true,
+        "first_approval_date": "2007-02-07",
+        "approval_day_known": true,
+        "single_molecule_rows": 1,
+        "combination_rows": 0,
+        "only_as_combination": false,
         "india_indications": [],
-        "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2007.pdf",
+        "source_list": "LIST OF NEW DRUGS APPROVED 2007",
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -3858,13 +3864,18 @@
       ],
       "india_approval": {
         "molecule": "Verapamil",
-        "found": false,
-        "approved_in_india": null,
-        "first_approval_date": null,
+        "found": true,
+        "approved_in_india": true,
+        "first_approval_date": "2006-11-23",
+        "approval_day_known": true,
+        "single_molecule_rows": 0,
+        "combination_rows": 1,
+        "only_as_combination": true,
         "india_indications": [],
-        "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2006.pdf",
+        "source_list": "LIST OF NEW DRUGS APPROVED 2006",
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -4045,18 +4056,19 @@
         "molecule": "Metoprolol",
         "found": true,
         "approved_in_india": true,
-        "first_approval_date": "2009-01-14",
+        "first_approval_date": "2006-02-07",
         "approval_day_known": true,
         "single_molecule_rows": 0,
-        "combination_rows": 5,
+        "combination_rows": 11,
         "only_as_combination": true,
         "india_indications": [
-          "For the treatment of essential hypertension 141 Etodolac 300/300mg +Thiocolchicoside 4/8mg For the treatment of patients with acute painful musculoskeletal conditions 142 Celecoxib 100/200mg +Diacerein 50/50mg For the treatment of adult patients with osteoarthritis of knee and/or hip joints 143 Metoprolol succinate ER 25mg+50mg + Olmesartan 20/20mg For the treatment of essential hypertension 144 1"
+          "For the treatment of essential hypertension 141 Etodolac 300/300mg +Thiocolchicoside 4/8mg For the treatment of patients with acute painful musculoskeletal conditions 142 Celecoxib 100/200mg +Diacerein 50/50mg For the treatment of adult patients with osteoarthritis of knee and/or hip joints 143 Metoprolol succinate ER 25mg+50mg + Olmesartan 20/20mg For the treatment of essential hypertension 144 1",
+          "in patients"
         ],
         "source_name": "CDSCO List of Approved New Drugs",
-        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2009.pdf",
-        "source_list": "LIST OF NEW DRUGS APPROVED 2009",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2006.pdf",
+        "source_list": "LIST OF NEW DRUGS APPROVED 2006",
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -4207,18 +4219,16 @@
         "molecule": "Atenolol",
         "found": true,
         "approved_in_india": true,
-        "first_approval_date": "2009-07-21",
+        "first_approval_date": "2003-09-11",
         "approval_day_known": true,
-        "single_molecule_rows": 0,
-        "combination_rows": 1,
-        "only_as_combination": true,
-        "india_indications": [
-          "in patients where use of such combination is appropriate"
-        ],
+        "single_molecule_rows": 1,
+        "combination_rows": 2,
+        "only_as_combination": false,
+        "india_indications": [],
         "source_name": "CDSCO List of Approved New Drugs",
-        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2009.pdf",
-        "source_list": "LIST OF NEW DRUGS APPROVED 2009",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2003.pdf",
+        "source_list": "LIST OF NEW DRUGS APPROVED 2003",
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -4373,7 +4383,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -4530,7 +4540,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -4661,13 +4671,18 @@
       "unmapped": [],
       "india_approval": {
         "molecule": "Nebivolol",
-        "found": false,
-        "approved_in_india": null,
-        "first_approval_date": null,
+        "found": true,
+        "approved_in_india": true,
+        "first_approval_date": "2002-07-12",
+        "approval_day_known": true,
+        "single_molecule_rows": 1,
+        "combination_rows": 1,
+        "only_as_combination": false,
         "india_indications": [],
-        "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2002.pdf",
+        "source_list": "LIST OF NEW DRUGS APPROVED 2002",
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -4862,7 +4877,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -5008,7 +5023,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -5145,7 +5160,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -5300,7 +5315,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2013.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED 2013",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -5442,7 +5457,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2009.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED 2009",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -5587,7 +5602,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/approvalsnd211.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED 2011",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -5760,7 +5775,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/approvalsnd211.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED 2011",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -5912,13 +5927,18 @@
       ],
       "india_approval": {
         "molecule": "Torsemide",
-        "found": false,
-        "approved_in_india": null,
-        "first_approval_date": null,
+        "found": true,
+        "approved_in_india": true,
+        "first_approval_date": "2007-01-17",
+        "approval_day_known": true,
+        "single_molecule_rows": 0,
+        "combination_rows": 1,
+        "only_as_combination": true,
         "india_indications": [],
-        "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2007.pdf",
+        "source_list": "LIST OF NEW DRUGS APPROVED 2007",
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -6116,7 +6136,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/approvalsnd211.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED 2011",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -6264,7 +6284,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -6395,13 +6415,18 @@
       "unmapped": [],
       "india_approval": {
         "molecule": "Metolazone",
-        "found": false,
-        "approved_in_india": null,
-        "first_approval_date": null,
+        "found": true,
+        "approved_in_india": true,
+        "first_approval_date": "2003-04-23",
+        "approval_day_known": true,
+        "single_molecule_rows": 1,
+        "combination_rows": 0,
+        "only_as_combination": false,
         "india_indications": [],
-        "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2003.pdf",
+        "source_list": "LIST OF NEW DRUGS APPROVED 2003",
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -6567,7 +6592,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -6735,7 +6760,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -6883,7 +6908,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -7055,7 +7080,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/1981_1990.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED 1981_1990",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -7192,7 +7217,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -7329,7 +7354,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -7475,7 +7500,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -7627,7 +7652,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -7771,18 +7796,19 @@
         "molecule": "Atorvastatin",
         "found": true,
         "approved_in_india": true,
-        "first_approval_date": "2009-07-01",
+        "first_approval_date": "2004-10-08",
         "approval_day_known": true,
         "single_molecule_rows": 0,
-        "combination_rows": 2,
+        "combination_rows": 4,
         "only_as_combination": true,
         "india_indications": [
-          "As an Adjunct to Diet to Reduce Elevated Total Cholesterol and Triglyceride Levels in Patients with Primary HyperCholesterolemia and Mixed Dyalipidemia (Type IIa and IIIb). 2) In adult patients with type II diabetes and without clinically evident coronary heart disease to reduce the risk of myocardial infarction and stroke. 3) To reduce the risk of stroke in adult patients without clinically evide"
+          "As an Adjunct to Diet to Reduce Elevated Total Cholesterol and Triglyceride Levels in Patients with Primary HyperCholesterolemia and Mixed Dyalipidemia (Type IIa and IIIb). 2) In adult patients with type II diabetes and without clinically evident coronary heart disease to reduce the risk of myocardial infarction and stroke. 3) To reduce the risk of stroke in adult patients without clinically evide",
+          "For the treatment of prostate cancer suitable for hormonal manipulation"
         ],
         "source_name": "CDSCO List of Approved New Drugs",
-        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2009.pdf",
-        "source_list": "LIST OF NEW DRUGS APPROVED 2009",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2004le.pdf",
+        "source_list": "LIST OF NEW DRUGS APPROVED 2004",
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -7943,19 +7969,16 @@
         "molecule": "Rosuvastatin",
         "found": true,
         "approved_in_india": true,
-        "first_approval_date": "2011-03-30",
+        "first_approval_date": "2003-09-12",
         "approval_day_known": true,
-        "single_molecule_rows": 0,
+        "single_molecule_rows": 1,
         "combination_rows": 2,
-        "only_as_combination": true,
-        "india_indications": [
-          "For the treatment of dyslipidemia associated with arthersclerotic arterial disease with risk of Myocardial infarction, stroke or peripheral vascular disease",
-          "to reduce Total-C, LDL-C, and ApoB levels in adolesent boys and girls, who are at least one year post-menarche, 10-17 years of age with heterozygous familial hypercholesterolemia if after an adequate trial of diet therapy the following findings are present: LDL-C> 190mg/dL or > 160mg/dL and there is a positive family history of premature cadiovascular disease (CVD) or two or more other CVD risk fa"
-        ],
+        "only_as_combination": false,
+        "india_indications": [],
         "source_name": "CDSCO List of Approved New Drugs",
-        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/approvalsnd211.pdf",
-        "source_list": "LIST OF NEW DRUGS APPROVED 2011",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2003.pdf",
+        "source_list": "LIST OF NEW DRUGS APPROVED 2003",
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -8099,7 +8122,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2009.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED 2009",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -8243,7 +8266,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2012.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED 2012",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -8388,7 +8411,7 @@
         "first_approval_date": "2012-11-01",
         "approval_day_known": true,
         "single_molecule_rows": 1,
-        "combination_rows": 0,
+        "combination_rows": 1,
         "only_as_combination": false,
         "india_indications": [
           "For treatment of mixed lipidemia in combination with statins, severe hypertriglyceridemia"
@@ -8396,7 +8419,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2012.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED 2012",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -8533,7 +8556,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -8664,13 +8687,18 @@
       "unmapped": [],
       "india_approval": {
         "molecule": "Ezetimibe",
-        "found": false,
-        "approved_in_india": null,
-        "first_approval_date": null,
+        "found": true,
+        "approved_in_india": true,
+        "first_approval_date": "2003-12-18",
+        "approval_day_known": true,
+        "single_molecule_rows": 1,
+        "combination_rows": 1,
+        "only_as_combination": false,
         "india_indications": [],
-        "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2003.pdf",
+        "source_list": "LIST OF NEW DRUGS APPROVED 2003",
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -8834,7 +8862,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/New%20Drug%20Approvals%202022jul25.pdf",
         "source_list": "List of new drugs approved in the year 2022 till date",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -9006,7 +9034,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -9169,7 +9197,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -9407,7 +9435,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -9544,7 +9572,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -9708,7 +9736,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -9888,7 +9916,7 @@
         "first_approval_date": "2001-01-17",
         "approval_day_known": true,
         "single_molecule_rows": 0,
-        "combination_rows": 2,
+        "combination_rows": 3,
         "only_as_combination": true,
         "india_indications": [
           "is indicated for the prevention of atherothrombotic events in adult patients after an acute coronary syndrome (ACS) with elevated cardiac biomarkers"
@@ -9896,7 +9924,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2001.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED 2001",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -10043,7 +10071,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -10208,7 +10236,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2012.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED 2012",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -10339,13 +10367,18 @@
       "unmapped": [],
       "india_approval": {
         "molecule": "Cilostazol",
-        "found": false,
-        "approved_in_india": null,
-        "first_approval_date": null,
+        "found": true,
+        "approved_in_india": true,
+        "first_approval_date": "2003-01-23",
+        "approval_day_known": true,
+        "single_molecule_rows": 0,
+        "combination_rows": 1,
+        "only_as_combination": true,
         "india_indications": [],
-        "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2003.pdf",
+        "source_list": "LIST OF NEW DRUGS APPROVED 2003",
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -10482,7 +10515,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -10630,7 +10663,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -10776,7 +10809,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -10961,7 +10994,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2009.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED 2009",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -11124,7 +11157,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -11280,7 +11313,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -11443,7 +11476,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2014.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED 2014",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -11594,7 +11627,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2012.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED 2012",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -11762,7 +11795,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/List%20of%20New%20Drugs%20approved%20in%20the%20year%202025%20till%20datee.pdf",
         "source_list": "List of New Drugs approved in year 2025 to till date",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -11929,7 +11962,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -12095,7 +12128,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -12239,7 +12272,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -12394,7 +12427,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -12531,7 +12564,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -12673,7 +12706,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2009.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED 2009",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -12804,13 +12837,18 @@
       "unmapped": [],
       "india_approval": {
         "molecule": "Nicorandil",
-        "found": false,
-        "approved_in_india": null,
-        "first_approval_date": null,
+        "found": true,
+        "approved_in_india": true,
+        "first_approval_date": "2006-04-24",
+        "approval_day_known": true,
+        "single_molecule_rows": 1,
+        "combination_rows": 0,
+        "only_as_combination": false,
         "india_indications": [],
-        "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2006.pdf",
+        "source_list": "LIST OF NEW DRUGS APPROVED 2006",
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -12963,7 +13001,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2013.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED 2013",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -13119,7 +13157,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -13273,7 +13311,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/New%20Drug%20Approvals%202022jul25.pdf",
         "source_list": "List of new drugs approved in the year 2022 till date",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -13428,7 +13466,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -13565,7 +13603,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -13714,7 +13752,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -13869,7 +13907,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -14025,7 +14063,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -14162,7 +14200,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -14299,7 +14337,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -14453,7 +14491,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -14600,7 +14638,7 @@
         "first_approval_date": "2012-12-05",
         "approval_day_known": true,
         "single_molecule_rows": 1,
-        "combination_rows": 1,
+        "combination_rows": 2,
         "only_as_combination": false,
         "india_indications": [
           "For the treatment of pulmonary arterial hypertension (PAH) (WHO Group-1) to improve exercise ability and delay clinical worsening"
@@ -14608,7 +14646,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2012.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED 2012",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -14744,7 +14782,7 @@
         "first_approval_date": "2013-02-27",
         "approval_day_known": true,
         "single_molecule_rows": 1,
-        "combination_rows": 0,
+        "combination_rows": 1,
         "only_as_combination": false,
         "india_indications": [
           "For the treatment of erectile dysfunction. 2. For the treatment of erectile dysfunction with benign prostatic hyperplasia"
@@ -14752,7 +14790,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2013.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED 2013",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -14896,7 +14934,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2009.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED 2009",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -15033,7 +15071,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -15170,7 +15208,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -15340,7 +15378,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/rnew%20drugs%20approval%202018.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED FROM 01-01-2018 to 31.12.2018",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -15494,7 +15532,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -15631,7 +15669,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -15805,7 +15843,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -15960,7 +15998,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -16126,7 +16164,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -16290,7 +16328,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -16443,18 +16481,18 @@
         "molecule": "Metformin",
         "found": true,
         "approved_in_india": true,
-        "first_approval_date": "2009-02-23",
+        "first_approval_date": "2007-01-23",
         "approval_day_known": true,
         "single_molecule_rows": 0,
-        "combination_rows": 3,
+        "combination_rows": 6,
         "only_as_combination": true,
         "india_indications": [
           "For the treatment of patients with diabetic polyneuropathy"
         ],
         "source_name": "CDSCO List of Approved New Drugs",
-        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2009.pdf",
-        "source_list": "LIST OF NEW DRUGS APPROVED 2009",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2007.pdf",
+        "source_list": "LIST OF NEW DRUGS APPROVED 2007",
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -16601,7 +16639,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -16732,13 +16770,18 @@
       "unmapped": [],
       "india_approval": {
         "molecule": "Gliclazide",
-        "found": false,
-        "approved_in_india": null,
+        "found": true,
+        "approved_in_india": true,
         "first_approval_date": null,
+        "approval_day_known": null,
+        "single_molecule_rows": 0,
+        "combination_rows": 1,
+        "only_as_combination": true,
         "india_indications": [],
-        "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2006.pdf",
+        "source_list": "LIST OF NEW DRUGS APPROVED 2006",
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -16875,7 +16918,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -17012,7 +17055,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -17149,7 +17192,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -17280,13 +17323,18 @@
       "unmapped": [],
       "india_approval": {
         "molecule": "Nateglinide",
-        "found": false,
-        "approved_in_india": null,
-        "first_approval_date": null,
+        "found": true,
+        "approved_in_india": true,
+        "first_approval_date": "2002-05-01",
+        "approval_day_known": true,
+        "single_molecule_rows": 1,
+        "combination_rows": 0,
+        "only_as_combination": false,
         "india_indications": [],
-        "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2002.pdf",
+        "source_list": "LIST OF NEW DRUGS APPROVED 2002",
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -17433,7 +17481,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -17570,7 +17618,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -17714,7 +17762,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2012.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED 2012",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -17865,7 +17913,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/4_LIST%20OF%20APPROVED%20DRUG%20FROM%2001-01-2015.pdf",
         "source_list": "LIST OF APPROVED DRUG FROM 01-01-2015 to 31-01-2015",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -18012,7 +18060,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -18156,7 +18204,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/4_LIST%20OF%20APPROVED%20DRUG%20FROM%2001-01-2015.pdf",
         "source_list": "LIST OF APPROVED DRUG FROM 01-01-2015 to 31-01-2015",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -18320,7 +18368,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/4_LIST%20OF%20APPROVED%20DRUG%20FROM%2001-01-2015.pdf",
         "source_list": "LIST OF APPROVED DRUG FROM 01-01-2015 to 31-01-2015",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -18487,7 +18535,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -18657,7 +18705,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/RLD%20from%202014-2011.pdf",
         "source_list": "Preliminary List of Products Permitted by DCG(I) and considered as Reference Product for BA/BE Studies (2014-2011)",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -18811,7 +18859,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -18955,7 +19003,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/newdrugapprovaldec3119.pdf",
         "source_list": "List of new drugs approved in the year 2019 till 30 December 2019",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -19118,7 +19166,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -19272,7 +19320,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -19439,7 +19487,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -19586,7 +19634,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -19756,7 +19804,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/List%20of%20New%20Drugs%20approved%20in%20the%20year%202024%20till%20date%20%2826.11.2024%29.pdf",
         "source_list": "List of new drugs approved in the year 2024 till date",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -19889,16 +19937,16 @@
         "molecule": "Pioglitazone",
         "found": true,
         "approved_in_india": true,
-        "first_approval_date": "2009-02-23",
+        "first_approval_date": "2007-01-23",
         "approval_day_known": true,
         "single_molecule_rows": 0,
-        "combination_rows": 1,
+        "combination_rows": 2,
         "only_as_combination": true,
         "india_indications": [],
         "source_name": "CDSCO List of Approved New Drugs",
-        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2009.pdf",
-        "source_list": "LIST OF NEW DRUGS APPROVED 2009",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2007.pdf",
+        "source_list": "LIST OF NEW DRUGS APPROVED 2007",
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -20040,7 +20088,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2009.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED 2009",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -20187,7 +20235,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -20345,7 +20393,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -20482,7 +20530,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -20619,7 +20667,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -20773,7 +20821,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -20927,7 +20975,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -21081,7 +21129,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -21235,7 +21283,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -21389,7 +21437,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -21544,7 +21592,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -21692,7 +21740,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -21829,7 +21877,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -21977,7 +22025,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -22123,7 +22171,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -22277,7 +22325,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -22424,7 +22472,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -22578,7 +22626,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -22757,7 +22805,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -22903,7 +22951,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -23078,7 +23126,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -23209,13 +23257,18 @@
       "unmapped": [],
       "india_approval": {
         "molecule": "Alendronate",
-        "found": false,
-        "approved_in_india": null,
+        "found": true,
+        "approved_in_india": true,
         "first_approval_date": null,
+        "approval_day_known": null,
+        "single_molecule_rows": 0,
+        "combination_rows": 1,
+        "only_as_combination": true,
         "india_indications": [],
-        "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2006.pdf",
+        "source_list": "LIST OF NEW DRUGS APPROVED 2006",
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -23357,13 +23410,18 @@
       ],
       "india_approval": {
         "molecule": "Risedronate",
-        "found": false,
-        "approved_in_india": null,
-        "first_approval_date": null,
+        "found": true,
+        "approved_in_india": true,
+        "first_approval_date": "2003-10-17",
+        "approval_day_known": true,
+        "single_molecule_rows": 1,
+        "combination_rows": 0,
+        "only_as_combination": false,
         "india_indications": [],
-        "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2003.pdf",
+        "source_list": "LIST OF NEW DRUGS APPROVED 2003",
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -23500,7 +23558,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -23678,7 +23736,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2009.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED 2009",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -23826,7 +23884,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -23974,13 +24032,18 @@
       "unmapped": [],
       "india_approval": {
         "molecule": "Teriparatide",
-        "found": false,
-        "approved_in_india": null,
-        "first_approval_date": null,
+        "found": true,
+        "approved_in_india": true,
+        "first_approval_date": "2003-09-04",
+        "approval_day_known": true,
+        "single_molecule_rows": 1,
+        "combination_rows": 0,
+        "only_as_combination": false,
         "india_indications": [],
-        "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2003.pdf",
+        "source_list": "LIST OF NEW DRUGS APPROVED 2003",
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -24117,7 +24180,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -24282,7 +24345,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -24437,7 +24500,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -24599,7 +24662,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2009.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED 2009",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -24745,7 +24808,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -24902,7 +24965,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -25068,7 +25131,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -25205,7 +25268,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -25342,7 +25405,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -25479,7 +25542,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -25617,13 +25680,18 @@
       "unmapped": [],
       "india_approval": {
         "molecule": "Levonorgestrel",
-        "found": false,
-        "approved_in_india": null,
-        "first_approval_date": null,
+        "found": true,
+        "approved_in_india": true,
+        "first_approval_date": "2007-02-07",
+        "approval_day_known": true,
+        "single_molecule_rows": 0,
+        "combination_rows": 1,
+        "only_as_combination": true,
         "india_indications": [],
-        "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2007.pdf",
+        "source_list": "LIST OF NEW DRUGS APPROVED 2007",
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -25767,7 +25835,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/rnew%20drugs%20approval%202018.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED FROM 01-01-2018 to 31.12.2018",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -25921,7 +25989,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -26085,7 +26153,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -26231,7 +26299,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -26382,7 +26450,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -26547,7 +26615,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -26693,7 +26761,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -26839,7 +26907,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -27005,7 +27073,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -27161,7 +27229,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -27305,7 +27373,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2015.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED 2015",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -27454,13 +27522,18 @@
       "unmapped": [],
       "india_approval": {
         "molecule": "Cabergoline",
-        "found": false,
-        "approved_in_india": null,
-        "first_approval_date": null,
+        "found": true,
+        "approved_in_india": true,
+        "first_approval_date": "2002-09-05",
+        "approval_day_known": true,
+        "single_molecule_rows": 1,
+        "combination_rows": 0,
+        "only_as_combination": false,
         "india_indications": [],
-        "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2002.pdf",
+        "source_list": "LIST OF NEW DRUGS APPROVED 2002",
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -27615,7 +27688,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -27776,13 +27849,18 @@
       ],
       "india_approval": {
         "molecule": "Progesterone (micronized)",
-        "found": false,
-        "approved_in_india": null,
-        "first_approval_date": null,
+        "found": true,
+        "approved_in_india": true,
+        "first_approval_date": "2002-02-13",
+        "approval_day_known": true,
+        "single_molecule_rows": 0,
+        "combination_rows": 1,
+        "only_as_combination": true,
         "india_indications": [],
-        "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2002.pdf",
+        "source_list": "LIST OF NEW DRUGS APPROVED 2002",
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -27968,7 +28046,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -28159,7 +28237,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -28327,7 +28405,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -28464,7 +28542,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -28617,7 +28695,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2_LIST%20OF%20NEW%20DRUGS%20APPROVED%20FROM%2001-01-2017.pdf",
         "source_list": "LIST OF NEW DRUG APPROVED FROM 01-01-2017 to TILL DATE BY NEW DRUGS DIVISION",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -28772,7 +28850,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -28927,7 +29005,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -29073,7 +29151,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -29210,7 +29288,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -29356,7 +29434,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -29511,7 +29589,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -29684,7 +29762,7 @@
         "first_approval_date": "2009-02-20",
         "approval_day_known": true,
         "single_molecule_rows": 1,
-        "combination_rows": 0,
+        "combination_rows": 1,
         "only_as_combination": false,
         "india_indications": [
           "For the treatment of menorrhagia"
@@ -29692,7 +29770,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2009.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED 2009",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -29847,7 +29925,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -29995,7 +30073,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -30141,7 +30219,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -30296,7 +30374,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -30442,7 +30520,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -30616,13 +30694,13 @@
         "first_approval_date": "2009-01-09",
         "approval_day_known": true,
         "single_molecule_rows": 1,
-        "combination_rows": 0,
+        "combination_rows": 1,
         "only_as_combination": false,
         "india_indications": [],
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2009.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED 2009",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -30769,13 +30847,18 @@
       "unmapped": [],
       "india_approval": {
         "molecule": "Mifepristone",
-        "found": false,
-        "approved_in_india": null,
-        "first_approval_date": null,
+        "found": true,
+        "approved_in_india": true,
+        "first_approval_date": "2002-02-13",
+        "approval_day_known": true,
+        "single_molecule_rows": 0,
+        "combination_rows": 2,
+        "only_as_combination": true,
         "india_indications": [],
-        "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2002.pdf",
+        "source_list": "LIST OF NEW DRUGS APPROVED 2002",
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -30912,7 +30995,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -31049,7 +31132,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -31191,7 +31274,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/4_LIST%20OF%20APPROVED%20DRUG%20FROM%2001-01-2015.pdf",
         "source_list": "LIST OF APPROVED DRUG FROM 01-01-2015 to 31-01-2015",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -31361,7 +31444,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2009.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED 2009",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -31511,7 +31594,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2009.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED 2009",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -31648,7 +31731,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -31785,7 +31868,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -31928,7 +32011,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -32077,10 +32160,10 @@
         "molecule": "Folic acid",
         "found": true,
         "approved_in_india": true,
-        "first_approval_date": "2009-01-14",
+        "first_approval_date": "2006-06-08",
         "approval_day_known": true,
         "single_molecule_rows": 0,
-        "combination_rows": 5,
+        "combination_rows": 6,
         "only_as_combination": true,
         "india_indications": [
           "For the treatment of diabetic neuropathy",
@@ -32089,9 +32172,9 @@
           "For the treatment of vitamin deficiency states in adults"
         ],
         "source_name": "CDSCO List of Approved New Drugs",
-        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2009.pdf",
-        "source_list": "LIST OF NEW DRUGS APPROVED 2009",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2006.pdf",
+        "source_list": "LIST OF NEW DRUGS APPROVED 2006",
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -32228,7 +32311,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -32372,7 +32455,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -32530,7 +32613,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -32684,7 +32767,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/rnew%20drugs%20approval%202018.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED FROM 01-01-2018 to 31.12.2018",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -32843,7 +32926,7 @@
         "source_name": "CDSCO List of Approved New Drugs",
         "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/approvalsnd211.pdf",
         "source_list": "LIST OF NEW DRUGS APPROVED 2011",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -32980,7 +33063,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -33135,7 +33218,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -33289,7 +33372,7 @@
         "india_indications": [],
         "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     },
     {
@@ -33420,13 +33503,20 @@
       "unmapped": [],
       "india_approval": {
         "molecule": "Fluconazole",
-        "found": false,
-        "approved_in_india": null,
-        "first_approval_date": null,
-        "india_indications": [],
-        "note": "Not found in the CDSCO new-drug lists. The register is thin before about 2009 and several older lists are scanned images that cannot be read, so this is not evidence the molecule is unapproved in India.",
+        "found": true,
+        "approved_in_india": true,
+        "first_approval_date": "2004-10-08",
+        "approval_day_known": true,
+        "single_molecule_rows": 0,
+        "combination_rows": 1,
+        "only_as_combination": true,
+        "india_indications": [
+          "For the treatment of prostate cancer suitable for hormonal manipulation"
+        ],
         "source_name": "CDSCO List of Approved New Drugs",
-        "retrieved_utc": "2026-08-05T12:13:39+00:00"
+        "source_url": "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadApprovalNewDrugs/2004le.pdf",
+        "source_list": "LIST OF NEW DRUGS APPROVED 2004",
+        "retrieved_utc": "2026-08-06T05:17:52+00:00"
       }
     }
   ]

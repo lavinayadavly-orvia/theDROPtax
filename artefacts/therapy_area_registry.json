@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-08-05T12:35:13+00:00",
+  "generated_utc": "2026-08-06T10:03:55+00:00",
   "caveats": [
     "Per-indication endpoints with benefit direction and a normalisation spec. direction matters: LDL-C, HbA1c, blood pressure and menstrual blood loss are lower-better; functional independence and BMD are higher-better."
   ],

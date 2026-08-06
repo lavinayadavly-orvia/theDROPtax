@@ -1,10 +1,12 @@
 # DROP Tax — data artefacts
 
-Exported 2026-08-05T12:35:13+00:00 from the `droptax` database.
+Exported 2026-08-06T10:03:55+00:00 from the `droptax` database.
 
 Curated for the DROP Tax platform and reusable on their own. Every file carries its caveats below, and they are repeated inside the JSON files. Carried across without them, each of these becomes a confident false statement — which is how several of them entered this codebase.
 
 **Scope: CardioMetabolic and Women's Health. No oncology.**
+
+**A molecule has at least four prices in India** — Jan Aushadhi, the MSO contract, a public counter, and branded retail, with MRP a ceiling above all of them. Any single figure needs to say which one it is.
 
 | File | Rows | What it is |
 |---|---|---|
@@ -15,7 +17,10 @@ Curated for the DROP Tax platform and reusable on their own. Every file carries 
 | `nlem_2022.csv` | 239 | Essential medicines with care levels |
 | `cdsco_new_drug_approvals.csv` | 472 | India approvals, indication and date |
 | `cdsco_biologics_permissions.csv` | 486 | Who may make or import, by firm |
-| `verified_label_facts.json` | **1** | DailyMed facts with verbatim quotes. Only inclisiran — 50 innovators were checked, one was persisted |
+| `cghs_restricted_medicines.csv` | 407 | Who must approve a restricted medicine, and on what cost trigger |
+| `mso_rate_contract.csv` | 525 | What central government pays, with contract windows |
+| `janaushadhi_product_mrp.csv` | 2,439 | PMBJP prices — the floor a patient can pay |
+| `verified_label_facts.json` | **1** | DailyMed facts with verbatim quotes. Inclisiran only |
 
 ## How far to trust each file
 
@@ -40,11 +45,25 @@ Curated for the DROP Tax platform and reusable on their own. Every file carries 
 
 ### `cdsco_biologics_permissions.csv`
 - r-DNA origin only: recombinant proteins and biosimilars. CT-21 is permission to manufacture and market, CT-18 to import and market.
-- out_of_scope marks oncology rows — the register is roughly a quarter oncology by volume and this platform covers CardioMetabolic and Women's Health. Rows are marked, not deleted.
+- out_of_scope marks oncology rows — the register is roughly a quarter oncology and this platform covers CardioMetabolic and Women's Health.
 - Better evidence than a curated brand list, but NOT more complete: the consolidated file lists one manufacturer for tenecteplase where a monthly file from the same register names another.
 
 ### `verified_label_facts.json`
-- Every field carries source_name, source_url, retrieved date and a verbatim quote. Facts without a quote were not verified and are absent.
+- ONE MOLECULE, NOT FIFTY. verify_from_dailymed.py checked 50 innovators; only inclisiran was ever persisted. Every field it does hold carries source_name, source_url, retrieved date and a verbatim quote.
+
+### `cghs_restricted_medicines.csv`
+- Restricted does NOT mean excluded — it means the medicine needs authorisation. STC is the Standing Technical Committee, a board that must clear the patient's file; non-STC is approved locally by the Additional Director or CMO of the Medical Store Depot.
+- The route is chosen by COST: above roughly Rs10,000 per administration, Rs50,000 a month, or a cancer cycle above Rs15,00,000.
+- The lists move. An STC drug approved in more than 20 separate cases within six months transitions to the non-STC online list; immunotherapy is the standing exception.
+
+### `mso_rate_contract.csv`
+- What central government actually pays. Every row carries its own contract window — a rate is only the rate between its dates.
+- Loaded from a supplied copy: mso-gmsd.in resolves every menu item to /portal/undefined, so it could not be fetched from source.
+- VMS is the code's own label in the contract and is deliberately NOT expanded, because it has not been read anywhere.
+
+### `janaushadhi_product_mrp.csv`
+- PMBJP prices — for a molecule listed here this is close to the least a patient can pay in India, and the reference every other price should be read against.
+- Zero MRP means UNDER PROCESS, not free. The site says so itself.
 
 ### `therapy_area_registry.json`
 - Per-indication endpoints with benefit direction and a normalisation spec. direction matters: LDL-C, HbA1c, blood pressure and menstrual blood loss are lower-better; functional independence and BMD are higher-better.

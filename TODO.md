@@ -15,7 +15,7 @@ still open, what got added.
 **The standing rule** — no assumptions, no leap of faith, no US-to-India copy
 paste, unfamiliar terms researched rather than confidently assumed.
 
-Last reviewed: **2026-08-05**
+Last reviewed: **2026-08-06**
 
 ---
 
@@ -25,7 +25,7 @@ Last reviewed: **2026-08-05**
 |---|---|---|
 | `[ ]` | **Rebuild the engines against what the instruments actually say** | A day of reading found eight things the code has wrong. See [documents/INDIA_PHARMA_MECHANICS.md](documents/INDIA_PHARMA_MECHANICS.md) §14. This is now ahead of wiring, because wiring the current logic would ship the errors. |
 | `[ ]` | **Wire the brain into `/analyze`** | Everything below exists, is tested, and is invisible. A user typing a drug still gets the old behaviour. |
-| `[ ]` | **Literature agent writes endpoints back** | Clinical endpoints in the DB are still **1 of 218**. |
+| `[ ]` | **Literature agent writes endpoints back** | Clinical endpoints in the DB are still **1 of 218**. The clinical section reads live and persists nothing. |
 | `[ ]` | **UI** | Deferred. One page per drug, sections appearing only where the fetch plan says they apply. |
 
 ---
@@ -89,6 +89,7 @@ Each of these is live in the code today and wrong.
 | `[x]` | Value engine | Registry-normalised event probability |
 | `[x]` | Literature agent | Europe PMC. Design, journal, authors, population, funding — each with its sentence |
 | `[x]` | Author standing | Papers-on-topic, institution kind, industry employment, ORCID coverage |
+| `[x]` | **Clinical section** | `core/clinical.py`. Label, CDSCO indication and literature kept apart; three questions — works / safe / applies here — over one retrieved set; reasons in words, no scores; gaps named |
 | `[~]` | Appraisal engine | 34 tests, **partly obsolete**. Exposure/follow-up machinery no longer fed |
 | `[ ]` | Registry gaps | 107 unmapped indications: Post-MI ×5, diabetic nephropathy ×3, CV-risk reduction ×3, HRT ×3 |
 | `[ ]` | Evidence criteria → code | Criteria defined, not implemented |
@@ -231,6 +232,11 @@ Per claim and per purpose: *supports · supports with caveat · does not support
 - `[x]` **Two more "gaps" were mislabelled, and one was a false claim.** `verified_facts` holds 1 molecule, not the 50 stated in this file and in the artefacts manifest — 50 were checked, 1 persisted. And multi-brand pricing is largely collected already: 171 of 178 molecules have more than one retail listing. Both corrected above.
 - `[ ]` **Persist the other 49 DailyMed verifications**, and check whether dosing frequency comes with them — that is what blocks per-unit → per-period costing on 156 drugs.
 - `[ ]` **Aggregate the retail workbook per molecule** to get brand count and price spread, which is the competition signal we settled on.
+- `[x]` **Clinical section built and rendered next to the commercial one.** Assembling the page found what auditing lists did not.
+- `[ ]` **The page contradicts itself on price.** It prints `catalogue ₹37,500/vial` and, four lines later, "No price resolved". `price_per_unit` is set; `global_price_inr` is null because no monthly figure could be derived, and the classifier reads the latter. Same cause makes it assert `costly_but_competed` with no cost.
+- `[ ]` **"Widely branded in India" sits above the evidence contradicting it** — two brands, one maker. `many_brands` fires because the word "generics" appears in a text field.
+- `[ ]` **The literature query has no relevance test.** A tirofiban trial leads the tenecteplase efficacy list, because the search returns papers that *mention* the molecule rather than papers about it.
+- `[ ]` **Gennova and Emcure appear side by side unexplained** — probably manufacturer and marketer, which is the co-marketing structure, but the page shows it as a conflict.
 - `[ ]` **Four prices now visible for the same molecule.** Jan Aushadhi, MSO contract, TNMSC counter, branded retail. Telmisartan is ₹0.61 contracted and ₹1.13 at a Kendra; metformin is *cheaper* at a Kendra than on contract. The platform still models one.
 
 - `[x]` **Market share is not a blocker.** We are not forecasting and not assigning share. NPPA needs ≥1% share because it computes a statutory ceiling; we describe a competitive picture, which is triangulated from annual reports, press releases, filings, consulting and IQVIA summaries, and observed price spread. Removed from the gap list.

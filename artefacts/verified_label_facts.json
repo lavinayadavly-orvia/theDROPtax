@@ -1,7 +1,7 @@
 {
-  "generated_utc": "2026-08-05T12:35:13+00:00",
+  "generated_utc": "2026-08-06T10:03:55+00:00",
   "caveats": [
-    "Every field carries source_name, source_url, retrieved date and a verbatim quote. Facts without a quote were not verified and are absent."
+    "ONE MOLECULE, NOT FIFTY. verify_from_dailymed.py checked 50 innovators; only inclisiran was ever persisted. Every field it does hold carries source_name, source_url, retrieved date and a verbatim quote."
   ],
   "molecules": {
     "inclisiran": {

@@ -23,6 +23,9 @@ Output
         nlem_2022.csv                   239 essential medicines, care levels
         cdsco_new_drug_approvals.csv    India approvals with indication and date
         cdsco_biologics_permissions.csv who may make or import, by firm
+        cghs_restricted_medicines.csv   who must approve a restricted medicine
+        mso_rate_contract.csv           what central government pays
+        janaushadhi_product_mrp.csv     PMBJP prices, the floor a patient pays
         verified_label_facts.json       DailyMed facts with verbatim quotes
 
 Usage
@@ -87,8 +90,34 @@ CAVEATS = {
         "monthly file from the same register names another.",
     ],
     "verified_label_facts.json": [
-        "Every field carries source_name, source_url, retrieved date and a "
-        "verbatim quote. Facts without a quote were not verified and are absent.",
+        "ONE MOLECULE, NOT FIFTY. verify_from_dailymed.py checked 50 innovators; "
+        "only inclisiran was ever persisted. Every field it does hold carries "
+        "source_name, source_url, retrieved date and a verbatim quote.",
+    ],
+    "cghs_restricted_medicines.csv": [
+        "Restricted does NOT mean excluded — it means the medicine needs "
+        "authorisation. STC is the Standing Technical Committee, a board that "
+        "must clear the patient's file; non-STC is approved locally by the "
+        "Additional Director or CMO of the Medical Store Depot.",
+        "The route is chosen by COST: above roughly Rs10,000 per administration, "
+        "Rs50,000 a month, or a cancer cycle above Rs15,00,000.",
+        "The lists move. An STC drug approved in more than 20 separate cases "
+        "within six months transitions to the non-STC online list; immunotherapy "
+        "is the standing exception.",
+    ],
+    "mso_rate_contract.csv": [
+        "What central government actually pays. Every row carries its own "
+        "contract window — a rate is only the rate between its dates.",
+        "Loaded from a supplied copy: mso-gmsd.in resolves every menu item to "
+        "/portal/undefined, so it could not be fetched from source.",
+        "VMS is the code's own label in the contract and is deliberately NOT "
+        "expanded, because it has not been read anywhere.",
+    ],
+    "janaushadhi_product_mrp.csv": [
+        "PMBJP prices — for a molecule listed here this is close to the least a "
+        "patient can pay in India, and the reference every other price should be "
+        "read against.",
+        "Zero MRP means UNDER PROCESS, not free. The site says so itself.",
     ],
     "therapy_area_registry.json": [
         "Per-indication endpoints with benefit direction and a normalisation "
@@ -180,6 +209,9 @@ async def main():
                            ("nlem", "nlem_2022.csv"),
                            ("cdsco_approvals", "cdsco_new_drug_approvals.csv"),
                            ("cdsco_biologics", "cdsco_biologics_permissions.csv"),
+                           ("cghs_restricted", "cghs_restricted_medicines.csv"),
+                           ("mso_rate_contract", "mso_rate_contract.csv"),
+                           ("janaushadhi", "janaushadhi_product_mrp.csv"),
                            ("support_programs", "support_programmes.csv")):
         docs = [x async for x in db[coll].find({}, {"_id": 0})]
         written[filename] = write_csv(os.path.join(root, filename), docs)
@@ -196,6 +228,10 @@ async def main():
         "",
         "**Scope: CardioMetabolic and Women's Health. No oncology.**",
         "",
+        "**A molecule has at least four prices in India** — Jan Aushadhi, the MSO "
+        "contract, a public counter, and branded retail, with MRP a ceiling above "
+        "all of them. Any single figure needs to say which one it is.",
+        "",
         "| File | Rows | What it is |",
         "|---|---|---|",
         "| `therapy_area_registry.json` | 37 | Indications with endpoints, benefit direction and normalisation |",
@@ -205,7 +241,10 @@ async def main():
         "| `nlem_2022.csv` | 239 | Essential medicines with care levels |",
         "| `cdsco_new_drug_approvals.csv` | 472 | India approvals, indication and date |",
         "| `cdsco_biologics_permissions.csv` | 486 | Who may make or import, by firm |",
-        "| `verified_label_facts.json` | — | DailyMed facts with verbatim quotes |",
+        "| `cghs_restricted_medicines.csv` | 407 | Who must approve a restricted medicine, and on what cost trigger |",
+        "| `mso_rate_contract.csv` | 525 | What central government pays, with contract windows |",
+        "| `janaushadhi_product_mrp.csv` | 2,439 | PMBJP prices — the floor a patient can pay |",
+        "| `verified_label_facts.json` | **1** | DailyMed facts with verbatim quotes. Inclisiran only |",
         "",
         "## How far to trust each file",
         "",
