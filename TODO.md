@@ -56,7 +56,7 @@ Each of these is live in the code today and wrong.
 | `[~]` | Clinical endpoints | 1 of 218 |
 | `[x]` | NPPA ceiling prices | 1,012 formulations, gazette-cited |
 | `[x]` | NLEM 2022 | 239 medicines. **Schedule I of DPCO *is* NLEM**, so this is the right test for "scheduled" |
-| `[x]` | CDSCO new drug approvals | 472, 452 dated, 2000–2026, with India-approved indication. 58/218 link, 39 only as combinations |
+| `[x]` | CDSCO new drug approvals | **813, 733 dated**, 1961–2026, with India-approved indication. **78/218 link**, 45 only as combinations. Scanned lists recovered by OCR |
 | `[x]` | CDSCO biologics permissions | 486 (125 manufacture, 361 import), 82 marked out of scope |
 | `[x]` | CGHS restricted medicines | 407, of which **81 need Standing Technical Committee clearance**. Inclisiran and evolocumab both STC |
 | `[x]` | MSO rate contracts | 525 rates, each with its contract window. **Supplied copy** — mso-gmsd.in nav is broken |
@@ -64,7 +64,7 @@ Each of these is live in the code today and wrong.
 | `[x]` | Verified label facts | DailyMed, 50 innovators, verbatim quotes |
 | `[ ]` | Event costs | ₹18L `major_event_cost` is **a placeholder**. PM-JAY rate tables unreachable |
 | `[ ]` | Multi-brand pricing | Inclisiran has 4 Indian brands; the workbook holds 1 |
-| `[!]` | 9 CDSCO lists unreadable | Image tables, no text layer. Neither pypdf nor pdfplumber. Needs OCR |
+| `[x]` | 9 CDSCO lists — **unblocked by OCR** | macOS Vision via pyobjc, no brew needed. Register went 472 → **813 approvals**, 450 → **733 dated**, catalogue links 58 → **78**. OCR'd rows carry their confidence |
 | `[!]` | CGHS site | Times out on every path including its home page |
 | `[!]` | PM-JAY rate tables | HTML shells at every URL. The HBP manual downloads fine |
 | `[!]` | Jan Aushadhi | SPA serving an app shell for every path including its own API |
@@ -224,6 +224,9 @@ Per claim and per purpose: *supports · supports with caveat · does not support
 ## Added this session
 
 **2026-08-06**
+
+- `[x]` **OCR unblocked the scanned CDSCO lists.** I had logged 9 image-table PDFs as blocked after trying two libraries. macOS ships a text recogniser in the Vision framework, reachable through pyobjc with no system package. Two further mistakes were mine: Vision returns a table column-major, so rows had to be rebuilt from bounding boxes; and I then flattened those rows back to a string to re-hunt serial numbers, which lost 191 of 194 rows on the 2006 list. Reading the row structure directly fixed it.
+- `[ ]` **Retry the other four blockers the same way.** CGHS timeouts, PM-JAY HTML shells, MSO's broken nav, Jan Aushadhi's SPA — each was logged after one or two attempts. The browser rendered CDSCO's JS tables fine and was never tried on NHA.
 
 - `[x]` **Market share is not a blocker.** We are not forecasting and not assigning share. NPPA needs ≥1% share because it computes a statutory ceiling; we describe a competitive picture, which is triangulated from annual reports, press releases, filings, consulting and IQVIA summaries, and observed price spread. Removed from the gap list.
 - `[ ]` **Compute the chain-margin proxy.** MSO contracted rate ÷ retail price, per molecule, on data already loaded. Not the TMR figure NPPA would use, but it answers the question that matters: which molecules carry a fat distribution margin and are therefore exposed under para 19.

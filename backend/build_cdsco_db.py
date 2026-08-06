@@ -173,6 +173,58 @@ def year_of(title):
     return int(m.group(0)) if m else None
 
 
+def _records_from_ocr_rows(rows, source_title, source_url):
+    """Approvals from OCR rows, which are already row-grouped left to right.
+
+    A row is kept when it carries a date or reads like a drug entry. The serial
+    is whatever leading integer the row starts with, and its absence is not
+    fatal — OCR merges the header cell into row one often enough that insisting
+    on it loses the row.
+    """
+    out = []
+    for row in rows:
+        body = re.sub(r"\s+", " ", row["text"]).strip()
+        if len(body) < 12:
+            continue
+        low = body.lower()
+        if any(h in low for h in ("s.no", "name of drug", "pharmacological",
+                                  "date of approval", "list of drug")) and len(body) < 90:
+            continue
+        approval_date, day_known = parse_date(body)
+        without_date = re.sub(r"\s+", " ", ANY_DATE.sub(" ", body)).strip(" .,-")
+        serial = None
+        m = re.match(r"^\s*(\d{1,4})\s+", without_date)
+        if m:
+            serial = int(m.group(1))
+            without_date = without_date[m.end():]
+        split = INDICATION_START.search(without_date)
+        if split and split.start() > 2:
+            name = without_date[: split.start()].strip(" ,;-")
+            indication = without_date[split.start():].strip(" ,;-")
+            confident = True
+        else:
+            name, indication, confident = without_date.strip(), None, False
+        if not name or (approval_date is None and not confident and len(name) < 20):
+            continue
+        out.append({
+            "serial": serial,
+            "drug_name": name[:300] or None,
+            "indication": indication[:600] if indication else None,
+            "approval_date": approval_date,
+            "approval_day_known": day_known,
+            "name_split_confident": confident,
+            "raw": body[:900],
+            "source_list": source_title,
+            "source_url": source_url,
+            "parse_mode": "ocr_rows",
+            "from_ocr": True,
+            # OCR misreads. The confidence travels with the row so a figure
+            # lifted from a scan is visibly weaker than one from a text layer.
+            "ocr_confidence": row.get("confidence"),
+        })
+    return out
+
+
 def parse_approvals(pdf_path, source_title, source_url):
     """Rows out of one year's list.
 
@@ -184,10 +236,29 @@ def parse_approvals(pdf_path, source_title, source_url):
     reader = pypdf.PdfReader(pdf_path)
     text = re.sub(r"\s+", " ", "\n".join(
         (p.extract_text() or "") for p in reader.pages))
-    # A PDF with no extractable text is a scan. It needs OCR, and must be
-    # reported as unread rather than counted as an empty list.
+    # Nine of the forty lists are image tables with no text layer. Rather than
+    # report them unread, fall back to OCR — macOS Vision, via ocr_pdf. Rows
+    # are reassembled from bounding boxes because Vision returns a table
+    # column-major, which as plain text is unreadable.
+    #
+    # OCR'd text is marked so a figure lifted from a scan is visibly weaker
+    # evidence than one lifted from a text layer.
+    ocred = False
+    if len(text.strip()) < 40 or len(text) / max(os.path.getsize(pdf_path), 1) < 0.01:
+        try:
+            from ocr_pdf import ocr_pdf as _ocr
+            ocr_rows, _stats = _ocr(pdf_path)
+        except Exception as e:
+            raise ValueError(f"no text layer and OCR failed: {e}")
+        if ocr_rows:
+            # OCR already grouped fragments into rows by bounding box, so the
+            # row structure exists. Flattening it back to a string and hunting
+            # serial numbers again throws that away and loses most of the rows —
+            # the 2006 list gave 3 of its 40-odd approvals that way. Read the
+            # rows directly instead.
+            return _records_from_ocr_rows(ocr_rows, source_title, source_url), 0
     if len(text.strip()) < 40:
-        raise ValueError("no extractable text — scanned image, needs OCR")
+        raise ValueError("no extractable text and OCR produced nothing")
 
     # Rows are NOT line-delimited: extraction puts one row's date and the next
     # row's serial on the same line ("...17.01.2025 3. Fexuprazan..."), so a
@@ -204,10 +275,10 @@ def parse_approvals(pdf_path, source_title, source_url):
     # without the period "2 mg" can look like serial 2 — the sequential
     # constraint is doing more work in that mode, and which mode was used is
     # recorded rather than hidden.
-    def scan(require_period: bool):
+    def scan(require_period: bool, start: int = 1):
         pattern = (r"(?<![\d.])(\d{1,4})\s*\.\s+(?=[A-Za-z])" if require_period
                    else r"(?<![\d.])(\d{1,4})\s*\.?\s+(?=[A-Z][a-z])")
-        expected, found = 1, []
+        expected, found = start, []
         for m in re.finditer(pattern, text):
             if int(m.group(1)) != expected:
                 continue
@@ -222,12 +293,22 @@ def parse_approvals(pdf_path, source_title, source_url):
             expected += 1
         return found
 
-    marks = scan(True)
-    mode = "numbered"
-    if len(marks) < 3:
-        loose = scan(False)
-        if len(loose) > len(marks):
-            marks, mode = loose, "unnumbered"
+    # The scan does not insist on finding serial 1. On a scanned list OCR
+    # routinely merges the header cell into the first data row, so "1" comes
+    # back as "S.No" and a scan anchored at 1 finds nothing at all — which is
+    # what happened to the 2006 list. Trying a few starting serials and keeping
+    # whichever yields most rows costs nothing and survives a misread first row.
+    best, mode = [], "numbered"
+    for start in (1, 2, 3):
+        got = scan(True, start)
+        if len(got) > len(best):
+            best = got
+    if len(best) < 3:
+        for start in (1, 2, 3):
+            got = scan(False, start)
+            if len(got) > len(best):
+                best, mode = got, "unnumbered"
+    marks = best
 
     blocks = []
     for i, (start, serial, body_at) in enumerate(marks):
@@ -267,6 +348,7 @@ def parse_approvals(pdf_path, source_title, source_url):
             "source_list": source_title,
             "source_url": source_url,
             "parse_mode": mode,
+            "from_ocr": ocred,
         })
     return records, unparsed
 
